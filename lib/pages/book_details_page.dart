@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kitap_dagi/models/book.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
 
 import '../constants.dart';
 
 class BookDetails extends StatelessWidget {
-  final dynamic book;
+  final Book book;
   const BookDetails({Key? key, required this.book}) : super(key: key);
 
   @override
@@ -35,7 +36,7 @@ class BookDetails extends StatelessWidget {
                             child: SizedBox(
                               width: size.width / 1.5,
                               height: size.height / 2,
-                              child: Image.network(book["book_image"]),
+                              child: Image.network(book.bookImage),
                             ),
                           ),
                           const SizedBox(
@@ -55,7 +56,7 @@ class BookDetails extends StatelessWidget {
                               child: SizedBox(
                                   width: size.height / 1.5,
                                   height: size.width / 2,
-                                  child: Image.network(book["book_image"])),
+                                  child: Image.network(book.bookImage)),
                             )),
                         SizedBox(
                           width: size.width -
@@ -89,7 +90,7 @@ class BookDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          book["title"],
+          book.title,
           style: const TextStyle(
               color: kTextColor, fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -113,7 +114,7 @@ class BookDetails extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                book["author"],
+                book.author,
                 style: const TextStyle(
                     color: kTextColor,
                     fontSize: 15,
@@ -139,7 +140,7 @@ class BookDetails extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                book["publisher"],
+                book.author,
                 style: const TextStyle(
                     color: kTextColor,
                     fontSize: 15,
@@ -164,7 +165,7 @@ class BookDetails extends StatelessWidget {
           ),
         ),
         Row(
-          children: [yildizlar(double.parse(book["rating"])), Text("(16)")],
+          children: [yildizlar(double.parse(book.rating)), Text("(16)")],
         ),
         const SizedBox(
           height: 10,
@@ -186,7 +187,7 @@ class BookDetails extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                book["description"],
+                book.description,
                 style: TextStyle(
                     color: kTextColor,
                     fontSize: 15,
@@ -215,10 +216,7 @@ class BookDetails extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                book["book_image_height"] +
-                    " x " +
-                    book["book_image_width"] +
-                    " mm",
+                "${book.bookImageHeight} x ${book.bookImageWidth} mm",
                 style: TextStyle(
                     color: kTextColor,
                     fontSize: 15,
@@ -319,8 +317,8 @@ class BookDetails extends StatelessWidget {
                                           Expanded(child: SizedBox()),
                                           SizedBox(
                                               width: 120,
-                                              child: yildizlar(double.parse(
-                                                  book["rating"]))),
+                                              child: yildizlar(
+                                                  double.parse(book.rating))),
                                         ],
                                       ),
                                     ),

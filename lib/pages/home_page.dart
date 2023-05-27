@@ -7,6 +7,7 @@ import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import '../models/book.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -149,7 +150,7 @@ class HomePage extends StatelessWidget {
     }
   }
 */
-  Widget buildBook(Size size, String baslik, List asd, int baslama) {
+  Widget buildBook(Size size, String baslik, List<Book> asd, int baslama) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
@@ -193,7 +194,7 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Image.network(
-                                asd[index + baslama]["book_image"],
+                                asd[index + baslama].bookImage,
                                 // "assets/harry.jpg",
                                 //height: 190,
                                 width: 130,
@@ -201,14 +202,14 @@ class HomePage extends StatelessWidget {
                                 fit: BoxFit.contain,
                               ),
                               Text(
-                                asd[index + baslama]["title"],
+                                asd[index + baslama].title,
                                 style: const TextStyle(
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14),
                               ),
                               Text(
-                                asd[index + baslama]["author"],
+                                asd[index + baslama].author,
                                 style: const TextStyle(
                                     color: kPrimaryColor, fontSize: 13),
                               )

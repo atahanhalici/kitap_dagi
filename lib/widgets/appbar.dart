@@ -10,7 +10,7 @@ class MyAppBar extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: kDefaultPadding * 2.5),
       // It will cover 20% of our total height
-      height: size.height * 0.1,
+      height: size.height > size.width ? size.height * 0.1 : size.width * 0.1,
       child: Stack(
         children: <Widget>[
           Container(
@@ -19,7 +19,9 @@ class MyAppBar extends StatelessWidget {
               right: kDefaultPadding,
               bottom: 36 + kDefaultPadding,
             ),
-            height: size.height * 0.1 - 27,
+            height: size.height > size.width
+                ? size.height * 0.1 - 27
+                : size.width * 0.1 - 27,
             decoration: BoxDecoration(
               color: kPrimaryColor,
               borderRadius: BorderRadius.only(
