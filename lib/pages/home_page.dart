@@ -20,10 +20,15 @@ class HomePage extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor: kPrimaryColor, elevation: 0, actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-        IconButton(onPressed: () {}, icon: Icon(Icons.person))
-      ]),
+      appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          title: Text("Kitap Dağı"),
+          centerTitle: true,
+          elevation: 0,
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.person))
+          ]),
       drawerEnableOpenDragGesture: true,
       drawer: const MyDrawer(),
       body: _mainModel.state == ViewState.geliyor
@@ -38,61 +43,41 @@ class HomePage extends StatelessWidget {
                       children: [
                         const MyAppBar(),
                         slider(size),
-                        buildBook(size, "Sizin İçin Seçtiklerimiz",
-                            _mainModel.asd, 0),
-                        const Padding(
+                        kitapSlider(size, _mainModel.sizinicin,
+                            "Sizin İçin Seçtiklerimiz"),
+                        //buildBook(size, "Sizin İçin Seçtiklerimiz",
+                        //  _mainModel.asd, 0),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: kDefaultPadding / 2),
                           child: SizedBox(
-                            width: 275,
+                            width: size.width / 1.5,
                             child: Divider(
                               thickness: 2,
                             ),
                           ),
                         ),
-                        buildBook(
-                            size, "Çok Satan Kitaplar", _mainModel.asd, 7),
-                        const Padding(
+                        kitapSlider(
+                            size, _mainModel.coksatan, "Çok Satan Kitaplar"),
+                        //  buildBook(
+                        //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: kDefaultPadding / 2),
                           child: SizedBox(
-                            width: 275,
+                            width: size.width / 1.5,
                             child: Divider(
                               thickness: 2,
                             ),
                           ),
                         ),
-                        buildBook(
-                            size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
+                        kitapSlider(
+                            size, _mainModel.yenicikan, "Yeni Çıkan Kitaplar"),
+                        // buildBook(
+                        //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
                         const SizedBox(
                           height: kDefaultPadding,
                         ),
-                        /* const Padding(
-                padding: EdgeInsets.only(left: kDefaultPadding),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Daha Fazlası İçin",
-                    style: TextStyle(color: kPrimaryColor, fontSize: 15),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: const EdgeInsets.only(left: kDefaultPadding),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    width: 175,
-                    child: Divider(
-                      color: kPrimaryColor,
-                      thickness: 2,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: kDefaultPadding / 2,
-              ),*/
                       ],
                     ),
                   ),
@@ -150,7 +135,7 @@ class HomePage extends StatelessWidget {
     }
   }
 */
-  Widget buildBook(Size size, String baslik, List<Book> asd, int baslama) {
+  /* Widget buildBook(Size size, String baslik, List<Book> asd) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
@@ -175,19 +160,19 @@ class HomePage extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BookDetails(
-                                      book: asd[index + baslama],
-                                    )),
-                          );
-                        },
-                        child: SizedBox(
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BookDetails(
+                                  book: asd[index + baslama],
+                                )),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
                           width: 130,
                           height: 300,
                           child: Column(
@@ -216,11 +201,11 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: kDefaultPadding / 2,
-                      )
-                    ],
+                        const SizedBox(
+                          width: kDefaultPadding / 2,
+                        )
+                      ],
+                    ),
                   );
                 }),
           ),
@@ -228,56 +213,135 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  slider(Size size) {
-    return CarouselSlider(
-      options: CarouselOptions(
-          viewportFraction: 1,
-          height:
-              size.height > size.width ? size.height / 3.5 : size.width / 3.5,
-          autoPlay: true,
-          autoPlayInterval: Duration(seconds: 7)),
-      items: imgList.map((imgAsset) {
-        return Builder(
-          builder: (BuildContext context) {
-            return Container(
-              // height: size.height / 4,
-              margin: const EdgeInsets.only(
-                  bottom: kDefaultPadding,
-                  right: kDefaultPadding,
-                  left: kDefaultPadding),
-              decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10.0,
-                      spreadRadius: 2.0,
-                    ), //BoxShadow
-                  ],
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(
-                      imgAsset,
-                    ),
-                  )),
-            );
-          },
-        );
-      }).toList(),
-    );
+*/
+  kitapSlider(Size size, List<Book> asd, String baslik) {
+    double mywidth = (size.width - (2 * kDefaultPadding)) / 150;
+    mywidth = mywidth.ceil().toDouble();
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        child: Column(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                baslik,
+                style: const TextStyle(color: kPrimaryColor, fontSize: 15),
+              ),
+              const SizedBox(
+                width: 150,
+                child: Divider(
+                  color: kPrimaryColor,
+                  thickness: 2,
+                ),
+              ),
+              CarouselSlider(
+                options: CarouselOptions(
+                    viewportFraction: 1 / mywidth,
+                    height: 280,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 7)),
+                items: asd.map((book) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BookDetails(
+                                      book: book,
+                                    )),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: SizedBox(
+                            width: 130,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Image.network(
+                                  book.bookImage,
+                                  // "assets/harry.jpg",
+                                  //height: 190,
+                                  width: 130,
+                                  height: 200,
+                                  fit: BoxFit.contain,
+                                ),
+                                Text(
+                                  book.title,
+                                  style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
+                                Text(
+                                  book.author,
+                                  style: const TextStyle(
+                                      color: kPrimaryColor, fontSize: 13),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        ]));
   }
+}
 
-  List imgList = [
-    "assets/gununkitabi.png",
-    "assets/superindirimler.png",
-    "assets/coksatanlar.png",
-  ];
-  List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-    return result;
+slider(Size size) {
+  return CarouselSlider(
+    options: CarouselOptions(
+        viewportFraction: 1,
+        height: size.height > size.width ? size.height / 3.5 : size.width / 3.5,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 7)),
+    items: imgList.map((imgAsset) {
+      return Builder(
+        builder: (BuildContext context) {
+          return Container(
+            // height: size.height / 4,
+            margin: const EdgeInsets.only(
+                bottom: kDefaultPadding,
+                right: kDefaultPadding,
+                left: kDefaultPadding),
+            decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10.0,
+                    spreadRadius: 2.0,
+                  ), //BoxShadow
+                ],
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    imgAsset,
+                  ),
+                )),
+          );
+        },
+      );
+    }).toList(),
+  );
+}
+
+List imgList = [
+  "assets/gununkitabi.png",
+  "assets/superindirimler.png",
+  "assets/coksatanlar.png",
+];
+List<T> map<T>(List list, Function handler) {
+  List<T> result = [];
+  for (var i = 0; i < list.length; i++) {
+    result.add(handler(i, list[i]));
   }
+  return result;
 }

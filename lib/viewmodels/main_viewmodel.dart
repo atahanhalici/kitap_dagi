@@ -11,6 +11,9 @@ class MainViewModel with ChangeNotifier {
   ViewState _state = ViewState.geliyor;
   ViewState get state => _state;
   List<Book> asd = [];
+  List<Book> sizinicin = [];
+  List<Book> coksatan = [];
+  List<Book> yenicikan = [];
   set state(ViewState value) {
     _state = value;
     notifyListeners();
@@ -20,6 +23,13 @@ class MainViewModel with ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 100));
     // try {
     asd = await _repository.kitaplariGetir();
+    for (int i = 0; i < asd.length; i++) {
+      i < 8
+          ? sizinicin.add(asd[i])
+          : i < 16
+              ? coksatan.add(asd[i])
+              : yenicikan.add(asd[i]);
+    }
     state = ViewState.geldi;
     return asd;
     /*} catch (e) {

@@ -13,10 +13,15 @@ class BookDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor: kPrimaryColor, elevation: 0, actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-        IconButton(onPressed: () {}, icon: Icon(Icons.person))
-      ]),
+      appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          title: Text(book.title),
+          centerTitle: true,
+          elevation: 0,
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.person))
+          ]),
       drawerEnableOpenDragGesture: true,
       drawer: const MyDrawer(),
       body: SafeArea(
