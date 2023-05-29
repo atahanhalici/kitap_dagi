@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../models/book.dart';
+import '../viewmodels/comment_viewmodel.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -17,7 +18,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     MainViewModel _mainModel =
         Provider.of<MainViewModel>(context, listen: true);
-
+    CommentViewModel _commentModel =
+        Provider.of<CommentViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +46,7 @@ class HomePage extends StatelessWidget {
                         const MyAppBar(),
                         slider(size),
                         kitapSlider(size, _mainModel.sizinicin,
-                            "Sizin İçin Seçtiklerimiz"),
+                            "Sizin İçin Seçtiklerimiz", _commentModel),
                         //buildBook(size, "Sizin İçin Seçtiklerimiz",
                         //  _mainModel.asd, 0),
                         Padding(
@@ -57,8 +59,8 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        kitapSlider(
-                            size, _mainModel.coksatan, "Çok Satan Kitaplar"),
+                        kitapSlider(size, _mainModel.coksatan,
+                            "Çok Satan Kitaplar", _commentModel),
                         //  buildBook(
                         //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
                         Padding(
@@ -71,8 +73,8 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        kitapSlider(
-                            size, _mainModel.yenicikan, "Yeni Çıkan Kitaplar"),
+                        kitapSlider(size, _mainModel.yenicikan,
+                            "Yeni Çıkan Kitaplar", _commentModel),
                         // buildBook(
                         //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
                         const SizedBox(
@@ -214,7 +216,12 @@ class HomePage extends StatelessWidget {
     );
   }
 */
-  kitapSlider(Size size, List<Book> asd, String baslik) {
+  kitapSlider(
+    Size size,
+    List<Book> asd,
+    String baslik,
+    CommentViewModel commentModel,
+  ) {
     double mywidth = (size.width - (2 * kDefaultPadding)) / 150;
     mywidth = mywidth.ceil().toDouble();
     return Padding(
@@ -245,6 +252,8 @@ class HomePage extends StatelessWidget {
                     builder: (BuildContext context) {
                       return GestureDetector(
                         onTap: () {
+                          commentModel.yorumlariGetir(book.id);
+                          commentModel.yildizPuanla(0);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

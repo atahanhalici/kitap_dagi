@@ -71,7 +71,7 @@ class Book {
       };
 }
 
-class BuyLink {
+/*class BuyLink {
   final Name name;
   final String url;
   final String id;
@@ -92,4 +92,4 @@ enum Name {
   BOOKS_A_MILLION,
   BOOKSHOP,
   INDIE_BOUND
-}
+}*/

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/locator.dart';
 import 'package:kitap_dagi/pages/home_page.dart';
+import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ void main() {
   setupLocator();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => MainViewModel()),
+     ChangeNotifierProvider(create: (_) => CommentViewModel()),
   ], child: const MyApp()));
 }
 
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: kBackgroundColor,
           primaryColor: kPrimaryColor,
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(primary: kPrimaryColor),
           textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
