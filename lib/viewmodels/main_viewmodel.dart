@@ -27,13 +27,12 @@ class MainViewModel with ChangeNotifier {
       try {
         asd = await _repository.kitaplariGetir();
         for (int i = 0; i < asd.length; i++) {
-          i < 8
+          i < 7
               ? sizinicin.add(asd[i])
-              : i < 16
+              : i < 14
                   ? coksatan.add(asd[i])
                   : yenicikan.add(asd[i]);
         }
-
         // await _repository.yorumlariGetir(asd[0].id);
         state = ViewState.geldi;
 

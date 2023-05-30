@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/models/book.dart';
+import 'package:kitap_dagi/pages/comments_details_page.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
+import 'package:kitap_dagi/widgets/kitap_slider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../constants.dart';
+import '../viewmodels/main_viewmodel.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -24,7 +28,8 @@ class _BookDetailsState extends State<BookDetails> {
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
-
+    MainViewModel _mainModel =
+        Provider.of<MainViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -68,23 +73,33 @@ class _BookDetailsState extends State<BookDetails> {
                 : Row(
                     children: [
                       Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kDefaultPadding),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                                width: size.height / 1.5,
-                                height: size.width / 2,
-                                child: Image.network(widget.book.bookImage)),
-                          )),
-                      SizedBox(
-                        width: size.width -
-                            (2 * kDefaultPadding) -
-                            (size.height / 1.5),
-                        child: bilgiler(_commentModel),
+                          padding: const EdgeInsets.only(
+                              left: kDefaultPadding,
+                              right: kDefaultPadding / 2),
+                          child: SizedBox(
+                              width: (size.height / 1.5) - 10,
+                              height: (size.width / 2) - 10,
+                              child: Image.network(widget.book.bookImage))),
+                      Padding(
+                        padding: const EdgeInsets.only(right: kDefaultPadding),
+                        child: SizedBox(
+                          width: size.width -
+                              (2 * kDefaultPadding) -
+                              (size.height / 1.5),
+                          child: bilgiler(_commentModel),
+                        ),
                       )
                     ],
                   ),
+            const SizedBox(
+              height: kDefaultPadding,
+            ),
+            KitapSlider(
+              size: size,
+              asd: _mainModel.coksatan,
+              baslik: "Öneriler",
+              cizgiUzunluk: 75,
+            ),
             const SizedBox(
               height: kDefaultPadding,
             ),
@@ -269,6 +284,31 @@ class _BookDetailsState extends State<BookDetails> {
             ],
           ),
         ),
+        const SizedBox(
+          height: kDefaultPadding,
+        ),
+        satinAl(widget.book),
+        const SizedBox(
+          height: kDefaultPadding - 5,
+        ),
+        TextButton(
+            onPressed: () {},
+            child: Container(
+              width: MediaQuery.of(context).size.width - (2 * kDefaultPadding),
+              height: 50,
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                  child: Text(
+                "Favorilere Ekle",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              )),
+            )),
       ],
     );
   }
@@ -297,21 +337,34 @@ class _BookDetailsState extends State<BookDetails> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Expanded(child: SizedBox()),
-                              Row(
-                                children: const [
-                                  Text(
-                                    "Tüm Yorumları Görüntüle",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15,
+                              GestureDetector(
+                                onTap: () {
+                                  commentModel.baslama = 0;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CommentsDetails(
+                                              book: widget.book,
+                                              comments: commentModel.comments,
+                                            )),
+                                  );
+                                },
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      "Tüm Yorumları Görüntüle",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15,
+                                      ),
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.grey,
-                                    size: 15,
-                                  )
-                                ],
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.grey,
+                                      size: 15,
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -329,8 +382,8 @@ class _BookDetailsState extends State<BookDetails> {
                         SizedBox(
                           width: size.width - 2 * kDefaultPadding,
                           child: ListView.builder(
-                              itemCount: commentModel.comments.yorumSayisi >= 2
-                                  ? 2
+                              itemCount: commentModel.comments.yorumSayisi >= 4
+                                  ? 4
                                   : commentModel.comments.yorumSayisi,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -370,12 +423,18 @@ class _BookDetailsState extends State<BookDetails> {
                                                 ),
                                                 Expanded(child: SizedBox()),
                                                 SizedBox(
-                                                    width: 120,
-                                                    child: yildizlar(double
-                                                        .parse(commentModel
-                                                                .comments
-                                                                .yorumlar[index]
-                                                            ["rank"]))),
+                                                  width: 120,
+                                                  child: yildizlar(commentModel
+                                                                  .comments
+                                                                  .yorumlar[
+                                                              index]["rank"] !=
+                                                          ""
+                                                      ? double.parse(
+                                                          commentModel.comments
+                                                                  .yorumlar[
+                                                              index]["rank"])
+                                                      : 0.0),
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -609,5 +668,126 @@ class _BookDetailsState extends State<BookDetails> {
         ],
       ),
     );
+  }
+
+  satinAl(
+    Book book,
+  ) {
+    Size size = MediaQuery.of(context).size;
+    return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: book.buyLinks.length,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: size.width < size.height
+              ? (size.width -
+                      (2 * kDefaultPadding) -
+                      ((book.buyLinks.length - 1) * 5)) /
+                  book.buyLinks.length
+              : (size.width -
+                      (size.height / 1.5) -
+                      (2 * kDefaultPadding) -
+                      ((book.buyLinks.length - 1) * 5)) /
+                  book.buyLinks.length,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          mainAxisExtent: size.width < size.height
+              ? (size.width -
+                      (2 * kDefaultPadding) -
+                      ((book.buyLinks.length - 1) * 5)) /
+                  book.buyLinks.length
+              : (size.width -
+                      (size.height / 1.5) -
+                      (2 * kDefaultPadding) -
+                      ((book.buyLinks.length - 1) * 5)) /
+                  book.buyLinks.length,
+        ),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () async {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: true, // user must tap button!
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text(
+                      "Kitap Dağı'ndan Ayrılıyorsunuz!",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text(
+                            book.buyLinks[index]["name"] +
+                                " Web Sitesi Açılacak. Onaylıyor musunuz?",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text(
+                          "Hayır",
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text(
+                          "Evet",
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () async {
+                          await launchUrlString(
+                              widget.book.buyLinks[index]["url"]);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  // color: Color.fromARGB(255, 207, 207, 207),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                      width: 1.5, color: Color.fromARGB(255, 112, 112, 112))),
+              child: Padding(
+                padding: const EdgeInsets.all(1),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      book.buyLinks[index]["name"],
+                      style: TextStyle(fontSize: 10, color: kPrimaryColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      book.buyLinks[index]["linkPrice"] + " TL",
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

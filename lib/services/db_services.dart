@@ -26,9 +26,9 @@ class DbServices {
         },
         body: jsonEncode(body));
     var jsonResponse = json.decode(response.body);
-   
-    Comments comments = Comments.fromJson(jsonResponse);
 
+    Comments comments = Comments.fromJson(jsonResponse);
+    print(comments.yorumlar);
     return comments;
   }
 

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../models/book.dart';
 import '../viewmodels/comment_viewmodel.dart';
+import '../widgets/kitap_slider.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -45,8 +46,12 @@ class HomePage extends StatelessWidget {
                       children: [
                         const MyAppBar(),
                         slider(size),
-                        kitapSlider(size, _mainModel.sizinicin,
-                            "Sizin İçin Seçtiklerimiz", _commentModel),
+                        KitapSlider(
+                          size: size,
+                          asd: _mainModel.sizinicin,
+                          baslik: "Sizin İçin Seçtiklerimiz",
+                          cizgiUzunluk: 160,
+                        ),
                         //buildBook(size, "Sizin İçin Seçtiklerimiz",
                         //  _mainModel.asd, 0),
                         Padding(
@@ -59,8 +64,13 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        kitapSlider(size, _mainModel.coksatan,
-                            "Çok Satan Kitaplar", _commentModel),
+                        KitapSlider(
+                          size: size,
+                          asd: _mainModel.coksatan,
+                          baslik: "Çok Satan Kitaplar",
+                          cizgiUzunluk: 130,
+                        ),
+
                         //  buildBook(
                         //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
                         Padding(
@@ -73,8 +83,13 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        kitapSlider(size, _mainModel.yenicikan,
-                            "Yeni Çıkan Kitaplar", _commentModel),
+                        KitapSlider(
+                          size: size,
+                          asd: _mainModel.yenicikan,
+                          baslik: "Yeni Çıkan Kitaplar",
+                          cizgiUzunluk: 130,
+                        ),
+
                         // buildBook(
                         //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
                         const SizedBox(
@@ -216,92 +231,6 @@ class HomePage extends StatelessWidget {
     );
   }
 */
-  kitapSlider(
-    Size size,
-    List<Book> asd,
-    String baslik,
-    CommentViewModel commentModel,
-  ) {
-    double mywidth = (size.width - (2 * kDefaultPadding)) / 150;
-    mywidth = mywidth.ceil().toDouble();
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-        child: Column(children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                baslik,
-                style: const TextStyle(color: kPrimaryColor, fontSize: 15),
-              ),
-              const SizedBox(
-                width: 150,
-                child: Divider(
-                  color: kPrimaryColor,
-                  thickness: 2,
-                ),
-              ),
-              CarouselSlider(
-                options: CarouselOptions(
-                    viewportFraction: 1 / mywidth,
-                    height: 280,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 7)),
-                items: asd.map((book) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return GestureDetector(
-                        onTap: () {
-                          commentModel.yorumlariGetir(book.id);
-                          commentModel.yildizPuanla(0);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BookDetails(
-                                      book: book,
-                                    )),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: SizedBox(
-                            width: 130,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Image.network(
-                                  book.bookImage,
-                                  // "assets/harry.jpg",
-                                  //height: 190,
-                                  width: 130,
-                                  height: 200,
-                                  fit: BoxFit.contain,
-                                ),
-                                Text(
-                                  book.title,
-                                  style: const TextStyle(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                                Text(
-                                  book.author,
-                                  style: const TextStyle(
-                                      color: kPrimaryColor, fontSize: 13),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-        ]));
-  }
 }
 
 slider(Size size) {
