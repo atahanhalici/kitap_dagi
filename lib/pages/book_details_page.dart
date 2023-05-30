@@ -292,7 +292,7 @@ class _BookDetailsState extends State<BookDetails> {
                 width: 10,
               ),
               Text(
-                widget.book.author,
+                widget.book.publisher,
                 style: const TextStyle(
                     color: kTextColor,
                     fontSize: 15,
