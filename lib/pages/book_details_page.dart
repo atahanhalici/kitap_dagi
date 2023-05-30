@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitap_dagi/models/book.dart';
 import 'package:kitap_dagi/pages/comments_details_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
-import 'package:kitap_dagi/pages/registration.dart';
+import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../constants.dart';
 import '../viewmodels/main_viewmodel.dart';
+import '../viewmodels/user_viewmodel.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -25,28 +26,40 @@ class _BookDetailsState extends State<BookDetails> {
   String title = "", desc = "";
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
+  double ortalama = 0;
 
   @override
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
     MainViewModel _mainModel =
         Provider.of<MainViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
+    ortalamaHesapla(_commentModel);
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: Text(widget.book.title),
+          title: Text("Kitap Dağı"),
           centerTitle: true,
           elevation: 0,
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            Visibility(
+                visible: _userModel.users.durum,
+                child:
+                    IconButton(onPressed: () {}, icon: Icon(Icons.favorite))),
             IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                  _userModel.users.durum == false
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfilPage()),
+                        );
                 },
                 icon: Icon(Icons.person))
           ]),
@@ -117,7 +130,88 @@ class _BookDetailsState extends State<BookDetails> {
             _commentModel.state == ViewStates.geldi
                 ? _commentModel.comments.yorumSayisi > 0
                     ? yorumlar(size, _commentModel)
-                    : Container(
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
+                            child: Text(
+                              "Yorumlar",
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
+                            child: SizedBox(
+                              width: 65,
+                              child: Divider(
+                                color: kPrimaryColor,
+                                thickness: 2,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 214, 214, 214),
+                                borderRadius: BorderRadius.circular(10)),
+                            height: size.height / 4,
+                            child: Center(
+                              child: Text(
+                                "Bu Kitap İçin Herhangi Bir Yorum Bulunmamaktadır!",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ),
+            const SizedBox(
+              height: kDefaultPadding,
+            ),
+            _userModel.users.durum == true
+                ? yorumyap(size, _commentModel, widget.book, _userModel)
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding),
+                        child: Text(
+                          "Yorum Yap",
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding),
+                        child: const SizedBox(
+                          width: 75,
+                          child: Divider(
+                            color: kPrimaryColor,
+                            thickness: 2,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
                         margin:
                             EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         decoration: BoxDecoration(
@@ -126,18 +220,13 @@ class _BookDetailsState extends State<BookDetails> {
                         height: size.height / 4,
                         child: Center(
                           child: Text(
-                            "Bu Kitap İçin Herhangi Bir Yorum Bulunmamaktadır!",
+                            "Yorum Yapabilmek İçin Oturum Açmanız Gerekmektedir!",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                      )
-                : Center(
-                    child: CircularProgressIndicator(),
+                      ),
+                    ],
                   ),
-            const SizedBox(
-              height: kDefaultPadding,
-            ),
-            yorumyap(size, _commentModel, widget.book),
             const SizedBox(
               height: kDefaultPadding,
             ),
@@ -230,9 +319,11 @@ class _BookDetailsState extends State<BookDetails> {
         commentModel.state == ViewStates.geldi
             ? Row(
                 children: [
-                  yildizlar(widget.book.rating != "NaN"
+                  yildizlar(ortalama != null ? ortalama : 0.0
+                      /* widget.book.rating != "NaN"
                       ? double.parse(widget.book.rating)
-                      : 0.0),
+                      : 0.0*/
+                      ),
                   Text("(" + commentModel.comments.yorumSayisi.toString() + ")")
                 ],
               )
@@ -357,6 +448,7 @@ class _BookDetailsState extends State<BookDetails> {
                                         builder: (context) => CommentsDetails(
                                               book: widget.book,
                                               comments: commentModel.comments,
+                                              ortalama: ortalama,
                                             )),
                                   );
                                 },
@@ -425,7 +517,10 @@ class _BookDetailsState extends State<BookDetails> {
                                                   WrapAlignment.spaceBetween,
                                               children: [
                                                 Text(
-                                                  "Atahan Halıcı",
+                                                  commentModel.comments
+                                                              .yorumlar[index]
+                                                          ["nameSurname"] ??
+                                                      "",
                                                   style: TextStyle(
                                                       color: kTextColor,
                                                       fontSize: 15,
@@ -507,7 +602,8 @@ class _BookDetailsState extends State<BookDetails> {
     );
   }
 
-  yorumyap(Size size, CommentViewModel commentModel, Book book) {
+  yorumyap(Size size, CommentViewModel commentModel, Book book,
+      UserViewModel userModel) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
@@ -654,7 +750,11 @@ class _BookDetailsState extends State<BookDetails> {
           TextButton(
               onPressed: () {
                 if (_titleController.text != "" && _descController.text != "") {
-                  commentModel.yorumYap(title, desc, book.id);
+                  String adSoyad = userModel.users.user["name"] +
+                      " " +
+                      userModel.users.user["surname"];
+                  commentModel.yorumYap(title, desc, book.id, adSoyad);
+                  ortalamaHesapla(commentModel);
                   _descController.text = "";
                   _titleController.text = "";
                   commentModel.yildizPuanla(0);
@@ -734,8 +834,8 @@ class _BookDetailsState extends State<BookDetails> {
                             book.buyLinks[index]["name"] +
                                 " Web Sitesi Açılacak. Onaylıyor musunuz?",
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.black,
+                            ),
                           ),
                         ],
                       ),
@@ -745,7 +845,8 @@ class _BookDetailsState extends State<BookDetails> {
                         child: const Text(
                           "Hayır",
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                          ),
                         ),
                         onPressed: () {
                           Navigator.of(context).pop();
@@ -755,7 +856,8 @@ class _BookDetailsState extends State<BookDetails> {
                         child: const Text(
                           "Evet",
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                          ),
                         ),
                         onPressed: () async {
                           await launchUrlString(
@@ -800,5 +902,16 @@ class _BookDetailsState extends State<BookDetails> {
             ),
           );
         });
+  }
+
+  void ortalamaHesapla(CommentViewModel commentViewModel) {
+    ortalama = 0;
+    if (commentViewModel.comments.yorumlar.isNotEmpty) {
+      for (int i = 0; i < commentViewModel.comments.yorumlar.length; i++) {
+        ortalama =
+            ortalama + int.parse(commentViewModel.comments.yorumlar[i]["rank"]);
+      }
+      ortalama = ortalama / commentViewModel.comments.yorumlar.length;
+    }
   }
 }

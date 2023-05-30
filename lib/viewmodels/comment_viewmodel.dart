@@ -34,7 +34,6 @@ class CommentViewModel with ChangeNotifier {
       state = ViewStates.geldi;
 
       for (int i = 0; i < comments.yorumlar.length; i++) {
-        print("as");
         if (comments.yorumlar[i]["rank"] == "1") {
           biryildiz++;
         } else if (comments.yorumlar[i]["rank"] == "2") {
@@ -58,10 +57,10 @@ class CommentViewModel with ChangeNotifier {
     verilenYildiz = sayi;
   }
 
-  yorumYap(String title, String desc, String bookId) async {
+  yorumYap(String title, String desc, String bookId, String adSoyad) async {
     state = ViewStates.geliyor;
     try {
-      _repository.yorumYap(title, desc, verilenYildiz, bookId);
+      _repository.yorumYap(title, desc, verilenYildiz, bookId, adSoyad);
       yorumlariGetir(bookId);
     } catch (e) {}
   }

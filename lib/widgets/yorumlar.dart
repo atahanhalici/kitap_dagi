@@ -84,7 +84,15 @@ class YorumlarWidget extends StatelessWidget {
                                                   WrapAlignment.spaceBetween,
                                               children: [
                                                 Text(
-                                                  "Atahan Halıcı",
+                                                  commentModel.comments
+                                                                      .yorumlar[
+                                                                  index]
+                                                              ["nameSurname"] !=
+                                                          null
+                                                      ? commentModel.comments
+                                                              .yorumlar[index]
+                                                          ["nameSurname"]
+                                                      : "",
                                                   style: TextStyle(
                                                       color: kTextColor,
                                                       fontSize: 15,

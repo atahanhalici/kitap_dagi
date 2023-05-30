@@ -263,11 +263,8 @@ class _KayitOlState extends State<KayitOl> {
                                 };
                                 bool kayit = await _userModel.kayit(bilgiler);
                                 if (context.mounted && kayit == true) {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()));
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
                                   alertDialog(
                                       "Kayıt İşlemi Başarıyla Tamamlandı",
                                       "E postanızı kontrol edip hesabınızı onaylamanız gerekmektedir. Onaylamadığınız takdirde hesabınıza giriş yapmanız mümkün değildir!");

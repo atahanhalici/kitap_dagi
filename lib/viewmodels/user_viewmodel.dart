@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kitap_dagi/models/user.dart';
 
 import '../locator.dart';
 import '../repository/repository.dart';
@@ -10,6 +11,9 @@ class UserViewModel with ChangeNotifier {
   ViewStatee _statee = ViewStatee.geliyor;
   ViewStatee get statee => _statee;
   bool deger = false;
+  bool girisState = false;
+  int a = 0;
+  Users users = Users(mesaj: "", user: {}, durum: false);
   set statee(ViewStatee value) {
     _statee = value;
     notifyListeners();
@@ -25,6 +29,27 @@ class UserViewModel with ChangeNotifier {
     } catch (e) {
       statee = ViewStatee.hata;
       return deger;
+    }
+  }
+
+  Future<Users> giris(Map<String, String> bilgiler) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    statee = ViewStatee.geliyor;
+    try {
+      users = await _repository.giris(bilgiler);
+
+      statee = ViewStatee.geldi;
+      return users;
+    } catch (e) {
+      statee = ViewStatee.hata;
+      return users;
+    }
+  }
+
+  beniHatirlaKontrol() async {
+    if (a == 0) {
+      a++;
+      users = await _repository.beniHatirlaKontrol();
     }
   }
 }

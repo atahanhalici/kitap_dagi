@@ -1,5 +1,6 @@
 import 'package:kitap_dagi/locator.dart';
 import 'package:kitap_dagi/models/comment.dart';
+import 'package:kitap_dagi/models/user.dart';
 import 'package:kitap_dagi/services/db_services.dart';
 
 import '../models/book.dart';
@@ -16,11 +17,19 @@ class Repository {
     return await _databaseService.yorumlariGetir(id);
   }
 
-  yorumYap(String title, String desc, int verilenYildiz, String bookId) async {
-    await _databaseService.yorumYap(title, desc, verilenYildiz, bookId);
+  yorumYap(String title, String desc, int verilenYildiz, String bookId,String adSoyad) async {
+    await _databaseService.yorumYap(title, desc, verilenYildiz, bookId,adSoyad);
   }
 
   Future<bool> kayit(Map<String, String> bilgiler) async {
     return await _databaseService.kayit(bilgiler);
+  }
+
+ Future<Users> giris(Map<String, String> bilgiler) async{
+  return await _databaseService.giris(bilgiler);
+  }
+
+  beniHatirlaKontrol() async{
+     return await _databaseService.beniHatirlaKontrol();
   }
 }

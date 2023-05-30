@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
+import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/widgets/yorumlar.dart';
@@ -8,13 +9,19 @@ import 'package:provider/provider.dart';
 
 import '../models/book.dart';
 import '../models/comment.dart';
+import '../viewmodels/user_viewmodel.dart';
 import '../widgets/appbar.dart';
 import '../widgets/drawer.dart';
 
 class CommentsDetails extends StatefulWidget {
   final Book book;
   final Comments comments;
-  const CommentsDetails({Key? key, required this.book, required this.comments})
+  final num ortalama;
+  const CommentsDetails(
+      {Key? key,
+      required this.book,
+      required this.comments,
+      required this.ortalama})
       : super(key: key);
 
   @override
@@ -26,21 +33,33 @@ class _CommentsDetailsState extends State<CommentsDetails> {
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: Text(widget.book.title),
+            title: Text("Kitap Dağı"),
             centerTitle: true,
             elevation: 0,
             actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+              Visibility(
+                  visible: _userModel.users.durum,
+                  child:
+                      IconButton(onPressed: () {}, icon: Icon(Icons.favorite))),
               IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
+                    _userModel.users.durum == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                          )
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfilPage()),
+                          );
                   },
                   icon: Icon(Icons.person))
             ]),
@@ -119,7 +138,9 @@ class _CommentsDetailsState extends State<CommentsDetails> {
     return SizedBox(
       height: 30,
       child: ListView.builder(
-          itemCount: ((comments.yorumlar.length / 10) + 1).toInt(),
+          itemCount: comments.yorumlar.length % 10 != 0
+              ? ((comments.yorumlar.length / 10) + 1).toInt()
+              : (comments.yorumlar.length / 10).toInt(),
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -223,7 +244,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                widget.book.rating,
+                widget.ortalama.toStringAsFixed(1),
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               Row(
@@ -232,23 +253,33 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                 children: [
                   Icon(
                     Icons.star,
-                    color: bookRating >= 1 ? Colors.orange : Colors.grey,
+                    color: widget.ortalama.round() >= 1
+                        ? Colors.orange
+                        : Colors.grey,
                   ),
                   Icon(
                     Icons.star,
-                    color: bookRating >= 2 ? Colors.orange : Colors.grey,
+                    color: widget.ortalama.round() >= 2
+                        ? Colors.orange
+                        : Colors.grey,
                   ),
                   Icon(
                     Icons.star,
-                    color: bookRating >= 3 ? Colors.orange : Colors.grey,
+                    color: widget.ortalama.round() >= 3
+                        ? Colors.orange
+                        : Colors.grey,
                   ),
                   Icon(
                     Icons.star,
-                    color: bookRating >= 4 ? Colors.orange : Colors.grey,
+                    color: widget.ortalama.round() >= 4
+                        ? Colors.orange
+                        : Colors.grey,
                   ),
                   Icon(
                     Icons.star,
-                    color: bookRating >= 5 ? Colors.orange : Colors.grey,
+                    color: widget.ortalama.round() >= 5
+                        ? Colors.orange
+                        : Colors.grey,
                   ),
                 ],
               )

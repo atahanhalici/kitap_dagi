@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/home_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
+import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/drawer.dart';
 
@@ -16,9 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   final _sifreController = TextEditingController();
   bool _gizli = true;
   bool uyari = false;
+  bool isChecked = false;
+  var box = Hive.box("informations");
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
@@ -157,7 +165,31 @@ class _LoginPageState extends State<LoginPage> {
                         height: 15,
                       ),
                       Row(
-                        children: const [
+                        children: [
+                          Checkbox(
+                            checkColor: Colors.white,
+                            activeColor: kPrimaryColor,
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            },
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isChecked = !isChecked;
+                              });
+                            },
+                            child: const Text(
+                              'Beni Hatırla',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 68, 68, 68),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
                           Expanded(child: SizedBox()),
                           Text(
                             "Şifremi Unuttum",
@@ -172,9 +204,38 @@ class _LoginPageState extends State<LoginPage> {
                         height: 5,
                       ),
                       TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_emailController.text != "" &&
                                 _sifreController.text != "") {
+                              Map<String, String> bilgiler = {
+                                "email": _emailController.text,
+                                "password": _sifreController.text
+                              };
+                              await _userModel.giris(bilgiler);
+                              if (context.mounted) {
+                                if (_userModel.users.durum == true) {
+                                  if (isChecked) {
+                                    await box.put(
+                                        "user", _userModel.users.user);
+                                    await box.put(
+                                        "durum", _userModel.users.durum);
+                                    await box.put("mesaj", "");
+                                  }
+                                  if (context.mounted) {
+                                    Navigator.popUntil(
+                                        context, (route) => route.isFirst);
+
+                                    /* Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomePage()));*/
+                                  }
+                                } else {
+                                  alertDialog("Giriş Yapılamadı!",
+                                      _userModel.users.mesaj);
+                                }
+                              }
                             } else {
                               setState(() {
                                 uyari = true;
@@ -288,37 +349,45 @@ class _LoginPageState extends State<LoginPage> {
             ]))));
   }
 
-  SizedBox TextKutu(String bilgi, bool sifremi) {
-    return SizedBox(
-      height: 50,
-      child: TextFormField(
-        //  controller: _titleController,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        cursorColor: Colors.black,
-        maxLines: 1,
-        obscureText: _gizli,
-        decoration: InputDecoration(
-          labelText: bilgi,
-          labelStyle: const TextStyle(color: Colors.black),
-          focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: kPrimaryColor)),
-          border: const UnderlineInputBorder(),
-          suffixIcon: IconButton(
-              onPressed: () {
-                if (sifremi == true) {
-                  setState(() {
-                    _gizli = !_gizli;
-                  });
-                }
+  alertDialog(String baslik, String icerik) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            baslik,
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  icerik,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Tamam",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              onPressed: () async {
+                Navigator.pop(context);
               },
-              icon: sifremi == true
-                  ? _gizli
-                      ? const Icon(Icons.visibility, color: Colors.grey)
-                      : const Icon(Icons.visibility_off, color: Colors.grey)
-                  : const Icon(Icons.person)),
-        ),
-        validator: (deger) {},
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

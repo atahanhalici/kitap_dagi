@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kitap_dagi/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:kitap_dagi/models/comment.dart';
 import 'package:kitap_dagi/models/yorum.dart';
+
+import '../models/user.dart';
 
 class DbServices {
   String yol = "http://192.168.0.23:3000";
@@ -31,12 +34,14 @@ class DbServices {
     return comments;
   }
 
-  yorumYap(String title, String desc, int verilenYildiz, String bookId) async {
+  yorumYap(String title, String desc, int verilenYildiz, String bookId,
+      String adSoyad) async {
     var body = {
       "title": title,
       "desc": desc,
       "rank": verilenYildiz,
-      "id": bookId
+      "id": bookId,
+      "nameSurname": adSoyad
     };
     await http.post(Uri.parse(yol + "/mobile/newcomment"),
         headers: {
@@ -55,5 +60,29 @@ class DbServices {
         body: jsonEncode(bilgiler));
     var jsonResponse = json.decode(response.body);
     return jsonResponse;
+  }
+
+  Future<Users> giris(Map<String, String> bilgiler) async {
+    print(bilgiler);
+    var response = await http.post(Uri.parse("$yol/mobile/auth/login"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: jsonEncode(bilgiler));
+    var jsonResponse = json.decode(response.body);
+
+    Users users = Users.fromJson(jsonResponse);
+    return users;
+  }
+
+  beniHatirlaKontrol() async {
+    var box = await Hive.openBox("informations");
+    bool durum = false;
+    box.get("durum") == null ? durum = false : durum = box.get("durum");
+    Map user = {};
+    box.get("user") == null ? user = {} : user = box.get("user");
+    Users users = Users(mesaj: "", user: user, durum: durum);
+    return users;
   }
 }

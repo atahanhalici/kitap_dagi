@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
+import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,7 @@ import 'login_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+ const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,8 @@ class HomePage extends StatelessWidget {
         Provider.of<MainViewModel>(context, listen: true);
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -31,13 +35,21 @@ class HomePage extends StatelessWidget {
           centerTitle: true,
           elevation: 0,
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            Visibility(
+                visible: _userModel.users.durum,
+                child:
+                    IconButton(onPressed: () {}, icon: Icon(Icons.favorite))),
             IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                  _userModel.users.durum == false
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfilPage()),
+                        );
                 },
                 icon: Icon(Icons.person))
           ]),
