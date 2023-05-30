@@ -16,7 +16,11 @@ class Repository {
     return await _databaseService.yorumlariGetir(id);
   }
 
-  yorumYap(String title, String desc, int verilenYildiz, String bookId) async{
-    await _databaseService.yorumYap(title,desc,verilenYildiz,bookId);
+  yorumYap(String title, String desc, int verilenYildiz, String bookId) async {
+    await _databaseService.yorumYap(title, desc, verilenYildiz, bookId);
+  }
+
+  Future<bool> kayit(Map<String, String> bilgiler) async {
+    return await _databaseService.kayit(bilgiler);
   }
 }

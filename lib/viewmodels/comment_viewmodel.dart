@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/locator.dart';
 
+import '../models/book.dart';
 import '../models/comment.dart';
 import '../repository/repository.dart';
 
@@ -12,8 +13,9 @@ class CommentViewModel with ChangeNotifier {
   ViewStates get state => _state;
   int biryildiz = 0, ikiyildiz = 0, ucyildiz = 0, dortyildiz = 0, besyildiz = 0;
   int verilenYildiz = 0;
-  Comments comments = Comments(yorumSayisi: 0, yorumlar: []);
+  Comments comments = Comments(yorumSayisi: 0, yorumlar: [], onerilenKitap: []);
   int baslama = 0;
+  List<Book> onerilenKitap = [];
   set state(ViewStates value) {
     _state = value;
     notifyListeners();
@@ -24,6 +26,10 @@ class CommentViewModel with ChangeNotifier {
     biryildiz = ikiyildiz = ucyildiz = dortyildiz = besyildiz = 0;
     try {
       comments = await _repository.yorumlariGetir(id);
+
+      onerilenKitap =
+          comments.onerilenKitap.map((e) => Book.fromJson(e)).toList();
+      // print(onerilenKitap.length);
       // await _repository.yorumlariGetir(asd[0].id);
       state = ViewStates.geldi;
 

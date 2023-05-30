@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
+import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
@@ -10,6 +11,7 @@ import '../constants.dart';
 import '../models/book.dart';
 import '../viewmodels/comment_viewmodel.dart';
 import '../widgets/kitap_slider.dart';
+import 'login_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -30,7 +32,14 @@ class HomePage extends StatelessWidget {
           elevation: 0,
           actions: [
             IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.person))
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                icon: Icon(Icons.person))
           ]),
       drawerEnableOpenDragGesture: true,
       drawer: const MyDrawer(),

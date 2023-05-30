@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/login_page.dart';
+import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/widgets/yorumlar.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +35,14 @@ class _CommentsDetailsState extends State<CommentsDetails> {
             elevation: 0,
             actions: [
               IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.person))
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  icon: Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
         drawer: const MyDrawer(),

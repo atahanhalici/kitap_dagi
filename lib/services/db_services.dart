@@ -26,9 +26,8 @@ class DbServices {
         },
         body: jsonEncode(body));
     var jsonResponse = json.decode(response.body);
-
     Comments comments = Comments.fromJson(jsonResponse);
-    print(comments.yorumlar);
+    print(comments.onerilenKitap.length);
     return comments;
   }
 
@@ -39,11 +38,22 @@ class DbServices {
       "rank": verilenYildiz,
       "id": bookId
     };
-    final response = await http.post(Uri.parse(yol + "/mobile/newcomment"),
+    await http.post(Uri.parse(yol + "/mobile/newcomment"),
         headers: {
           // "Accept": "application/json",
           "Content-Type": "application/json"
         },
         body: jsonEncode(body));
+  }
+
+  Future<bool> kayit(Map<String, String> bilgiler) async {
+    var response = await http.post(Uri.parse("$yol/mobile/auth/register"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: jsonEncode(bilgiler));
+    var jsonResponse = json.decode(response.body);
+    return jsonResponse;
   }
 }
