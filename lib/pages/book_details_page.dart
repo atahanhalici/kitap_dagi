@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kitap_dagi/models/book.dart';
 import 'package:kitap_dagi/pages/comments_details_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
@@ -491,6 +492,11 @@ class _BookDetailsState extends State<BookDetails> {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
+                                DateTime dt = DateTime.parse(commentModel
+                                    .comments.yorumlar[index]["createdAt"]);
+                                Intl.defaultLocale = 'tr';
+                                String formattedDate =
+                                    DateFormat("dd MMMM yyyy").format(dt);
                                 return Column(
                                   children: [
                                     Container(
@@ -552,8 +558,20 @@ class _BookDetailsState extends State<BookDetails> {
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Text(commentModel
-                                              .comments.yorumlar[index]["desc"])
+                                          Text(commentModel.comments
+                                              .yorumlar[index]["desc"]),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                formattedDate,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ),

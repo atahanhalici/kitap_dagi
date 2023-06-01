@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kitap_dagi/locator.dart';
 import 'package:kitap_dagi/pages/home_page.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
@@ -12,6 +13,7 @@ import 'constants.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox("informations");
+  initializeDateFormatting();
   setupLocator();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => MainViewModel()),

@@ -49,7 +49,21 @@ class UserViewModel with ChangeNotifier {
   beniHatirlaKontrol() async {
     if (a == 0) {
       a++;
-      users = await _repository.beniHatirlaKontrol();
+      try {
+        users = await _repository.beniHatirlaKontrol();
+      } catch (e) {
+        return users;
+      }
+    }
+  }
+
+  Future<bool> cikisYap() async {
+    bool sonuc = await _repository.cikisYap();
+    if (sonuc == true) {
+      users = Users(mesaj: "", user: {}, durum: false);
+      return true;
+    } else {
+      return false;
     }
   }
 }

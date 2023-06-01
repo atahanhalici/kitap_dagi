@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/forgot_my_password_page.dart';
 import 'package:kitap_dagi/pages/home_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
@@ -191,11 +192,20 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Expanded(child: SizedBox()),
-                          Text(
-                            "Şifremi Unuttum",
-                            style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 15,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotMyPassword()));
+                            },
+                            child: Text(
+                              "Şifremi Unuttum",
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: 15,
+                              ),
                             ),
                           )
                         ],

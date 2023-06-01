@@ -32,4 +32,8 @@ class Repository {
   beniHatirlaKontrol() async{
      return await _databaseService.beniHatirlaKontrol();
   }
+
+ Future<bool> cikisYap() async{
+    return await _databaseService.cikisYap();
+  }
 }

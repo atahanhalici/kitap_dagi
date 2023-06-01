@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,11 @@ class YorumlarWidget extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
+                                DateTime dt = DateTime.parse(commentModel
+                                    .comments.yorumlar[index]["createdAt"]);
+                                Intl.defaultLocale = 'tr';
+                                String formattedDate =
+                                    DateFormat("dd MMMM yyyy").format(dt);
                                 return Column(
                                   children: [
                                     Container(
@@ -131,7 +137,19 @@ class YorumlarWidget extends StatelessWidget {
                                           ),
                                           Text(commentModel.comments
                                                   .yorumlar[index + baslama]
-                                              ["desc"])
+                                              ["desc"]),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                formattedDate,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ),

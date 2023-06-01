@@ -30,7 +30,6 @@ class DbServices {
         body: jsonEncode(body));
     var jsonResponse = json.decode(response.body);
     Comments comments = Comments.fromJson(jsonResponse);
-    print(comments.onerilenKitap.length);
     return comments;
   }
 
@@ -84,5 +83,15 @@ class DbServices {
     box.get("user") == null ? user = {} : user = box.get("user");
     Users users = Users(mesaj: "", user: user, durum: durum);
     return users;
+  }
+
+  cikisYap() async {
+    try {
+      var box = await Hive.openBox("informations");
+      box.clear();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
