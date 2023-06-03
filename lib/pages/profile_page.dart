@@ -35,20 +35,16 @@ class ProfilPage extends StatelessWidget {
               const MyAppBar(),
               TextButton(
                   onPressed: () async {
-                    alertDialog("Hesabınızdan Çıkış Yapılacak",
-                        "Hesabınızdan Çıkış Yapmak Üzeresiniz! Çıkış Yapmak İstediğinize Emin misiniz?",
-                        () async {
-                      bool sonuc = await _userModel.cikisYap();
-                      if (context.mounted) {
-                        if (sonuc == true) {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
-                        }
+                    bool sonuc = await _userModel.cikisYap();
+                    if (context.mounted) {
+                      if (sonuc == true) {
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
                       }
-                    }, context);
+                    }
                   },
                   child: Container(
                     width: size.width - (2 * kDefaultPadding),
@@ -67,57 +63,5 @@ class ProfilPage extends StatelessWidget {
                     )),
                   )),
             ]))));
-  }
-
-  alertDialog(String baslik, String icerik, void Function() fonksiyon,
-      BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            baslik,
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  icerik,
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text(
-                "Hayır",
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text(
-                "Evet",
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: fonksiyon,
-            ),
-          ],
-        );
-      },
-    );
   }
 }

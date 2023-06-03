@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
-import 'package:kitap_dagi/pages/login_page.dart';
-import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
-import 'package:provider/provider.dart';
 
 class ForgotMyPassword extends StatefulWidget {
   const ForgotMyPassword({Key? key}) : super(key: key);
@@ -18,8 +15,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
   Widget build(BuildContext context) {
     final _emailController = TextEditingController();
     Size size = MediaQuery.of(context).size;
-    UserViewModel _userModel =
-        Provider.of<UserViewModel>(context, listen: true);
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
@@ -121,20 +117,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                       TextButton(
                           onPressed: () async {
                             if (_emailController.text.isNotEmpty) {
-                              Map sonuc = await _userModel
-                                  .sifremiUnuttum(_emailController.text);
-                              if (context.mounted) {
-                                alertDialog(
-                                    "Şifre Sıfırlama Talebi", sonuc["mesaj"],
-                                    () {
-                                  if (sonuc["durum"] == true) {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                  } else {
-                                    Navigator.of(context).pop();
-                                  }
-                                }, context);
-                              }
+                              print("sa");
                             } else {
                               setState(() {
                                 uyari = true;
@@ -174,46 +157,5 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                     : (size.height - (size.width * 0.1 - 27 + 80 + 225)) / 2,
               ),
             ]))));
-  }
-
-  alertDialog(String baslik, String icerik, void Function() fonksiyon,
-      BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            baslik,
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  icerik,
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text(
-                "Tamam",
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: fonksiyon,
-            ),
-          ],
-        );
-      },
-    );
   }
 }

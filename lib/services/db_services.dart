@@ -62,6 +62,7 @@ class DbServices {
   }
 
   Future<Users> giris(Map<String, String> bilgiler) async {
+    print(bilgiler);
     var response = await http.post(Uri.parse("$yol/mobile/auth/login"),
         headers: {
           "Accept": "application/json",
@@ -69,6 +70,7 @@ class DbServices {
         },
         body: jsonEncode(bilgiler));
     var jsonResponse = json.decode(response.body);
+
     Users users = Users.fromJson(jsonResponse);
     return users;
   }
@@ -85,49 +87,11 @@ class DbServices {
 
   cikisYap() async {
     try {
-      final response = await http.get(
-        Uri.parse("$yol/mobile/auth/logout"),
-      );
-      var jsonResponse = json.decode(response.body);
-
-      if (jsonResponse == true) {
-        var box = await Hive.openBox("informations");
-        box.clear();
-      }
+      var box = await Hive.openBox("informations");
+      box.clear();
       return true;
     } catch (e) {
       return false;
     }
-  }
-
-  Future<Map> sifremiUnuttum(String email) async {
-    Map<String, String> body = {
-      "email": email,
-    };
-    var response = await http.post(
-        Uri.parse("$yol/mobile/auth/forget-password"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-        body: jsonEncode(body));
-    var jsonResponse = json.decode(response.body);
-    print(jsonResponse);
-    return jsonResponse;
-  }
-
-  userKontrol(Users users) async {
-    Map<String, String> body = {
-      "email": users.user["email"],
-    };
-    var response = await http.post(Uri.parse("$yol/mobile/auth/localDb"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json"
-        },
-        body: jsonEncode(body));
-    var jsonResponse = json.decode(response.body);
-    print(jsonResponse);
-    return jsonResponse;
   }
 }

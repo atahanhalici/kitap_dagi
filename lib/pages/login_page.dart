@@ -304,7 +304,8 @@ class _LoginPageState extends State<LoginPage> {
                             radius: 17,
                             backgroundImage:
                                 AssetImage("assets/google_logo.png"),
-                            backgroundColor: Color.fromARGB(255, 236, 236, 236),
+                            backgroundColor:
+                                Color.fromARGB(255, 236, 236, 236),
                             //child: Image.asset("assets/google_logo.png"),
                           ),
                           SizedBox(
