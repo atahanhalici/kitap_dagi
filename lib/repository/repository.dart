@@ -17,23 +17,35 @@ class Repository {
     return await _databaseService.yorumlariGetir(id);
   }
 
-  yorumYap(String title, String desc, int verilenYildiz, String bookId,String adSoyad) async {
-    await _databaseService.yorumYap(title, desc, verilenYildiz, bookId,adSoyad);
+  yorumYap(String title, String desc, int verilenYildiz, String bookId,
+      String adSoyad) async {
+    await _databaseService.yorumYap(
+        title, desc, verilenYildiz, bookId, adSoyad);
   }
 
   Future<bool> kayit(Map<String, String> bilgiler) async {
     return await _databaseService.kayit(bilgiler);
   }
 
- Future<Users> giris(Map<String, String> bilgiler) async{
-  return await _databaseService.giris(bilgiler);
+  Future<Users> giris(Map<String, String> bilgiler) async {
+    return await _databaseService.giris(bilgiler);
   }
 
-  beniHatirlaKontrol() async{
-     return await _databaseService.beniHatirlaKontrol();
+  beniHatirlaKontrol() async {
+    return await _databaseService.beniHatirlaKontrol();
   }
 
- Future<bool> cikisYap() async{
+  Future<bool> cikisYap() async {
     return await _databaseService.cikisYap();
+  }
+ Future<Map> sifremiUnuttum(String email) async {
+    return await _databaseService.sifremiUnuttum(email);
+  }
+
+  Future<String>userKontrol(Users users) async {
+    return await _databaseService.userKontrol(users);
+  }
+  Future<Users> googleGiris() async {
+    return await _databaseService.googleGiris();
   }
 }

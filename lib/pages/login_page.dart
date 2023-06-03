@@ -299,28 +299,44 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          CircleAvatar(
-                            radius: 17,
-                            backgroundImage:
-                                AssetImage("assets/google_logo.png"),
-                            backgroundColor:
-                                Color.fromARGB(255, 236, 236, 236),
-                            //child: Image.asset("assets/google_logo.png"),
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              bool deger = await _userModel.googleGiris();
+                              if (context.mounted) {
+                                if (deger == true) {
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomePage()));
+                                }
+                              }
+                            },
+                            child: const CircleAvatar(
+                              radius: 17,
+                              backgroundImage:
+                                  AssetImage("assets/google_logo.png"),
+                              backgroundColor:
+                                  Color.fromARGB(255, 236, 236, 236),
+                              //child: Image.asset("assets/google_logo.png"),
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 17,
                             backgroundImage: AssetImage("assets/face_logo.png"),
                             backgroundColor: Color.fromARGB(255, 236, 236, 236),
                             //child: Image.asset("assets/google_logo.png"),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 17,
                             backgroundImage:
                                 AssetImage("assets/twitter_logo.png"),

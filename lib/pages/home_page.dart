@@ -28,6 +28,49 @@ class HomePage extends StatelessWidget {
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
+    if (_userModel.sifreKontrol == true) {
+      Future.delayed(Duration.zero, () {
+        return showDialog<void>(
+          context: context,
+          barrierDismissible: true, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                "Şifre Değişikliği Tespit Edildi!",
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                      "Şifre Değişikliği Yaptığınız İçin Hesabınızdan Çıkış Yapıldı. Lütfen Tekrar Giriş Yapınız!",
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text(
+                    "Tamam",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      });
+    }
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColor,

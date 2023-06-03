@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:kitap_dagi/models/user.dart';
 
 import '../locator.dart';
@@ -12,6 +13,7 @@ class UserViewModel with ChangeNotifier {
   ViewStatee get statee => _statee;
   bool deger = false;
   bool girisState = false;
+  bool sifreKontrol = false;
   int a = 0;
   Users users = Users(mesaj: "", user: {}, durum: false);
   set statee(ViewStatee value) {
@@ -51,10 +53,25 @@ class UserViewModel with ChangeNotifier {
       a++;
       try {
         users = await _repository.beniHatirlaKontrol();
+        String sifre = await _repository.userKontrol(users);
+        if (sifre == users.user["password"]) {
+        } else {
+          users = Users(mesaj: "", user: {}, durum: false);
+          var box = await Hive.openBox("informations");
+          box.clear();
+          sifreKontrol = true;
+          await Future.delayed(const Duration(seconds: 5));
+          sifreKontrol = false;
+        }
       } catch (e) {
         return users;
       }
     }
+  }
+
+  Future<Map> sifremiUnuttum(String email) async {
+    Map sonuc = await _repository.sifremiUnuttum(email);
+    return sonuc;
   }
 
   Future<bool> cikisYap() async {
@@ -65,5 +82,13 @@ class UserViewModel with ChangeNotifier {
     } else {
       return false;
     }
+  }
+
+  Future<bool> googleGiris() async {
+    var sonuc = await _repository.googleGiris();
+    if (sonuc.durum) {
+      users = sonuc;
+    }
+    return sonuc.durum;
   }
 }
