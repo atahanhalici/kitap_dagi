@@ -175,7 +175,9 @@ class _BookDetailsState extends State<BookDetails> {
                           ),
                         ],
                       )
-                : Container(),
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ),
             const SizedBox(
               height: kDefaultPadding,
             ),

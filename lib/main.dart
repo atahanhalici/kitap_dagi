@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
         Provider.of<UserViewModel>(context, listen: true);
     _mainModel.kitaplariGetir();
     _userModel.beniHatirlaKontrol();
-    
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Kitap Dağı',
