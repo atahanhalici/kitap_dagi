@@ -336,12 +336,29 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(
                             width: 20,
                           ),
-                          const CircleAvatar(
-                            radius: 17,
-                            backgroundImage:
-                                AssetImage("assets/twitter_logo.png"),
-                            backgroundColor: Color.fromARGB(255, 236, 236, 236),
-                            //child: Image.asset("assets/google_logo.png"),
+                          GestureDetector(
+                            onTap: () async {
+                              bool deger = await _userModel.twitterGiris();
+                              if (context.mounted) {
+                                if (deger == true) {
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomePage()));
+                                }
+                              }
+                            },
+                            child: const CircleAvatar(
+                              radius: 17,
+                              backgroundImage:
+                                  AssetImage("assets/twitter_logo.png"),
+                              backgroundColor:
+                                  Color.fromARGB(255, 236, 236, 236),
+                              //child: Image.asset("assets/google_logo.png"),
+                            ),
                           )
                         ],
                       ),

@@ -91,4 +91,12 @@ class UserViewModel with ChangeNotifier {
     }
     return sonuc.durum;
   }
+
+  twitterGiris() async{
+     var sonuc = await _repository.twitterGiris();
+    if (sonuc.durum) {
+      users = sonuc;
+    }
+    return sonuc.durum;
+  }
 }

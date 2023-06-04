@@ -48,4 +48,8 @@ class Repository {
   Future<Users> googleGiris() async {
     return await _databaseService.googleGiris();
   }
+
+  twitterGiris() async{
+ return await _databaseService.twitterGiris();
+  }
 }

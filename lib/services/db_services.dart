@@ -6,6 +6,7 @@ import 'package:kitap_dagi/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:kitap_dagi/models/comment.dart';
 import 'package:kitap_dagi/models/yorum.dart';
+import 'package:twitter_login_v2/twitter_login_v2.dart';
 
 import '../models/user.dart';
 
@@ -136,22 +137,56 @@ class DbServices {
   }
 
   Future<Users> googleGiris() async {
-    var box = await Hive.openBox("informations");
+    try {
+      var box = await Hive.openBox("informations");
 
-    final GoogleSignInAccount? account = await googleSignIn.signIn();
-    Users user = Users(
-        mesaj: "",
-        user: {
-          "name": account!.displayName,
-          "email": account.email,
-          "password": account.id,
-          "surname": ""
-        },
-        durum: true);
-    await box.put("user", user.user);
-    await box.put("durum", user.durum);
-    await box.put("mesaj", "");
-    googleSignIn.signOut();
-    return user;
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+      Users user = Users(
+          mesaj: "",
+          user: {
+            "name": account!.displayName,
+            "email": account.email,
+            "password": account.id,
+            "surname": ""
+          },
+          durum: true);
+      await box.put("user", user.user);
+      await box.put("durum", user.durum);
+      await box.put("mesaj", "");
+      await http.post(Uri.parse("$yol/mobile/auth/google"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: jsonEncode({
+            "name": account.displayName!,
+            "email": account.email,
+            "password": account.id,
+            "surname": ""
+          }));
+
+      googleSignIn.signOut();
+      return user;
+    } catch (e) {
+      return Users(mesaj: "", user: {}, durum: false);
+    }
+  }
+
+  twitterGiris() async {
+    var box = await Hive.openBox("informations");
+    final twitterLogin = TwitterLoginV2(
+        clientId: "REtFQnRvd1VpUzQ4SUwtU2dKUk06MTpjaQ",
+        redirectURI: 'http://localhost:3000/auth/twitter/callback',
+        scopes: ['tweet.read', 'tweet.write', 'users.read']);
+    try {
+      final accessToken = await twitterLogin.loginV2();
+      print('login successed');
+      print(accessToken.toJson());
+      return Users(mesaj: "", user: {}, durum: false);
+    } catch (e) {
+      print('login failed');
+      print(e);
+      return Users(mesaj: "", user: {}, durum: false);
+    }
   }
 }
