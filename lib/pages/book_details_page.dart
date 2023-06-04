@@ -877,7 +877,10 @@ class _BookDetailsState extends State<BookDetails> {
                         ),
                         onPressed: () async {
                           await launchUrlString(
-                              widget.book.buyLinks[index]["url"]);
+                            widget.book.buyLinks[index]["url"],
+                            mode: LaunchMode.externalNonBrowserApplication,
+                          );
+
                           // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                         },
