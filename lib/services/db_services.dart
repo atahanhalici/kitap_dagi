@@ -5,13 +5,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kitap_dagi/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:kitap_dagi/models/comment.dart';
-import 'package:kitap_dagi/models/yorum.dart';
 import 'package:twitter_login_v2/twitter_login_v2.dart';
 
 import '../models/user.dart';
 
 class DbServices {
-  String yol = "http://192.168.0.23:3000";
+  String yol = "https://kitapdagi.onrender.com";
   final GoogleSignIn googleSignIn = GoogleSignIn();
   Future<List<Book>> kitaplariGetir() async {
     List<Book> _books = [];
@@ -65,7 +64,6 @@ class DbServices {
   }
 
   Future<Users> giris(Map<String, String> bilgiler) async {
-    print(bilgiler);
     var response = await http.post(Uri.parse("$yol/mobile/auth/login"),
         headers: {
           "Accept": "application/json",
@@ -141,17 +139,30 @@ class DbServices {
       var box = await Hive.openBox("informations");
 
       final GoogleSignInAccount? account = await googleSignIn.signIn();
+      List isim = account!.displayName!.split(" ");
+      String ad = "";
+      String soyad = "";
+      if (isim.length > 2) {
+        for (int i = 0; i < isim.length; i++) {
+          ad += " ${isim[i]}";
+        }
+        soyad = isim.last;
+      } else {
+        ad = isim[0];
+        soyad = isim[1];
+      }
       Users user = Users(
           mesaj: "",
           user: {
-            "name": account!.displayName,
+            "name": ad,
             "email": account.email,
             "password": account.id,
-            "surname": ""
+            "surname": soyad
           },
           durum: true);
       await box.put("user", user.user);
       await box.put("durum", user.durum);
+      await box.put("password", account.id);
       await box.put("mesaj", "");
       await http.post(Uri.parse("$yol/mobile/auth/google"),
           headers: {
@@ -159,10 +170,10 @@ class DbServices {
             "Content-Type": "application/json"
           },
           body: jsonEncode({
-            "name": account.displayName!,
+            "name": ad,
             "email": account.email,
             "password": account.id,
-            "surname": ""
+            "surname": soyad
           }));
 
       googleSignIn.signOut();
@@ -175,9 +186,9 @@ class DbServices {
   twitterGiris() async {
     var box = await Hive.openBox("informations");
     final twitterLogin = TwitterLoginV2(
-        clientId: "REtFQnRvd1VpUzQ4SUwtU2dKUk06MTpjaQ",
-        redirectURI: 'http://localhost:3000/auth/twitter/callback',
-        scopes: ['tweet.read', 'tweet.write', 'users.read']);
+      clientId: "REtFQnRvd1VpUzQ4SUwtU2dKUk06MTpjaQ",
+      redirectURI: '$yol/auth/twitter/callback',
+    );
     try {
       final accessToken = await twitterLogin.loginV2();
       print('login successed');

@@ -39,7 +39,6 @@ class UserViewModel with ChangeNotifier {
     statee = ViewStatee.geliyor;
     try {
       users = await _repository.giris(bilgiler);
-
       statee = ViewStatee.geldi;
       return users;
     } catch (e) {
@@ -92,8 +91,8 @@ class UserViewModel with ChangeNotifier {
     return sonuc.durum;
   }
 
-  twitterGiris() async{
-     var sonuc = await _repository.twitterGiris();
+  twitterGiris() async {
+    var sonuc = await _repository.twitterGiris();
     if (sonuc.durum) {
       users = sonuc;
     }

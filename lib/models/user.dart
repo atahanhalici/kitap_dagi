@@ -11,7 +11,7 @@ class Users {
   factory Users.fromJson(Map<String, dynamic> json) => Users(
         durum: json["durum"],
         mesaj: json["mesaj"],
-        user: json["user"],
+        user: json["user"]["user"],
       );
   Map<String, dynamic> toJson() => {
         "durum": durum,
@@ -21,7 +21,7 @@ class Users {
   Users.fromMap(Map<String, dynamic> map)
       : durum = map["durum"],
         mesaj = map["mesaj"],
-        user = map["user"];
+        user = map["user"]["user"];
   Map<String, dynamic> toMap() {
     return {
       "durum": durum,
