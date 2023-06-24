@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,14 @@ class _ProfilPageState extends State<ProfilPage> {
             centerTitle: true,
             elevation: 0,
             actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => FavoritesPage()),
+                    );
+                  },
+                  icon: Icon(Icons.favorite)),
               IconButton(onPressed: () {}, icon: Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
@@ -38,8 +46,25 @@ class _ProfilPageState extends State<ProfilPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+              Container(
+                padding: EdgeInsets.only(
+                  left: kDefaultPadding,
+                  right: kDefaultPadding,
+                  bottom: 36 + kDefaultPadding,
+                ),
+                height: size.height > size.width
+                    ? size.height * 0.1 - 27
+                    : size.width * 0.1 - 27,
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(36),
+                    bottomRight: Radius.circular(36),
+                  ),
+                ),
+              ),
               SizedBox(
-                height: size.height > 500 ? 100 : 20,
+                height: size.height > 500 ? 60 : 20,
               ),
               Padding(
                 padding:

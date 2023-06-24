@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
+import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
@@ -17,7 +18,7 @@ import 'login_page.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
- const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +81,15 @@ class HomePage extends StatelessWidget {
           actions: [
             Visibility(
                 visible: _userModel.users.durum,
-                child:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.favorite))),
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FavoritesPage()),
+                      );
+                    },
+                    icon: Icon(Icons.favorite))),
             IconButton(
                 onPressed: () {
                   _userModel.users.durum == false

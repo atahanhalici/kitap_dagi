@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
@@ -45,8 +46,15 @@ class _CommentsDetailsState extends State<CommentsDetails> {
             actions: [
               Visibility(
                   visible: _userModel.users.durum,
-                  child:
-                      IconButton(onPressed: () {}, icon: Icon(Icons.favorite))),
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FavoritesPage()),
+                        );
+                      },
+                      icon: Icon(Icons.favorite))),
               IconButton(
                   onPressed: () {
                     _userModel.users.durum == false
