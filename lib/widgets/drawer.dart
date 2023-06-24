@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/category_page.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -31,10 +32,15 @@ class MyDrawer extends StatelessWidget {
     return ListTile(
       title: Text(ad),
       onTap: () {
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CategoryPage()),
+        );
         // Update the state of the app
         // ...
         // Then close the drawer
-        Navigator.pop(context);
+        // Navigator.pop(context);
       },
     );
   }
