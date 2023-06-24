@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kitap_dagi/locator.dart';
 import 'package:kitap_dagi/pages/home_page.dart';
+import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
@@ -19,6 +20,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => MainViewModel()),
     ChangeNotifierProvider(create: (_) => CommentViewModel()),
     ChangeNotifierProvider(create: (_) => UserViewModel()),
+    ChangeNotifierProvider(create: (_) => CategoryViewModel()),
   ], child: const MyApp()));
 }
 

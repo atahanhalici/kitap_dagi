@@ -52,4 +52,8 @@ class Repository {
   twitterGiris() async{
  return await _databaseService.twitterGiris();
   }
+
+  kategoriKitapGetir(String id) async{
+     return await _databaseService.kategoriKitapGetir(id);
+  }
 }

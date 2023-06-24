@@ -16,6 +16,7 @@ class DbServices {
     List<Book> _books = [];
     final response = await http.get(Uri.parse(yol + "/mobile/homepage"));
     List jsonResponse = json.decode(response.body);
+    print(jsonResponse.runtimeType);
     if (jsonResponse is List) {
       _books = jsonResponse.map((e) => Book.fromJson(e)).toList();
     }
@@ -199,5 +200,18 @@ class DbServices {
       print(e);
       return Users(mesaj: "", user: {}, durum: false);
     }
+  }
+
+  kategoriKitapGetir(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$yol/mobile/page/$id"),
+      );
+      var jsonResponse = json.decode(response.body);
+      List sa = jsonResponse["book"];
+      var asd = sa.map((e) => Book.fromJson(e)).toList();
+      Map son = {"title": jsonResponse["title"], "book": asd};
+      return son;
+    } catch (e) {}
   }
 }
