@@ -5,6 +5,7 @@ import 'package:kitap_dagi/pages/login_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/widgets/yorumlar.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,8 @@ class _CommentsDetailsState extends State<CommentsDetails> {
         Provider.of<CommentViewModel>(context, listen: true);
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
+         FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -48,6 +51,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                   visible: _userModel.users.durum,
                   child: IconButton(
                       onPressed: () {
+                          _favModel.favoriGetir(_userModel.users.user["_id"]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

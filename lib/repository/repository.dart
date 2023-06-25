@@ -56,4 +56,20 @@ class Repository {
   kategoriKitapGetir(String id) async{
      return await _databaseService.kategoriKitapGetir(id);
   }
+
+  Future<List<Book>>favoriGetir(String id) async{
+    return await _databaseService.favoriGetir(id);
+  }
+
+  favoriKaldir(String id, String bookid)async {
+     return await _databaseService.favoriKaldir(id,bookid);
+  }
+
+  favoriEkle(String userId, String bookId) async{
+     return await _databaseService.favoriEkle(userId,bookId);
+  }
+
+  guncelle(String text, String text2, String user) async{
+     return await _databaseService.guncelle(text,text2,user);
+  }
 }

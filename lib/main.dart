@@ -5,6 +5,7 @@ import 'package:kitap_dagi/locator.dart';
 import 'package:kitap_dagi/pages/home_page.dart';
 import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => CommentViewModel()),
     ChangeNotifierProvider(create: (_) => UserViewModel()),
     ChangeNotifierProvider(create: (_) => CategoryViewModel()),
+    ChangeNotifierProvider(create: (_) => FavoritesViewModel()),
   ], child: const MyApp()));
 }
 

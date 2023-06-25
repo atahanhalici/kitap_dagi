@@ -12,6 +12,7 @@ class CategoryViewModel with ChangeNotifier {
   ViewStatees get state => _state;
   List<Book> kitaplar = [];
   String title = "";
+  int baslama = 0;
   set state(ViewStatees value) {
     _state = value;
     notifyListeners();

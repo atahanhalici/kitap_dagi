@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
+import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,11 @@ class _ProfilPageState extends State<ProfilPage> {
   Widget build(BuildContext context) {
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
+    FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
+    String isim = _userModel.users.user["name"];
+    String soyisim = _userModel.users.user["surname"];
+    String email = "";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
@@ -30,6 +36,7 @@ class _ProfilPageState extends State<ProfilPage> {
             actions: [
               IconButton(
                   onPressed: () {
+                    _favModel.favoriGetir(_userModel.users.user["_id"]);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => FavoritesPage()),
@@ -155,7 +162,7 @@ class _ProfilPageState extends State<ProfilPage> {
                     if (deger!.isEmpty) {
                       return "İsim Kısmı Boş Bırakılamaz!";
                     } else {
-                      //_emailController.text = deger;
+                      isim = deger;
                     }
                     return null;
                   },
@@ -184,7 +191,7 @@ class _ProfilPageState extends State<ProfilPage> {
                     if (deger!.isEmpty) {
                       return "Soyisim Kısmı Boş Bırakılamaz!";
                     } else {
-                      //_emailController.text = deger;
+                      soyisim = deger;
                     }
                     return null;
                   },
@@ -200,6 +207,7 @@ class _ProfilPageState extends State<ProfilPage> {
                   initialValue:
                       !sifreGuncelle ? _userModel.users.user["email"] : "",
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  readOnly: !sifreGuncelle,
                   cursorColor: Colors.black,
                   maxLines: 1,
                   decoration: InputDecoration(
@@ -211,20 +219,27 @@ class _ProfilPageState extends State<ProfilPage> {
                         borderSide: BorderSide(color: kPrimaryColor)),
                     border: const OutlineInputBorder(),
                   ),
-                  validator: (deger) {
-                    if (deger!.isEmpty) {
-                      return "E-Mail Kısmı Boş Bırakılamaz!";
-                    } else if (!deger.contains("@") || !deger.contains(".")) {
-                      return "Geçersiz Mail Formatı. Lütfen Kontrol Ediniz";
-                    } else {
-                      //_emailController.text = deger;
-                    }
-                    return null;
-                  },
+                  validator: (deger) {},
                 ),
               ),
               TextButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    if (sifreGuncelle == false) {
+                      var sonuc = await _userModel.guncelle(
+                          isim, soyisim, _userModel.users.user["_id"]);
+                      if (context.mounted) {
+                        if (sonuc["durum"] == true) {
+                          // ignore: use_build_context_synchronously
+                          aDialog(
+                              "İşlem Başarılı", "${sonuc["mesaj"]}", context);
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          aDialog(
+                              "İşlem Başarısız", "${sonuc["mesaj"]} ", context);
+                        }
+                      }
+                    }
+                  },
                   child: Container(
                     width: size.width - (2 * kDefaultPadding),
                     height: 50,
@@ -275,6 +290,48 @@ class _ProfilPageState extends State<ProfilPage> {
                     )),
                   )),
             ]))));
+  }
+
+  aDialog(String baslik, String icerik, BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            baslik,
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  icerik,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Tamam",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   alertDialog(String baslik, String icerik, void Function() fonksiyon,

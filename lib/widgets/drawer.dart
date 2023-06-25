@@ -33,6 +33,7 @@ class MyDrawer extends StatelessWidget {
   ListTile Categories(BuildContext context, String ad, String name) {
     CategoryViewModel _categoryModel =
         Provider.of<CategoryViewModel>(context, listen: true);
+    _categoryModel.baslama = 0;
     return ListTile(
       title: Text(ad),
       onTap: () async {

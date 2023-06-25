@@ -6,6 +6,7 @@ import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:kitap_dagi/widgets/kitap_slider.dart';
@@ -38,6 +39,8 @@ class _BookDetailsState extends State<BookDetails> {
         Provider.of<UserViewModel>(context, listen: true);
     MainViewModel _mainModel =
         Provider.of<MainViewModel>(context, listen: true);
+    FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     ortalamaHesapla(_commentModel);
     return Scaffold(
@@ -51,6 +54,7 @@ class _BookDetailsState extends State<BookDetails> {
                 visible: _userModel.users.durum,
                 child: IconButton(
                     onPressed: () {
+                      _favModel.favoriGetir(_userModel.users.user["_id"]);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -244,6 +248,10 @@ class _BookDetailsState extends State<BookDetails> {
   }
 
   Column bilgiler(CommentViewModel commentModel) {
+    FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -401,7 +409,18 @@ class _BookDetailsState extends State<BookDetails> {
           height: kDefaultPadding - 5,
         ),
         TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              var sonuc = await _favModel.favoriEkle(
+                  _userModel.users.user["_id"], widget.book.id);
+              if (context.mounted) {
+                sonuc["durum"] == true
+                    ? aDialog(
+                        "Favorilere Ekle",
+                        "${widget.book.title} İsimli Kitap Favorilere Eklendi",
+                        context)
+                    : aDialog("Favorilere Ekle", "${sonuc["mesaj"]}", context);
+              }
+            },
             child: Container(
               width: MediaQuery.of(context).size.width - (2 * kDefaultPadding),
               height: 50,
@@ -419,6 +438,47 @@ class _BookDetailsState extends State<BookDetails> {
               )),
             )),
       ],
+    );
+  }
+
+  aDialog(String baslik, String icerik, BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            baslik,
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  icerik,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+                child: const Text(
+                  "Tamam",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        );
+      },
     );
   }
 

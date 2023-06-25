@@ -98,4 +98,21 @@ class UserViewModel with ChangeNotifier {
     }
     return sonuc.durum;
   }
+
+  guncelle(String text, String text2, String user) async {
+    try {
+      var sonuc = await _repository.guncelle(text, text2, user);
+      if (sonuc["durum"] == true) {
+        users.user["name"] = text;
+        users.user["surname"] = text2;
+        var box = await Hive.openBox("informations");
+        await box.put("user", users.user);
+      }
+      statee = ViewStatee.geldi;
+      return sonuc;
+    } catch (e) {
+      statee = ViewStatee.hata;
+      return users;
+    }
+  }
 }

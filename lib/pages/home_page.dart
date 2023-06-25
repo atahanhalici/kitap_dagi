@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
+import 'package:kitap_dagi/pages/category_page.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/pages/registration.dart';
+import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
@@ -28,6 +31,8 @@ class HomePage extends StatelessWidget {
         Provider.of<CommentViewModel>(context, listen: true);
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
+    FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     if (_userModel.sifreKontrol == true) {
       Future.delayed(Duration.zero, () {
@@ -83,6 +88,7 @@ class HomePage extends StatelessWidget {
                 visible: _userModel.users.durum,
                 child: IconButton(
                     onPressed: () {
+                      _favModel.favoriGetir(_userModel.users.user["_id"]);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -117,7 +123,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const MyAppBar(),
-                        slider(size),
+                        slider(size, context),
                         KitapSlider(
                           size: size,
                           asd: _mainModel.sizinicin,
@@ -305,7 +311,9 @@ class HomePage extends StatelessWidget {
 */
 }
 
-slider(Size size) {
+slider(Size size, BuildContext context) {
+  CategoryViewModel _categoryModel =
+      Provider.of<CategoryViewModel>(context, listen: true);
   return CarouselSlider(
     options: CarouselOptions(
         viewportFraction: 1,
@@ -315,27 +323,47 @@ slider(Size size) {
     items: imgList.map((imgAsset) {
       return Builder(
         builder: (BuildContext context) {
-          return Container(
-            // height: size.height / 4,
-            margin: const EdgeInsets.only(
-                bottom: kDefaultPadding,
-                right: kDefaultPadding,
-                left: kDefaultPadding),
-            decoration: BoxDecoration(
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10.0,
-                    spreadRadius: 2.0,
-                  ), //BoxShadow
-                ],
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                    imgAsset,
-                  ),
-                )),
+          return GestureDetector(
+            onTap: () {
+              if (imgAsset == "assets/superindirimler.png" ||
+                  imgAsset == "assets/coksatanlar.png") {
+                _categoryModel.baslama = 0;
+                _categoryModel.kategoriKitapGetir(
+                    imgAsset == "assets/superindirimler.png"
+                        ? "indirimdekiler"
+                        : "cok-satan-kitaplar");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CategoryPage(
+                          title: imgAsset == "assets/superindirimler.png"
+                              ? "Süper İndirimler"
+                              : "Çok Satanlar")),
+                );
+              }
+            },
+            child: Container(
+              // height: size.height / 4,
+              margin: const EdgeInsets.only(
+                  bottom: kDefaultPadding,
+                  right: kDefaultPadding,
+                  left: kDefaultPadding),
+              decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10.0,
+                      spreadRadius: 2.0,
+                    ), //BoxShadow
+                  ],
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      imgAsset,
+                    ),
+                  )),
+            ),
           );
         },
       );

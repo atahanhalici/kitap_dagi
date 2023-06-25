@@ -16,7 +16,6 @@ class DbServices {
     List<Book> _books = [];
     final response = await http.get(Uri.parse(yol + "/mobile/homepage"));
     List jsonResponse = json.decode(response.body);
-    print(jsonResponse.runtimeType);
     if (jsonResponse is List) {
       _books = jsonResponse.map((e) => Book.fromJson(e)).toList();
     }
@@ -209,9 +208,74 @@ class DbServices {
       );
       var jsonResponse = json.decode(response.body);
       List sa = jsonResponse["book"];
+      print(sa);
       var asd = sa.map((e) => Book.fromJson(e)).toList();
       Map son = {"title": jsonResponse["title"], "book": asd};
       return son;
     } catch (e) {}
+  }
+
+  Future<List<Book>> favoriGetir(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$yol/mobile/auth/favorites/$id"),
+      );
+      var jsonResponse = json.decode(response.body);
+      List sa = jsonResponse["book"];
+      for (int i = 0; i < sa.length; i++) {
+        sa[i]["createdAt"] = "";
+        sa[i]["updatedAt"] = "";
+      }
+      List<Book> asd = sa.map((e) => Book.fromJson(e)).toList();
+      return asd;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  favoriKaldir(String id, String bookid) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$yol/mobile/auth/deletefavorite/$id/$bookid"),
+      );
+      var jsonResponse = json.decode(response.body);
+      return jsonResponse;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  favoriEkle(String userId, String bookId) async {
+    Map<String, String> body = {"book": bookId, "user": userId};
+
+    try {
+      var response = await http.post(Uri.parse("$yol/mobile/auth/addfavorite"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: jsonEncode(body));
+      var jsonResponse = json.decode(response.body);
+      return jsonResponse;
+    } catch (e) {
+      return {"durum": false, "mesaj": "HATA"};
+    }
+  }
+
+  guncelle(String text, String text2, String user) async {
+    Map<String, String> body = {"id": user, "name": text, "surname": text2};
+
+    try {
+      var response = await http.post(Uri.parse("$yol/mobile/auth/profile"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: jsonEncode(body));
+      var jsonResponse = json.decode(response.body);
+      return jsonResponse;
+    } catch (e) {
+      return {"durum": false, "mesaj": "HATA"};
+    }
   }
 }

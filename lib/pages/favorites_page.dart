@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/models/book.dart';
+import 'package:kitap_dagi/pages/book_details_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
+import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
+import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../widgets/drawer.dart';
@@ -12,22 +18,27 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // ignore: no_leading_underscores_for_local_identifiers
+    FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
+
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: Text("Kitap Dağı"),
+            title: const Text("Kitap Dağı"),
             centerTitle: true,
             elevation: 0,
             actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.favorite)),
               IconButton(
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => ProfilPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilPage()),
                     );
                   },
-                  icon: Icon(Icons.person))
+                  icon: const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
         drawer: const MyDrawer(),
@@ -37,9 +48,8 @@ class FavoritesPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
               const MyAppBar(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: Text(
                   "Favorilerim",
                   style: TextStyle(
@@ -48,10 +58,9 @@ class FavoritesPage extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: const SizedBox(
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: SizedBox(
                   width: 100,
                   child: Divider(
                     color: kPrimaryColor,
@@ -59,24 +68,55 @@ class FavoritesPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Favori(size, context),
-              SizedBox(
-                height: kDefaultPadding,
-              ),
-              Favori(size, context),
-              SizedBox(
-                height: kDefaultPadding,
-              ),
-              Favori(size, context),
+              _favModel.state == ViewStatex.geldi
+                  ? _favModel.kitaplar.isNotEmpty
+                      ? Liste(_favModel, size)
+                      : Container(
+                          height: 100,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding, vertical: 20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color.fromARGB(255, 207, 207, 207)),
+                          child: Center(
+                            child: Text(
+                              "Favori Listenize Eklenmiş Kitap Bulunmamaktadır",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
             ]))));
   }
 
-  Container Favori(Size size, BuildContext context) {
+  Widget Liste(FavoritesViewModel favoritesViewModel, Size size) {
+    return ListView.builder(
+        itemCount: favoritesViewModel.kitaplar.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return Favori(size, context, favoritesViewModel.kitaplar[index],
+              favoritesViewModel);
+        });
+  }
+
+  Widget Favori(Size size, BuildContext context, Book kitap,
+      FavoritesViewModel favoritesViewModel) {
+    CommentViewModel _commentModel =
+        Provider.of<CommentViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
+    var rating = double.parse(kitap.rating);
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Color.fromARGB(255, 207, 207, 207)),
+            color: const Color.fromARGB(255, 246, 246, 246)),
         child: Column(
           children: [
             Row(
@@ -88,8 +128,8 @@ class FavoritesPage extends StatelessWidget {
                     height: size.width < size.height
                         ? size.height / 4
                         : size.width / 4,
-                    child: Image.asset(
-                      "assets/harry.jpg",
+                    child: Image.network(
+                      kitap.bookImage,
                       fit: BoxFit.contain,
                     )),
                 Expanded(
@@ -97,16 +137,16 @@ class FavoritesPage extends StatelessWidget {
                     height: size.width < size.height
                         ? size.height / 4
                         : size.width / 4,
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Harry Potter ve Ölüm Yadigârları",
+                          kitap.title,
                           style: const TextStyle(
                               color: kTextColor,
-                              fontSize: 10,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold),
                         ),
                         Wrap(
@@ -115,17 +155,17 @@ class FavoritesPage extends StatelessWidget {
                               "Yazar:",
                               style: TextStyle(
                                   color: kPrimaryColor,
-                                  fontSize: 10,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               width: 10,
                             ),
                             Text(
-                              "J.K. Rowling",
+                              kitap.author,
                               style: const TextStyle(
                                   color: kTextColor,
-                                  fontSize: 10,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold),
                             )
                           ],
@@ -136,17 +176,17 @@ class FavoritesPage extends StatelessWidget {
                               "Yayınevi:",
                               style: TextStyle(
                                   color: kPrimaryColor,
-                                  fontSize: 10,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               width: 10,
                             ),
                             Text(
-                              "Yapı Kredi Yayınları",
+                              kitap.publisher,
                               style: const TextStyle(
                                   color: kTextColor,
-                                  fontSize: 10,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold),
                             )
                           ],
@@ -158,23 +198,33 @@ class FavoritesPage extends StatelessWidget {
                           "Değerlendirmeler",
                           style: TextStyle(
                               color: kPrimaryColor,
-                              fontSize: 10,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 5,
-                          width: 80,
+                          width: 100,
                           child: Divider(
                             color: kPrimaryColor,
                             thickness: 2,
                           ),
                         ),
-                        yildizlar(0),
+                        yildizlar(rating),
                         const SizedBox(
                           height: 10,
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            _commentModel.yorumlariGetir(kitap.id);
+                            _commentModel.yildizPuanla(0);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BookDetails(
+                                        book: kitap,
+                                      )),
+                            );
+                          },
                           child: Container(
                             width: 200,
                             height: 20,
@@ -187,7 +237,7 @@ class FavoritesPage extends StatelessWidget {
                               "Kitabı İncele",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 13,
                               ),
                             )),
                           ),
@@ -196,7 +246,29 @@ class FavoritesPage extends StatelessWidget {
                           height: 10,
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () async {
+                            bool sonuc = await favoritesViewModel.favoriKaldir(
+                                _userModel.users.user["_id"], kitap.id);
+
+                            if (context.mounted) {
+                              if (sonuc == true) {
+                                // ignore: use_build_context_synchronously
+                                aDialog(
+                                    "İşlem Başarılı",
+                                    "${kitap.title} İsimli Kitap Favorilerden Başarıyla Kaldırıldı.",
+                                    context);
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                aDialog(
+                                    "İşlem Başarısız",
+                                    "${kitap.title} İsimli Kitap Favorilerden Kaldırılamadı!",
+                                    context);
+                              }
+                            }
+
+                            favoritesViewModel
+                                .favoriGetir(_userModel.users.user["_id"]);
+                          },
                           child: Container(
                             width: 200,
                             height: 20,
@@ -209,7 +281,7 @@ class FavoritesPage extends StatelessWidget {
                               "Favorilerden Kaldır",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 13,
                               ),
                             )),
                           ),
@@ -223,7 +295,7 @@ class FavoritesPage extends StatelessWidget {
                 ),
                 Visibility(
                     visible: size.width > size.height ? true : false,
-                    child: satinAl(context)),
+                    child: satinAl(context, kitap)),
                 const SizedBox(
                   width: 10,
                 ),
@@ -231,16 +303,16 @@ class FavoritesPage extends StatelessWidget {
             ),
             Visibility(
               visible: size.height > size.width ? true : false,
-              child: SizedBox(
+              child: const SizedBox(
                 height: 10,
               ),
             ),
             Visibility(
                 visible: size.height > size.width ? true : false,
-                child: satinAl(context)),
+                child: satinAl(context, kitap)),
             Visibility(
               visible: size.height > size.width ? true : false,
-              child: SizedBox(
+              child: const SizedBox(
                 height: 5,
               ),
             ),
@@ -248,7 +320,7 @@ class FavoritesPage extends StatelessWidget {
         ));
   }
 
-  satinAl(BuildContext context) {
+  satinAl(BuildContext context, Book kitap) {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
       width: size.width > size.height
@@ -284,7 +356,7 @@ class FavoritesPage extends StatelessWidget {
                         child: ListBody(
                           children: <Widget>[
                             Text(
-                              "asd" +
+                              kitap.buyLinks[index]["name"] +
                                   " Web Sitesi Açılacak. Onaylıyor musunuz?",
                               style: const TextStyle(
                                 color: Colors.black,
@@ -314,7 +386,7 @@ class FavoritesPage extends StatelessWidget {
                           ),
                           onPressed: () async {
                             await launchUrlString(
-                              "https://www.youtube.com/",
+                              kitap.buyLinks[index]["url"],
                               mode: LaunchMode.externalNonBrowserApplication,
                             );
 
@@ -340,12 +412,12 @@ class FavoritesPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "asd",
+                        kitap.buyLinks[index]["name"],
                         style: TextStyle(fontSize: 10, color: kPrimaryColor),
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        "55" + " TL",
+                        kitap.buyLinks[index]["linkPrice"] + " TL",
                         style: TextStyle(
                             fontSize: 12,
                             color: kPrimaryColor,
@@ -358,6 +430,48 @@ class FavoritesPage extends StatelessWidget {
               ),
             );
           }),
+    );
+  }
+
+  aDialog(String baslik, String icerik, BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            baslik,
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  icerik,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Tamam",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
