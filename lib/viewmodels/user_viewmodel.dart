@@ -106,7 +106,9 @@ class UserViewModel with ChangeNotifier {
         users.user["name"] = text;
         users.user["surname"] = text2;
         var box = await Hive.openBox("informations");
-        await box.put("user", users.user);
+        if (box.get("user") != null) {
+          await box.put("user", users.user);
+        }
       }
       statee = ViewStatee.geldi;
       return sonuc;
