@@ -11,15 +11,16 @@ class MyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // ignore: no_leading_underscores_for_local_identifiers
     TextEditingController _controller = TextEditingController();
     return Container(
-      margin: EdgeInsets.only(bottom: kDefaultPadding * 2.5),
+      margin:const EdgeInsets.only(bottom: kDefaultPadding * 2.5),
       // It will cover 20% of our total height
       height: size.height > size.width ? size.height * 0.1 : size.width * 0.1,
       child: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(
+            padding:const EdgeInsets.only(
               left: kDefaultPadding,
               right: kDefaultPadding,
               bottom: 36 + kDefaultPadding,
@@ -27,7 +28,7 @@ class MyAppBar extends StatelessWidget {
             height: size.height > size.width
                 ? size.height * 0.1 - 27
                 : size.width * 0.1 - 27,
-            decoration: BoxDecoration(
+            decoration:const BoxDecoration(
               color: kPrimaryColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(36),
@@ -41,15 +42,15 @@ class MyAppBar extends StatelessWidget {
             top: 15,
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              margin:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              padding:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               height: 54,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    offset: Offset(0, 10),
+                    offset:const Offset(0, 10),
                     blurRadius: 50,
                     color: kPrimaryColor.withOpacity(0.23),
                   ),
@@ -78,7 +79,7 @@ class MyAppBar extends StatelessWidget {
                               aramaMetodu(
                                   context, _controller.text, _controller);
                             },
-                            child: Icon(Icons.search)),
+                            child:const Icon(Icons.search)),
                       ),
                     ),
                   ),
@@ -94,6 +95,7 @@ class MyAppBar extends StatelessWidget {
   aramaMetodu(
       BuildContext context, String isim, TextEditingController controller) {
     if (isim.isNotEmpty) {
+      // ignore: no_leading_underscores_for_local_identifiers
       CategoryViewModel _categoryModel =
           Provider.of<CategoryViewModel>(context, listen: false);
       _categoryModel.baslama = 0;

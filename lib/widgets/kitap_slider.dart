@@ -26,6 +26,7 @@ class KitapSlider extends StatefulWidget {
 class _KitapSliderState extends State<KitapSlider> {
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;

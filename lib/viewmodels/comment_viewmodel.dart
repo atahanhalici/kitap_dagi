@@ -62,6 +62,7 @@ class CommentViewModel with ChangeNotifier {
     try {
       _repository.yorumYap(title, desc, verilenYildiz, bookId, adSoyad);
       yorumlariGetir(bookId);
+    // ignore: empty_catches
     } catch (e) {}
   }
 }

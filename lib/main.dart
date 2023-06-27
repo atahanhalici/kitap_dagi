@@ -31,8 +31,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     MainViewModel _mainModel =
         Provider.of<MainViewModel>(context, listen: true);
+    // ignore: no_leading_underscores_for_local_identifiers
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
     _mainModel.kitaplariGetir();
@@ -48,6 +50,6 @@ class MyApp extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomePage());
+        home: const HomePage());
   }
 }

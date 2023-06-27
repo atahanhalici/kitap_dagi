@@ -1,9 +1,10 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
-import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/widgets/yorumlar.dart';
@@ -37,13 +38,13 @@ class _CommentsDetailsState extends State<CommentsDetails> {
         Provider.of<CommentViewModel>(context, listen: true);
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
-         FavoritesViewModel _favModel =
+    FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: Text("Kitap Dağı"),
+            title: const Text("Kitap Dağı"),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -51,38 +52,40 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                   visible: _userModel.users.durum,
                   child: IconButton(
                       onPressed: () {
-                          _favModel.favoriGetir(_userModel.users.user["_id"]);
+                        _favModel.favoriGetir(_userModel.users.user["_id"]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FavoritesPage()),
+                              builder: (context) =>const FavoritesPage()),
                         );
                       },
-                      icon: Icon(Icons.favorite))),
+                      icon: const Icon(Icons.favorite))),
               IconButton(
                   onPressed: () {
                     _userModel.users.durum == false
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()),
+                                builder: (context) =>const LoginPage()),
                           )
                         : Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfilPage()),
+                                builder: (context) =>const ProfilPage()),
                           );
                   },
-                  icon: Icon(Icons.person))
+                  icon: const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi:2,gidilecek: ""),
+        drawer: const MyDrawer(sayi: 2, gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-              const MyAppBar(sayfa: 0,),
+              const MyAppBar(
+                sayfa: 0,
+              ),
               size.width < size.height
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
@@ -152,6 +155,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
       child: ListView.builder(
           itemCount: comments.yorumlar.length % 10 != 0
               ? ((comments.yorumlar.length / 10) + 1).toInt()
+              // ignore: division_optimization
               : (comments.yorumlar.length / 10).toInt(),
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
@@ -164,11 +168,11 @@ class _CommentsDetailsState extends State<CommentsDetails> {
               },
               child: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           color: commentViewModel.baslama / 10 == index
@@ -183,7 +187,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                 ],
@@ -195,6 +199,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
 
   degerlendirmeOzet(
       Comments comments, Size size, CommentViewModel commentModel) {
+    // ignore: unused_local_variable
     double bookRating = double.parse(widget.book.rating);
     return Column(
       children: [
@@ -209,7 +214,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                 color: kPrimaryColor,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Center(
+              child: const Center(
                   child: Text(
                 "Kitap Detayına Dön",
                 style: TextStyle(
@@ -218,28 +223,28 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                     fontWeight: FontWeight.bold),
               )),
             )),
-        SizedBox(
+        const SizedBox(
           height: kDefaultPadding,
         ),
         Text(
           widget.book.title,
-          style: TextStyle(
+          style: const TextStyle(
               color: kPrimaryColor, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         SizedBox(
           width: size.width - 2 * kDefaultPadding,
-          child: Divider(
+          child: const Divider(
             color: kPrimaryColor,
             thickness: 2,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: kDefaultPadding,
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 214, 214, 214),
+              color: const Color.fromARGB(255, 214, 214, 214),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
@@ -257,7 +262,8 @@ class _CommentsDetailsState extends State<CommentsDetails> {
             children: [
               Text(
                 widget.ortalama.toStringAsFixed(1),
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -298,20 +304,18 @@ class _CommentsDetailsState extends State<CommentsDetails> {
             ],
           )),
         ),
-        SizedBox(
+        const SizedBox(
           height: kDefaultPadding,
         ),
         Text(
-          "(" +
-              commentModel.comments.yorumSayisi.toString() +
-              " Değerlendirme)",
-          style: TextStyle(
+          "(${commentModel.comments.yorumSayisi} Değerlendirme)",
+          style: const TextStyle(
               color: Color.fromARGB(255, 70, 70, 70),
               fontSize: 15,
               fontWeight: FontWeight.bold),
         ),
         cizelge(size, commentModel),
-        SizedBox(
+        const SizedBox(
           height: kDefaultPadding,
         ),
       ],
@@ -334,13 +338,13 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 2.5),
+                    padding: const EdgeInsets.only(
+                        top: 5, left: 5, right: 5, bottom: 2.5),
                     child: Row(
                       children: [
                         Text(
                           "${index + 1}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                         const Icon(
                           Icons.star,
@@ -349,7 +353,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 45,
                     height: 2,
                     child: Divider(
@@ -358,8 +362,8 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.only(bottom: 5, left: 5, right: 5, top: 2.5),
+                    padding: const EdgeInsets.only(
+                        bottom: 5, left: 5, right: 5, top: 2.5),
                     child: Text(
                       index + 1 == 1
                           ? commentModel.biryildiz.toString()
@@ -372,7 +376,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                                       : index + 1 == 5
                                           ? commentModel.besyildiz.toString()
                                           : "",
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   )
                 ],

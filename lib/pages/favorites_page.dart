@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, duplicate_ignore
+
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/models/book.dart';
@@ -41,13 +43,15 @@ class FavoritesPage extends StatelessWidget {
                   icon: const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi:3,gidilecek: ""),
+        drawer: const MyDrawer(sayi: 3, gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-              const MyAppBar(sayfa: 0,),
+              const MyAppBar(
+                sayfa: 0,
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: Text(
@@ -78,22 +82,23 @@ class FavoritesPage extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: const Color.fromARGB(255, 207, 207, 207)),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Favori Listenize Eklenmiş Kitap Bulunmamaktadır",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                         )
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: const Center(
+                  :const Padding(
+                      padding:  EdgeInsets.only(top: 20),
+                      child:  Center(
                         child: CircularProgressIndicator(),
                       ),
                     ),
             ]))));
   }
 
+  // ignore: non_constant_identifier_names
   Widget Liste(FavoritesViewModel favoritesViewModel, Size size) {
     return ListView.builder(
         itemCount: favoritesViewModel.kitaplar.length,
@@ -105,6 +110,7 @@ class FavoritesPage extends StatelessWidget {
         });
   }
 
+  // ignore: non_constant_identifier_names
   Widget Favori(Size size, BuildContext context, Book kitap,
       FavoritesViewModel favoritesViewModel) {
     CommentViewModel _commentModel =
@@ -132,162 +138,163 @@ class FavoritesPage extends StatelessWidget {
                       kitap.bookImage,
                       fit: BoxFit.contain,
                     )),
-                Expanded(
-                  child: Container(
-                    height: size.width < size.height
-                        ? size.height / 4
-                        : size.width / 4,
-                    margin: const EdgeInsets.only(top: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          kitap.title,
-                          style: const TextStyle(
-                              color: kTextColor,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Wrap(
-                          children: [
-                            const Text(
-                              "Yazar:",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              kitap.author,
-                              style: const TextStyle(
-                                  color: kTextColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                        Wrap(
-                          children: [
-                            const Text(
-                              "Yayınevi:",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              kitap.publisher,
-                              style: const TextStyle(
-                                  color: kTextColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Değerlendirmeler",
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                          width: 100,
-                          child: Divider(
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  height: size.width < size.height
+                      ? size.height / 4
+                      : size.width / 4,
+                  margin: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        kitap.title,
+                        style: const TextStyle(
+                            color: kTextColor,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Wrap(
+                        children: [
+                          const Text(
+                            "Yazar:",
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          ),
+                      const    SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            kitap.author,
+                            style: const TextStyle(
+                                color: kTextColor,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      Wrap(
+                        children: [
+                          const Text(
+                            "Yayınevi:",
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          ),
+                    const      SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            kitap.publisher,
+                            style: const TextStyle(
+                                color: kTextColor,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        "Değerlendirmeler",
+                        style: TextStyle(
                             color: kPrimaryColor,
-                            thickness: 2,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                        width: 100,
+                        child: Divider(
+                          color: kPrimaryColor,
+                          thickness: 2,
+                        ),
+                      ),
+                      yildizlar(rating),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _commentModel.yorumlariGetir(kitap.id);
+                          _commentModel.yildizPuanla(0);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BookDetails(
+                                      book: kitap,
+                                    )),
+                          );
+                        },
+                        child: Container(
+                          width: 200,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                        ),
-                        yildizlar(rating),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _commentModel.yorumlariGetir(kitap.id);
-                            _commentModel.yildizPuanla(0);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BookDetails(
-                                        book: kitap,
-                                      )),
-                            );
-                          },
-                          child: Container(
-                            width: 200,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              borderRadius: BorderRadius.circular(5),
+                          child: const Center(
+                              child: Text(
+                            "Kitabı İncele",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
                             ),
-                            child: const Center(
-                                child: Text(
-                              "Kitabı İncele",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                            )),
-                          ),
+                          )),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            bool sonuc = await favoritesViewModel.favoriKaldir(
-                                _userModel.users.user["_id"], kitap.id);
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          bool sonuc = await favoritesViewModel.favoriKaldir(
+                              _userModel.users.user["_id"], kitap.id);
 
-                            if (context.mounted) {
-                              if (sonuc == true) {
-                                // ignore: use_build_context_synchronously
-                                aDialog(
-                                    "İşlem Başarılı",
-                                    "${kitap.title} İsimli Kitap Favorilerden Başarıyla Kaldırıldı.",
-                                    context);
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                aDialog(
-                                    "İşlem Başarısız",
-                                    "${kitap.title} İsimli Kitap Favorilerden Kaldırılamadı!",
-                                    context);
-                              }
+                          if (context.mounted) {
+                            if (sonuc == true) {
+                              // ignore: use_build_context_synchronously
+                              aDialog(
+                                  "İşlem Başarılı",
+                                  "${kitap.title} İsimli Kitap Favorilerden Başarıyla Kaldırıldı.",
+                                  context);
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              aDialog(
+                                  "İşlem Başarısız",
+                                  "${kitap.title} İsimli Kitap Favorilerden Kaldırılamadı!",
+                                  context);
                             }
+                          }
 
-                            favoritesViewModel
-                                .favoriGetir(_userModel.users.user["_id"]);
-                          },
-                          child: Container(
-                            width: 200,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Center(
-                                child: Text(
-                              "Favorilerden Kaldır",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                            )),
+                          favoritesViewModel
+                              .favoriGetir(_userModel.users.user["_id"]);
+                        },
+                        child: Container(
+                          width: 200,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                        )
-                      ],
-                    ),
+                          child: const Center(
+                              child: Text(
+                            "Favorilerden Kaldır",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          )),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 const SizedBox(
@@ -316,6 +323,9 @@ class FavoritesPage extends StatelessWidget {
                 height: 5,
               ),
             ),
+         const   SizedBox(
+              height: kDefaultPadding,
+            )
           ],
         ));
   }
@@ -324,7 +334,7 @@ class FavoritesPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
       width: size.width > size.height
-          ? (size.width - ((size.height / 3) + 200))
+          ? ((size.width - ((size.height / 3) + 200))) - 80
           : (size.width - 2 * kDefaultPadding),
       child: GridView.builder(
           shrinkWrap: true,
@@ -404,7 +414,7 @@ class FavoritesPage extends StatelessWidget {
                     // color: Color.fromARGB(255, 207, 207, 207),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        width: 1.5, color: Color.fromARGB(255, 112, 112, 112))),
+                        width: 1.5, color:const Color.fromARGB(255, 112, 112, 112))),
                 child: Padding(
                   padding: const EdgeInsets.all(1),
                   child: Column(
@@ -413,13 +423,13 @@ class FavoritesPage extends StatelessWidget {
                     children: [
                       Text(
                         kitap.buyLinks[index]["name"],
-                        style: TextStyle(fontSize: 10, color: kPrimaryColor),
+                        style:const TextStyle(fontSize: 8, color: kPrimaryColor),
                         textAlign: TextAlign.center,
                       ),
                       Text(
                         kitap.buyLinks[index]["linkPrice"] + " TL",
-                        style: TextStyle(
-                            fontSize: 12,
+                        style:const TextStyle(
+                            fontSize: 10,
                             color: kPrimaryColor,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,

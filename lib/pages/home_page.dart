@@ -1,10 +1,11 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
 import 'package:kitap_dagi/pages/category_page.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
-import 'package:kitap_dagi/pages/registration.dart';
 import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/main_viewmodel.dart';
@@ -14,7 +15,6 @@ import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
-import '../models/book.dart';
 import '../viewmodels/comment_viewmodel.dart';
 import '../widgets/kitap_slider.dart';
 import 'login_page.dart';
@@ -50,18 +50,18 @@ class _HomePageState extends State<HomePage> {
           barrierDismissible: true, // user must tap button!
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(
+              title:const Text(
                 "Şifre Değişikliği Tespit Edildi!",
-                style: const TextStyle(
+                style:  TextStyle(
                   color: Colors.black,
                 ),
               ),
               content: SingleChildScrollView(
                 child: ListBody(
-                  children: <Widget>[
+                  children:const <Widget>[
                     Text(
                       "Şifre Değişikliği Yaptığınız İçin Hesabınızdan Çıkış Yapıldı. Lütfen Tekrar Giriş Yapınız!",
-                      style: const TextStyle(
+                      style:  TextStyle(
                         color: Colors.black,
                       ),
                     ),
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: Text("Kitap Dağı"),
+          title:const Text("Kitap Dağı"),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -101,23 +101,23 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => FavoritesPage()),
+                            builder: (context) =>const FavoritesPage()),
                       );
                     },
-                    icon: Icon(Icons.favorite))),
+                    icon:const Icon(Icons.favorite))),
             IconButton(
                 onPressed: () {
                   _userModel.users.durum == false
                       ? Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(builder: (context) =>const LoginPage()),
                         )
                       : Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfilPage()),
+                          MaterialPageRoute(builder: (context) =>const ProfilPage()),
                         );
                 },
-                icon: Icon(Icons.person))
+                icon:const Icon(Icons.person))
           ]),
       drawerEnableOpenDragGesture: true,
       drawer: const MyDrawer(sayi:5,gidilecek: ""),
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 )
-              : Center(
+              :const Center(
                   child: Text("HATA"),
                 ),
     );
@@ -186,7 +186,7 @@ slider(Size size, BuildContext context) {
         viewportFraction: 1,
         height: size.height > size.width ? size.height / 3.5 : size.width / 3.5,
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 7)),
+        autoPlayInterval:const Duration(seconds: 7)),
     items: imgList.map((imgAsset) {
       return Builder(
         builder: (BuildContext context) {

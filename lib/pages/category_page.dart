@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
@@ -21,7 +23,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     UserViewModel _userModel =
@@ -34,7 +36,7 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: Text("Kitap Dağı"),
+            title:const Text("Kitap Dağı"),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -46,25 +48,25 @@ class _CategoryPageState extends State<CategoryPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FavoritesPage()),
+                              builder: (context) =>const FavoritesPage()),
                         );
                       },
-                      icon: Icon(Icons.favorite))),
+                      icon:const Icon(Icons.favorite))),
               IconButton(
                   onPressed: () {
                     _userModel.users.durum == false
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginPage()),
+                                builder: (context) =>const LoginPage()),
                           )
                         : Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfilPage()),
+                                builder: (context) =>const ProfilPage()),
                           );
                   },
-                  icon: Icon(Icons.person))
+                  icon:const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
         drawer: MyDrawer(sayi: 1, gidilecek: widget.title),
@@ -96,7 +98,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: kDefaultPadding,
                       ),
                       _categoryModel.state == ViewStatees.geldi
@@ -110,7 +112,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       borderRadius: BorderRadius.circular(10),
                                       color: const Color.fromARGB(
                                           255, 207, 207, 207)),
-                                  child: Center(
+                                  child:const Center(
                                     child: Text(
                                       "Aradığınız İsimde Kitap Bulunamadı",
                                       style: TextStyle(
@@ -119,17 +121,18 @@ class _CategoryPageState extends State<CategoryPage> {
                                   ),
                                 )
                               : Kitaplar(context)
-                          : Center(child: CircularProgressIndicator()),
+                          :const Center(child: CircularProgressIndicator()),
                     ]))));
   }
 
+  // ignore: non_constant_identifier_names
   Widget Kitaplar(BuildContext context) {
     CategoryViewModel _categoryModel =
         Provider.of<CategoryViewModel>(context, listen: true);
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      padding:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
         children: [
           GridView.builder(
@@ -183,7 +186,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 height: 200,
                                 fit: BoxFit.contain,
                               ),
-                              SizedBox(
+                           const   SizedBox(
                                 height: 5,
                               ),
                               Align(
@@ -216,11 +219,11 @@ class _CategoryPageState extends State<CategoryPage> {
                       ),
                     ));
               }),
-          SizedBox(
+        const SizedBox(
             height: kDefaultPadding,
           ),
           sayfalama(_categoryModel),
-          SizedBox(
+        const  SizedBox(
             height: kDefaultPadding,
           ),
         ],
@@ -234,6 +237,7 @@ class _CategoryPageState extends State<CategoryPage> {
       child: ListView.builder(
           itemCount: categoryViewModel.kitaplar.length % 20 != 0
               ? ((categoryViewModel.kitaplar.length / 20) + 1).toInt()
+              // ignore: division_optimization
               : (categoryViewModel.kitaplar.length / 20).toInt(),
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
@@ -248,11 +252,11 @@ class _CategoryPageState extends State<CategoryPage> {
               },
               child: Row(
                 children: [
-                  SizedBox(
+            const      SizedBox(
                     width: 5,
                   ),
                   Container(
-                      padding: EdgeInsets.all(5),
+                      padding:const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           color: categoryViewModel.baslama / 20 == index
@@ -267,7 +271,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                       )),
-                  SizedBox(
+            const      SizedBox(
                     width: 5,
                   ),
                 ],

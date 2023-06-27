@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kitap_dagi/constants.dart';
@@ -43,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
               Container(
-                padding: EdgeInsets.only(
+                padding:const EdgeInsets.only(
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                   bottom: 36 + kDefaultPadding,
@@ -51,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration: BoxDecoration(
+                decoration:const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -59,16 +61,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
+             const SizedBox(
                 height: kDefaultPadding * 3,
               ),
               Container(
                 //height: 500,
                 //width: 100,
-                margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                padding: EdgeInsets.all(kDefaultPadding),
+                margin:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding:const EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 236, 236, 236),
+                    color: const Color.fromARGB(255, 236, 236, 236),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -100,12 +102,12 @@ class _LoginPageState extends State<LoginPage> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           cursorColor: Colors.black,
                           maxLines: 1,
-                          decoration: InputDecoration(
+                          decoration:const InputDecoration(
                             labelText: "E-Mail",
-                            labelStyle: const TextStyle(color: Colors.black),
-                            focusedBorder: const UnderlineInputBorder(
+                            labelStyle:  TextStyle(color: Colors.black),
+                            focusedBorder:  UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border: const UnderlineInputBorder(),
+                            border:  UnderlineInputBorder(),
                             suffixIcon: Icon(Icons.person),
                           ),
                           validator: (deger) {
@@ -121,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                      SizedBox(
+                    const  SizedBox(
                         height: 10,
                       ),
                       SizedBox(
@@ -162,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                      SizedBox(
+                 const     SizedBox(
                         height: 15,
                       ),
                       Row(
@@ -184,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding:const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 'Beni Hatırla',
                                 style: TextStyle(
@@ -194,18 +196,18 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          Expanded(child: SizedBox()),
+                      const    Expanded(child: SizedBox()),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ForgotMyPassword()));
+                                       const   ForgotMyPassword()));
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child:const Text(
                                 "Şifremi Unuttum",
                                 style: TextStyle(
                                   color: kPrimaryColor,
@@ -216,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
-                      SizedBox(
+                  const    SizedBox(
                         height: 5,
                       ),
                       TextButton(
@@ -266,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Center(
+                            child:const Center(
                                 child: Text(
                               "Giriş Yap",
                               style: TextStyle(
@@ -277,12 +279,12 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                       Visibility(
                         visible: uyari,
-                        child: Text(
+                        child: const Text(
                           "Lütfen Hiçbir Alanı Boş Geçmeyiniz!",
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -300,7 +302,7 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                         ],
                       ),
-                      SizedBox(
+                  const    SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -317,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => HomePage()));
+                                          builder: (context) =>const HomePage()));
                                 }
                               }
                             },
@@ -377,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
-                      SizedBox(
+               const       SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -389,10 +391,10 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => KayitOl()));
+                                      builder: (context) =>const KayitOl()));
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding:const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 "Kayıt Ol",
                                 style: TextStyle(color: kPrimaryColor),

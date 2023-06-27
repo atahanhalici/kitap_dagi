@@ -1,6 +1,7 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
-import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/user_viewmodel.dart';
@@ -33,7 +34,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
               Container(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                   bottom: 36 + kDefaultPadding,
@@ -41,7 +42,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration: BoxDecoration(
+                decoration:const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -57,10 +58,10 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
               Container(
                 //height: 225,
                 //width: 100,
-                margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                padding: EdgeInsets.all(kDefaultPadding),
+                margin:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding:const EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 236, 236, 236),
+                    color:const Color.fromARGB(255, 236, 236, 236),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -92,12 +93,12 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           cursorColor: Colors.black,
                           maxLines: 1,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: "E-Mail",
-                            labelStyle: const TextStyle(color: Colors.black),
-                            focusedBorder: const UnderlineInputBorder(
+                            labelStyle:  TextStyle(color: Colors.black),
+                            focusedBorder:  UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border: const UnderlineInputBorder(),
+                            border:  UnderlineInputBorder(),
                             suffixIcon: Icon(Icons.person),
                           ),
                           validator: (deger) {
@@ -113,7 +114,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           },
                         ),
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: 10,
                       ),
                       TextButton(
@@ -146,7 +147,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Center(
+                            child:const Center(
                                 child: Text(
                               "Şifremi Unuttum",
                               style: TextStyle(
@@ -157,7 +158,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           )),
                       Visibility(
                         visible: uyari,
-                        child: Text(
+                        child:const Text(
                           "Lütfen Hiçbir Alanı Boş Geçmeyiniz!",
                           style: TextStyle(color: Colors.red),
                         ),
@@ -201,13 +202,13 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
           ),
           actions: <Widget>[
             TextButton(
+              onPressed: fonksiyon,
               child: const Text(
                 "Tamam",
                 style: TextStyle(
                   color: Colors.black,
                 ),
               ),
-              onPressed: fonksiyon,
             ),
           ],
         );

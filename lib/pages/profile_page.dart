@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
@@ -30,12 +32,11 @@ class _ProfilPageState extends State<ProfilPage> {
     String soyisim = _userModel.users.user["surname"];
     String email = "";
     Size size = MediaQuery.of(context).size;
-    print(_userModel.users.user["password"]);
 
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: Text("Kitap Dağı"),
+            title:const Text("Kitap Dağı"),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -44,11 +45,11 @@ class _ProfilPageState extends State<ProfilPage> {
                     _favModel.favoriGetir(_userModel.users.user["_id"]);
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => FavoritesPage()),
+                      MaterialPageRoute(builder: (context) =>const FavoritesPage()),
                     );
                   },
-                  icon: Icon(Icons.favorite)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.person))
+                  icon:const Icon(Icons.favorite)),
+              IconButton(onPressed: () {}, icon:const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
         drawer: const MyDrawer(sayi: 7, gidilecek: ""),
@@ -59,7 +60,7 @@ class _ProfilPageState extends State<ProfilPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
               Container(
-                padding: EdgeInsets.only(
+                padding:const EdgeInsets.only(
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                   bottom: 36 + kDefaultPadding,
@@ -67,7 +68,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration: BoxDecoration(
+                decoration:const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -90,8 +91,8 @@ class _ProfilPageState extends State<ProfilPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: !sifreGuncelle
-                                ? Color.fromARGB(255, 250, 250, 250)
-                                : Color.fromARGB(255, 226, 226, 226),
+                                ?const Color.fromARGB(255, 250, 250, 250)
+                                : const Color.fromARGB(255, 226, 226, 226),
                             border: Border(
                               top: BorderSide(
                                   width: 1.0,
@@ -122,8 +123,8 @@ class _ProfilPageState extends State<ProfilPage> {
                             height: 50,
                             decoration: BoxDecoration(
                               color: sifreGuncelle
-                                  ? Color.fromARGB(255, 250, 250, 250)
-                                  : Color.fromARGB(255, 226, 226, 226),
+                                  ?const Color.fromARGB(255, 250, 250, 250)
+                                  :const Color.fromARGB(255, 226, 226, 226),
                               border: Border(
                                 top: BorderSide(
                                     width: 1.0,
@@ -321,7 +322,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                                  builder: (context) => const HomePage()));
                           aDialog(
                               "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                         } else {
@@ -342,7 +343,7 @@ class _ProfilPageState extends State<ProfilPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage()));
+                                    builder: (context) =>const HomePage()));
                             aDialog(
                                 "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                           } else {
@@ -387,7 +388,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                                  builder: (context) => const HomePage()));
                         }
                       }
                     }, context);
@@ -491,13 +492,13 @@ class _ProfilPageState extends State<ProfilPage> {
               },
             ),
             TextButton(
+              onPressed: fonksiyon,
               child: const Text(
                 "Evet",
                 style: TextStyle(
                   color: Colors.black,
                 ),
               ),
-              onPressed: fonksiyon,
             ),
           ],
         );

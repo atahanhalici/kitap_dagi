@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kitap_dagi/models/book.dart';
@@ -35,8 +37,10 @@ class _BookDetailsState extends State<BookDetails> {
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
+
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
+
     MainViewModel _mainModel =
         Provider.of<MainViewModel>(context, listen: true);
     FavoritesViewModel _favModel =
@@ -46,7 +50,7 @@ class _BookDetailsState extends State<BookDetails> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: Text("Kitap Dağı"),
+          title: const Text("Kitap Dağı"),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -58,35 +62,42 @@ class _BookDetailsState extends State<BookDetails> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => FavoritesPage()),
+                            builder: (context) => const FavoritesPage()),
                       );
                     },
-                    icon: Icon(Icons.favorite))),
+                    icon: const Icon(Icons.favorite))),
             IconButton(
                 onPressed: () {
                   _userModel.users.durum == false
                       ? Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         )
                       : Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfilPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const ProfilPage()),
                         );
                 },
-                icon: Icon(Icons.person))
+                icon: const Icon(Icons.person))
           ]),
       drawerEnableOpenDragGesture: true,
-      drawer: const MyDrawer(sayi: 0, gidilecek: "",),
+      drawer: const MyDrawer(
+        sayi: 0,
+        gidilecek: "",
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const MyAppBar(sayfa: 0,),
+            const MyAppBar(
+              sayfa: 0,
+            ),
             _mainModel.state == ViewState.geldi
                 ? kitap()
-                : Center(
+                : const Center(
                     child: CircularProgressIndicator(),
                   )
           ],
@@ -165,7 +176,7 @@ class _BookDetailsState extends State<BookDetails> {
                 baslik: "Öneriler",
                 cizgiUzunluk: 75,
               )
-            : CircularProgressIndicator(),
+            : const CircularProgressIndicator(),
         const SizedBox(
           height: kDefaultPadding,
         ),
@@ -201,13 +212,13 @@ class _BookDetailsState extends State<BookDetails> {
                         height: 10,
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding),
                         decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 214, 214, 214),
+                            color: const Color.fromARGB(255, 214, 214, 214),
                             borderRadius: BorderRadius.circular(10)),
                         height: size.height / 4,
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Bu Kitap İçin Herhangi Bir Yorum Bulunmamaktadır!",
                             style: TextStyle(fontWeight: FontWeight.bold),
@@ -226,9 +237,8 @@ class _BookDetailsState extends State<BookDetails> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     child: Text(
                       "Yorum Yap",
                       style: TextStyle(
@@ -237,10 +247,9 @@ class _BookDetailsState extends State<BookDetails> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: const SizedBox(
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: SizedBox(
                       width: 75,
                       child: Divider(
                         color: kPrimaryColor,
@@ -248,16 +257,17 @@ class _BookDetailsState extends State<BookDetails> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 214, 214, 214),
+                        color: const Color.fromARGB(255, 214, 214, 214),
                         borderRadius: BorderRadius.circular(10)),
                     height: size.height / 4,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Yorum Yapabilmek İçin Oturum Açmanız Gerekmektedir!",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -303,7 +313,7 @@ class _BookDetailsState extends State<BookDetails> {
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
@@ -329,7 +339,7 @@ class _BookDetailsState extends State<BookDetails> {
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
@@ -360,12 +370,13 @@ class _BookDetailsState extends State<BookDetails> {
         commentModel.state == ViewStates.geldi
             ? Row(
                 children: [
+                  // ignore: prefer_if_null_operators, unnecessary_null_comparison
                   yildizlar(ortalama != null ? ortalama : 0.0
                       /* widget.book.rating != "NaN"
                       ? double.parse(widget.book.rating)
                       : 0.0*/
                       ),
-                  Text("(" + commentModel.comments.yorumSayisi.toString() + ")")
+                  Text("(${commentModel.comments.yorumSayisi})")
                 ],
               )
             : Container(),
@@ -378,19 +389,19 @@ class _BookDetailsState extends State<BookDetails> {
             alignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Açıklama:",
                 style: TextStyle(
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
                 widget.book.description,
-                style: TextStyle(
+                style: const TextStyle(
                     color: kTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -407,19 +418,19 @@ class _BookDetailsState extends State<BookDetails> {
             alignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Kitap Boyutu:",
                 style: TextStyle(
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
                 "${widget.book.bookImageHeight} x ${widget.book.bookImageWidth} mm",
-                style: TextStyle(
+                style: const TextStyle(
                     color: kTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -523,6 +534,7 @@ class _BookDetailsState extends State<BookDetails> {
                         SizedBox(
                           width: size.width - 2 * kDefaultPadding,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
                                 "Yorumlar",
@@ -531,7 +543,10 @@ class _BookDetailsState extends State<BookDetails> {
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Expanded(child: SizedBox()),
+                              /*  const Expanded(
+                                  child: SizedBox(
+                                height: 0,
+                              )),*/
                               GestureDetector(
                                 onTap: () {
                                   commentModel.baslama = 0;
@@ -567,12 +582,12 @@ class _BookDetailsState extends State<BookDetails> {
                         ),
                         SizedBox(
                           width: size.width - 2 * kDefaultPadding,
-                          child: Divider(
+                          child: const Divider(
                             color: kPrimaryColor,
                             thickness: 2,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         SizedBox(
@@ -592,10 +607,10 @@ class _BookDetailsState extends State<BookDetails> {
                                 return Column(
                                   children: [
                                     Container(
-                                      padding:
-                                          EdgeInsets.all(kDefaultPadding / 2),
+                                      padding: const EdgeInsets.all(
+                                          kDefaultPadding / 2),
                                       decoration: BoxDecoration(
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 223, 223, 223),
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -619,13 +634,12 @@ class _BookDetailsState extends State<BookDetails> {
                                                               .yorumlar[index]
                                                           ["nameSurname"] ??
                                                       "",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: kTextColor,
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Expanded(child: SizedBox()),
                                                 SizedBox(
                                                   width: 120,
                                                   child: yildizlar(commentModel
@@ -645,7 +659,7 @@ class _BookDetailsState extends State<BookDetails> {
                                           Text(
                                             commentModel.comments
                                                 .yorumlar[index]["title"],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: kTextColor,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
@@ -658,7 +672,7 @@ class _BookDetailsState extends State<BookDetails> {
                                             children: [
                                               Text(
                                                 formattedDate,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
@@ -667,7 +681,7 @@ class _BookDetailsState extends State<BookDetails> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     )
                                   ],
@@ -734,7 +748,7 @@ class _BookDetailsState extends State<BookDetails> {
               thickness: 2,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextFormField(
@@ -754,9 +768,10 @@ class _BookDetailsState extends State<BookDetails> {
             validator: (deger) {
               title = deger!;
               deger = "";
+              return null;
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextFormField(
@@ -776,9 +791,10 @@ class _BookDetailsState extends State<BookDetails> {
             validator: (deger) {
               desc = deger!;
               deger = "";
+              return null;
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           SizedBox(
@@ -854,7 +870,7 @@ class _BookDetailsState extends State<BookDetails> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextButton(
@@ -877,7 +893,7 @@ class _BookDetailsState extends State<BookDetails> {
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(
+                child: const Center(
                     child: Text(
                   "Yorum Yap",
                   style: TextStyle(
@@ -989,7 +1005,8 @@ class _BookDetailsState extends State<BookDetails> {
                   // color: Color.fromARGB(255, 207, 207, 207),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                      width: 1.5, color: Color.fromARGB(255, 112, 112, 112))),
+                      width: 1.5,
+                      color: const Color.fromARGB(255, 112, 112, 112))),
               child: Padding(
                 padding: const EdgeInsets.all(1),
                 child: Column(
@@ -998,13 +1015,13 @@ class _BookDetailsState extends State<BookDetails> {
                   children: [
                     Text(
                       book.buyLinks[index]["name"],
-                      style: TextStyle(fontSize: 10, color: kPrimaryColor),
+                      style: const TextStyle(fontSize: 8, color: kPrimaryColor),
                       textAlign: TextAlign.center,
                     ),
                     Text(
                       book.buyLinks[index]["linkPrice"] + " TL",
-                      style: TextStyle(
-                          fontSize: 12,
+                      style: const TextStyle(
+                          fontSize: 10,
                           color: kPrimaryColor,
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,

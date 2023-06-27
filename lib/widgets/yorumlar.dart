@@ -4,7 +4,6 @@ import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import '../pages/comments_details_page.dart';
 
 class YorumlarWidget extends StatelessWidget {
   final int baslama;
@@ -39,12 +38,12 @@ class YorumlarWidget extends StatelessWidget {
                         ),
                         SizedBox(
                           width: size.width - 2 * kDefaultPadding,
-                          child: Divider(
+                          child:const Divider(
                             color: kPrimaryColor,
                             thickness: 2,
                           ),
                         ),
-                        SizedBox(
+                    const    SizedBox(
                           height: 10,
                         ),
                         SizedBox(
@@ -68,9 +67,9 @@ class YorumlarWidget extends StatelessWidget {
                                   children: [
                                     Container(
                                       padding:
-                                          EdgeInsets.all(kDefaultPadding / 2),
+                                      const    EdgeInsets.all(kDefaultPadding / 2),
                                       decoration: BoxDecoration(
-                                          color: Color.fromARGB(
+                                          color:const Color.fromARGB(
                                               255, 223, 223, 223),
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -91,21 +90,14 @@ class YorumlarWidget extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   commentModel.comments
-                                                                      .yorumlar[
-                                                                  index]
-                                                              ["nameSurname"] !=
-                                                          null
-                                                      ? commentModel.comments
                                                               .yorumlar[index]
-                                                          ["nameSurname"]
-                                                      : "",
-                                                  style: TextStyle(
+                                                          ["nameSurname"] ?? "",
+                                                  style: const TextStyle(
                                                       color: kTextColor,
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Expanded(child: SizedBox()),
                                                 SizedBox(
                                                   width: 120,
                                                   child: yildizlar(commentModel
@@ -130,7 +122,7 @@ class YorumlarWidget extends StatelessWidget {
                                             commentModel.comments
                                                     .yorumlar[index + baslama]
                                                 ["title"],
-                                            style: TextStyle(
+                                            style:const TextStyle(
                                                 color: kTextColor,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
@@ -144,7 +136,7 @@ class YorumlarWidget extends StatelessWidget {
                                             children: [
                                               Text(
                                                 formattedDate,
-                                                style: TextStyle(
+                                                style:const TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
@@ -153,7 +145,7 @@ class YorumlarWidget extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(
+                                 const   SizedBox(
                                       height: 10,
                                     )
                                   ],

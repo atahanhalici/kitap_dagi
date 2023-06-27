@@ -13,9 +13,11 @@ class DbServices {
   String yol = "https://kitapdagi.onrender.com";
   final GoogleSignIn googleSignIn = GoogleSignIn();
   Future<List<Book>> kitaplariGetir() async {
+    // ignore: no_leading_underscores_for_local_identifiers
     List<Book> _books = [];
-    final response = await http.get(Uri.parse(yol + "/mobile/homepage"));
+    final response = await http.get(Uri.parse("$yol/mobile/homepage"));
     List jsonResponse = json.decode(response.body);
+    // ignore: unnecessary_type_check
     if (jsonResponse is List) {
       _books = jsonResponse.map((e) => Book.fromJson(e)).toList();
     }
@@ -24,7 +26,7 @@ class DbServices {
 
   yorumlariGetir(String id) async {
     var body = {"id": id};
-    final response = await http.post(Uri.parse(yol + "/mobile/comment"),
+    final response = await http.post(Uri.parse("$yol/mobile/comment"),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
@@ -44,7 +46,7 @@ class DbServices {
       "id": bookId,
       "nameSurname": adSoyad
     };
-    await http.post(Uri.parse(yol + "/mobile/newcomment"),
+    await http.post(Uri.parse("$yol/mobile/newcomment"),
         headers: {
           // "Accept": "application/json",
           "Content-Type": "application/json"
@@ -119,7 +121,6 @@ class DbServices {
         },
         body: jsonEncode(body));
     var jsonResponse = json.decode(response.body);
-    print(jsonResponse);
     return jsonResponse;
   }
 
@@ -211,19 +212,19 @@ class DbServices {
   }
 
   twitterGiris() async {
+    // ignore: unused_local_variable
     var box = await Hive.openBox("informations");
     final twitterLogin = TwitterLoginV2(
       clientId: "REtFQnRvd1VpUzQ4SUwtU2dKUk06MTpjaQ",
       redirectURI: '$yol/auth/twitter/callback',
     );
     try {
+      // ignore: unused_local_variable
       final accessToken = await twitterLogin.loginV2();
-      print('login successed');
-      print(accessToken.toJson());
+   
       return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     } catch (e) {
-      print('login failed');
-      print(e);
+   
       return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     }
   }
@@ -235,10 +236,11 @@ class DbServices {
       );
       var jsonResponse = json.decode(response.body);
       List sa = jsonResponse["book"];
-      print(sa);
+      
       var asd = sa.map((e) => Book.fromJson(e)).toList();
       Map son = {"title": jsonResponse["title"], "book": asd};
       return son;
+    // ignore: empty_catches
     } catch (e) {}
   }
 
@@ -307,9 +309,12 @@ class DbServices {
   }
 
   gununKitabi() async {
-    var response = await http.get(Uri.parse("$yol/mobile/book-of-the-day"));
-    var jsonResponse = json.decode(response.body);
-    return Book.fromJson(jsonResponse["book"][0]);
+    try {
+      var response = await http.get(Uri.parse("$yol/mobile/book-of-the-day"));
+      var jsonResponse = json.decode(response.body);
+      return Book.fromJson(jsonResponse["book"][0]);
+    // ignore: empty_catches
+    } catch (e) {}
   }
 
   sifreGuncelle(String isim, String soyisim, String user) async {
@@ -345,6 +350,7 @@ class DbServices {
       var asd = sa.map((e) => Book.fromJson(e)).toList();
       Map son = {"title": jsonResponse["title"], "book": asd};
       return son;
+    // ignore: empty_catches
     } catch (e) {}
   }
 }

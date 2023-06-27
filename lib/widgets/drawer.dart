@@ -33,7 +33,9 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   ListTile Categories(BuildContext context, String ad, String name) {
+    // ignore: no_leading_underscores_for_local_identifiers
     CategoryViewModel _categoryModel =
         Provider.of<CategoryViewModel>(context, listen: true);
     _categoryModel.baslama = 0;

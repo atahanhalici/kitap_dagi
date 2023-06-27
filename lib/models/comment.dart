@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:kitap_dagi/models/book.dart';
-import 'package:kitap_dagi/models/yorum.dart';
+
 
 List<Comments> commentFromJson(String str) =>
     List<Comments>.from(json.decode(str).map((x) => Comments.fromJson(x)));

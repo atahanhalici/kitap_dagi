@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
@@ -42,7 +44,7 @@ class _KayitOlState extends State<KayitOl> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
               Container(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                   bottom: 36 + kDefaultPadding,
@@ -50,7 +52,7 @@ class _KayitOlState extends State<KayitOl> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -58,16 +60,16 @@ class _KayitOlState extends State<KayitOl> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: kDefaultPadding * 3,
               ),
               Container(
                 //height: 500,
                 //width: 100,
-                margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                padding: EdgeInsets.all(kDefaultPadding),
+                margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding: const EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 236, 236, 236),
+                    color: const Color.fromARGB(255, 236, 236, 236),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -106,17 +108,17 @@ class _KayitOlState extends State<KayitOl> {
                                     AutovalidateMode.onUserInteraction,
                                 cursorColor: Colors.black,
                                 maxLines: 1,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "İsim",
-                                  labelStyle:
-                                      const TextStyle(color: Colors.black),
-                                  focusedBorder: const UnderlineInputBorder(
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  focusedBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: kPrimaryColor)),
-                                  border: const UnderlineInputBorder(),
+                                  border: UnderlineInputBorder(),
                                 ),
                                 validator: (deger) {
                                   _isimController.text = deger!;
+                                  return null;
                                 },
                               ),
                             )),
@@ -132,24 +134,24 @@ class _KayitOlState extends State<KayitOl> {
                                     AutovalidateMode.onUserInteraction,
                                 cursorColor: Colors.black,
                                 maxLines: 1,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "Soyisim",
-                                  labelStyle:
-                                      const TextStyle(color: Colors.black),
-                                  focusedBorder: const UnderlineInputBorder(
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  focusedBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: kPrimaryColor)),
-                                  border: const UnderlineInputBorder(),
+                                  border: UnderlineInputBorder(),
                                 ),
                                 validator: (deger) {
                                   _soyisimController.text = deger!;
+                                  return null;
                                 },
                               ),
                             )),
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       SizedBox(
@@ -159,14 +161,14 @@ class _KayitOlState extends State<KayitOl> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           cursorColor: Colors.black,
                           maxLines: 1,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: "E-Mail",
-                            errorBorder: const UnderlineInputBorder(
+                            errorBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.red)),
-                            labelStyle: const TextStyle(color: Colors.black),
-                            focusedBorder: const UnderlineInputBorder(
+                            labelStyle: TextStyle(color: Colors.black),
+                            focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border: const UnderlineInputBorder(),
+                            border: UnderlineInputBorder(),
                           ),
                           validator: (deger) {
                             if (deger!.isEmpty) {
@@ -181,7 +183,7 @@ class _KayitOlState extends State<KayitOl> {
                           },
                         ),
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: 10,
                       ),
                       SizedBox(
@@ -235,10 +237,10 @@ class _KayitOlState extends State<KayitOl> {
                                     : const Icon(Icons.visibility_off,
                                         color: Colors.grey)),
                             labelText: "Şifrenizi Tekrar Giriniz",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: UnderlineInputBorder(
+                            labelStyle: const TextStyle(color: Colors.black),
+                            focusedBorder:const UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border: UnderlineInputBorder(),
+                            border:const UnderlineInputBorder(),
                           ),
                           validator: (deger) {
                             if (deger!.length < 4) {
@@ -252,10 +254,10 @@ class _KayitOlState extends State<KayitOl> {
                           },
                         ),
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: 15,
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: 5,
                       ),
                       TextButton(
@@ -304,7 +306,7 @@ class _KayitOlState extends State<KayitOl> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Center(
+                            child:const Center(
                                 child: Text(
                               "Kayıt Ol",
                               style: TextStyle(
@@ -315,19 +317,19 @@ class _KayitOlState extends State<KayitOl> {
                           )),
                       Visibility(
                         visible: uyari,
-                        child: Text(
+                        child:const Text(
                           "Lütfen Hiçbir Alanı Boş Geçmeyiniz!",
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
                       Visibility(
                         visible: uyusmuyor,
-                        child: Text(
+                        child:const Text(
                           "İki şifre birbiriyle uyuşmuyor!",
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
-                      SizedBox(
+                   const   SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -345,7 +347,7 @@ class _KayitOlState extends State<KayitOl> {
                           )),
                         ],
                       ),
-                      SizedBox(
+                  const   SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -380,7 +382,7 @@ class _KayitOlState extends State<KayitOl> {
                           )
                         ],
                       ),
-                      SizedBox(
+                const      SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -392,7 +394,7 @@ class _KayitOlState extends State<KayitOl> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                      builder: (context) =>const LoginPage()));
                               /* Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -400,7 +402,7 @@ class _KayitOlState extends State<KayitOl> {
                               );*/
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding:const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 "Giriş Yap",
                                 style: TextStyle(color: kPrimaryColor),
