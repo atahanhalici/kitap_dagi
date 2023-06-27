@@ -27,6 +27,8 @@ class _ProfilPageState extends State<ProfilPage> {
     String soyisim = _userModel.users.user["surname"];
     String email = "";
     Size size = MediaQuery.of(context).size;
+    print(_userModel.users.user["password"]);
+
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
@@ -46,7 +48,7 @@ class _ProfilPageState extends State<ProfilPage> {
               IconButton(onPressed: () {}, icon: Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
+        drawer: const MyDrawer(sayi:7,gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
@@ -108,33 +110,37 @@ class _ProfilPageState extends State<ProfilPage> {
                         },
                       ),
                     ),
-                    Expanded(
-                      child: GestureDetector(
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: sifreGuncelle
-                                ? Color.fromARGB(255, 250, 250, 250)
-                                : Color.fromARGB(255, 226, 226, 226),
-                            border: Border(
-                              top: BorderSide(
-                                  width: 1.0,
-                                  color: sifreGuncelle
-                                      ? kPrimaryColor
-                                      : Colors.black),
+                    Visibility(
+                      visible:
+                          _userModel.users.mailgiris == true ? true : false,
+                      child: Expanded(
+                        child: GestureDetector(
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: sifreGuncelle
+                                  ? Color.fromARGB(255, 250, 250, 250)
+                                  : Color.fromARGB(255, 226, 226, 226),
+                              border: Border(
+                                top: BorderSide(
+                                    width: 1.0,
+                                    color: sifreGuncelle
+                                        ? kPrimaryColor
+                                        : Colors.black),
+                              ),
                             ),
+                            child: const Center(
+                                child: Text(
+                              "Şifremi Güncelle",
+                              textAlign: TextAlign.center,
+                            )),
                           ),
-                          child: const Center(
-                              child: Text(
-                            "Şifremi Güncelle",
-                            textAlign: TextAlign.center,
-                          )),
+                          onTap: () {
+                            setState(() {
+                              sifreGuncelle = true;
+                            });
+                          },
                         ),
-                        onTap: () {
-                          setState(() {
-                            sifreGuncelle = true;
-                          });
-                        },
                       ),
                     ),
                   ],
@@ -145,7 +151,8 @@ class _ProfilPageState extends State<ProfilPage> {
                     horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
                 child: TextFormField(
                   //  controller: _titleController,
-                  key: Key(!sifreGuncelle ? _userModel.users.user["name"] : ""),
+                  key: Key(
+                      !sifreGuncelle ? _userModel.users.user["name"] : "eski"),
                   initialValue:
                       !sifreGuncelle ? _userModel.users.user["name"] : "",
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -160,7 +167,11 @@ class _ProfilPageState extends State<ProfilPage> {
                   ),
                   validator: (deger) {
                     if (deger!.isEmpty) {
-                      return "İsim Kısmı Boş Bırakılamaz!";
+                      if (!sifreGuncelle) {
+                        return "İsim Kısmı Boş Bırakılamaz!";
+                      } else {
+                        return "Eski Şifre Kısmı Boş Bırakılamaz!";
+                      }
                     } else {
                       isim = deger;
                     }
@@ -173,8 +184,9 @@ class _ProfilPageState extends State<ProfilPage> {
                     horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
                 child: TextFormField(
                   //  controller: _titleController,
-                  key: Key(
-                      !sifreGuncelle ? _userModel.users.user["surname"] : ""),
+                  key: Key(!sifreGuncelle
+                      ? _userModel.users.user["surname"]
+                      : "yeni"),
                   initialValue:
                       !sifreGuncelle ? _userModel.users.user["surname"] : "",
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -189,10 +201,21 @@ class _ProfilPageState extends State<ProfilPage> {
                   ),
                   validator: (deger) {
                     if (deger!.isEmpty) {
-                      return "Soyisim Kısmı Boş Bırakılamaz!";
+                      if (!sifreGuncelle) {
+                        return "Soyisim Kısmı Boş Bırakılamaz!";
+                      } else {
+                        return "Yeni Şifre Kısmı Boş Bırakılamaz!";
+                      }
                     } else {
-                      soyisim = deger;
+                      if (deger.length < 4) {
+                        return "Şifreniz en az 4 karakter uzunluğunda olmalıdır!";
+                      } else if (deger.length > 20) {
+                        return "Şifreniz en çok 20 karakter uzunluğunda olmalıdır!";
+                      } else {
+                        soyisim = deger;
+                      }
                     }
+
                     return null;
                   },
                 ),
@@ -202,8 +225,9 @@ class _ProfilPageState extends State<ProfilPage> {
                     horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
                 child: TextFormField(
                   //  controller: _titleController,
-                  key:
-                      Key(!sifreGuncelle ? _userModel.users.user["email"] : ""),
+                  key: Key(!sifreGuncelle
+                      ? _userModel.users.user["email"]
+                      : "yeniden"),
                   initialValue:
                       !sifreGuncelle ? _userModel.users.user["email"] : "",
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -219,17 +243,40 @@ class _ProfilPageState extends State<ProfilPage> {
                         borderSide: BorderSide(color: kPrimaryColor)),
                     border: const OutlineInputBorder(),
                   ),
-                  validator: (deger) {},
+                  validator: (deger) {
+                    if (deger!.isEmpty) {
+                      if (!sifreGuncelle) {
+                        return "Soyisim Kısmı Boş Bırakılamaz!";
+                      } else {
+                        return "Yeni Şifrenizi Tekrar Giriniz Kısmı Boş Bırakılamaz!";
+                      }
+                    } else {
+                      if (deger.length < 4) {
+                        return "Şifreniz en az 4 karakter uzunluğunda olmalıdır!";
+                      } else if (deger.length > 20) {
+                        return "Şifreniz en çok 20 karakter uzunluğunda olmalıdır!";
+                      } else {
+                        email = deger;
+                      }
+                    }
+
+                    return null;
+                  },
                 ),
               ),
               TextButton(
                   onPressed: () async {
                     if (sifreGuncelle == false) {
                       var sonuc = await _userModel.guncelle(
-                          isim, soyisim, _userModel.users.user["_id"]);
+                          isim, soyisim, _userModel.users.user["email"]);
                       if (context.mounted) {
                         if (sonuc["durum"] == true) {
                           // ignore: use_build_context_synchronously
+                          Navigator.popUntil(context, (route) => route.isFirst);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>  HomePage()));
                           aDialog(
                               "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                         } else {
@@ -237,6 +284,33 @@ class _ProfilPageState extends State<ProfilPage> {
                           aDialog(
                               "İşlem Başarısız", "${sonuc["mesaj"]} ", context);
                         }
+                      }
+                    } else {
+                      if (email == soyisim) {
+                        var sonuc = await _userModel.sifreGuncelle(
+                            isim, soyisim, _userModel.users.user["email"]);
+                        if (context.mounted) {
+                          if (sonuc["durum"] == true) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.popUntil(
+                                context, (route) => route.isFirst);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>  HomePage()));
+                            aDialog(
+                                "İşlem Başarılı", "${sonuc["mesaj"]}", context);
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            aDialog("İşlem Başarısız", "${sonuc["mesaj"]} ",
+                                context);
+                          }
+                        }
+                      } else {
+                        aDialog(
+                            "İşlem Başarısız",
+                            "Girmiş Olduğunuz Şifreler Uyuşmuyor! Lütfen Kontrol Ediniz.",
+                            context);
                       }
                     }
                   },
@@ -268,7 +342,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
+                                  builder: (context) =>  HomePage()));
                         }
                       }
                     }, context);

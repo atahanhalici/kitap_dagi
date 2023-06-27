@@ -20,8 +20,15 @@ import '../widgets/kitap_slider.dart';
 import 'login_page.dart';
 
 // ignore: must_be_immutable
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int a = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,9 @@ class HomePage extends StatelessWidget {
     FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
-    if (_userModel.sifreKontrol == true) {
+
+    if (_userModel.sifreKontrol == true && a == 0) {
+      a++;
       Future.delayed(Duration.zero, () {
         return showDialog<void>(
           context: context,
@@ -111,7 +120,7 @@ class HomePage extends StatelessWidget {
                 icon: Icon(Icons.person))
           ]),
       drawerEnableOpenDragGesture: true,
-      drawer: const MyDrawer(),
+      drawer: const MyDrawer(sayi:5,gidilecek: ""),
       body: _mainModel.state == ViewState.geliyor
           ? const Center(
               child: CircularProgressIndicator(),
@@ -122,7 +131,7 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const MyAppBar(),
+                        const MyAppBar(sayfa:1),
                         slider(size, context),
                         KitapSlider(
                           size: size,
@@ -132,16 +141,7 @@ class HomePage extends StatelessWidget {
                         ),
                         //buildBook(size, "Sizin İçin Seçtiklerimiz",
                         //  _mainModel.asd, 0),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: kDefaultPadding / 2),
-                          child: SizedBox(
-                            width: size.width / 1.5,
-                            child: Divider(
-                              thickness: 2,
-                            ),
-                          ),
-                        ),
+
                         KitapSlider(
                           size: size,
                           asd: _mainModel.coksatan,
@@ -151,16 +151,7 @@ class HomePage extends StatelessWidget {
 
                         //  buildBook(
                         //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: kDefaultPadding / 2),
-                          child: SizedBox(
-                            width: size.width / 1.5,
-                            child: Divider(
-                              thickness: 2,
-                            ),
-                          ),
-                        ),
+
                         KitapSlider(
                           size: size,
                           asd: _mainModel.yenicikan,
@@ -182,138 +173,14 @@ class HomePage extends StatelessWidget {
                 ),
     );
   }
-
-/*  Widget firsatlar(Size size, String resim) {
-    if (size.width < size.height) {
-      return Container(
-        height: size.height / 4,
-        margin: EdgeInsets.only(
-            bottom: kDefaultPadding,
-            right: kDefaultPadding,
-            left: kDefaultPadding),
-        decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-            ],
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                resim,
-              ),
-            )),
-      );
-    } else {
-      return Container(
-        height: size.width / 4,
-        margin: EdgeInsets.all(kDefaultPadding),
-        decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-            ],
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                resim,
-              ),
-            )),
-      );
-    }
-  }
-*/
-  /* Widget buildBook(Size size, String baslik, List<Book> asd) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            baslik,
-            style: const TextStyle(color: kPrimaryColor, fontSize: 15),
-          ),
-          const SizedBox(
-            width: 150,
-            child: Divider(
-              color: kPrimaryColor,
-              thickness: 2,
-            ),
-          ),
-          SizedBox(
-            height: 270,
-            child: ListView.builder(
-                itemCount: 7,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BookDetails(
-                                  book: asd[index + baslama],
-                                )),
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 130,
-                          height: 300,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Image.network(
-                                asd[index + baslama].bookImage,
-                                // "assets/harry.jpg",
-                                //height: 190,
-                                width: 130,
-                                height: 200,
-                                fit: BoxFit.contain,
-                              ),
-                              Text(
-                                asd[index + baslama].title,
-                                style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14),
-                              ),
-                              Text(
-                                asd[index + baslama].author,
-                                style: const TextStyle(
-                                    color: kPrimaryColor, fontSize: 13),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          width: kDefaultPadding / 2,
-                        )
-                      ],
-                    ),
-                  );
-                }),
-          ),
-        ],
-      ),
-    );
-  }
-*/
 }
 
 slider(Size size, BuildContext context) {
   CategoryViewModel _categoryModel =
       Provider.of<CategoryViewModel>(context, listen: true);
+  MainViewModel _mainModel = Provider.of<MainViewModel>(context, listen: true);
+  CommentViewModel _commentModel =
+      Provider.of<CommentViewModel>(context, listen: true);
   return CarouselSlider(
     options: CarouselOptions(
         viewportFraction: 1,
@@ -339,6 +206,16 @@ slider(Size size, BuildContext context) {
                           title: imgAsset == "assets/superindirimler.png"
                               ? "Süper İndirimler"
                               : "Çok Satanlar")),
+                );
+              } else if (imgAsset == "assets/gununkitabi.png") {
+                _mainModel.kitaplariGetir();
+                _commentModel.yorumlariGetir(_mainModel.gununkitabi.id);
+                _commentModel.yildizPuanla(0);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BookDetails(book: _mainModel.gununkitabi)),
                 );
               }
             },

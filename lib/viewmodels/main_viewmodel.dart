@@ -14,6 +14,21 @@ class MainViewModel with ChangeNotifier {
   List<Book> sizinicin = [];
   List<Book> coksatan = [];
   List<Book> yenicikan = [];
+  Book gununkitabi = Book(
+      id: "id",
+      buyLinks: [],
+      author: "author",
+      bookImage: "bookImage",
+      bookImageWidth: "bookImageWidth",
+      bookImageHeight: "bookImageHeight",
+      description: "description",
+      price: "price",
+      publisher: "publisher",
+      title: "title",
+      rating: "rating",
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
+      v: 0);
   int a = 0;
   set state(ViewState value) {
     _state = value;
@@ -21,6 +36,8 @@ class MainViewModel with ChangeNotifier {
   }
 
   Future<List<Book>> kitaplariGetir() async {
+    gununkitabi = await _repository.gununKitabi();
+    notifyListeners();
     if (a == 0) {
       a++;
       await Future.delayed(const Duration(milliseconds: 100));
@@ -44,5 +61,4 @@ class MainViewModel with ChangeNotifier {
     }
     return asd;
   }
-
 }

@@ -34,7 +34,7 @@ class _KayitOlState extends State<KayitOl> {
           elevation: 0,
         ),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
+        drawer: const MyDrawer(sayi: 8,gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(

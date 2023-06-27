@@ -76,13 +76,13 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                   icon: Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
+        drawer: const MyDrawer(sayi:2,gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-              const MyAppBar(),
+              const MyAppBar(sayfa: 0,),
               size.width < size.height
                   ? Padding(
                       padding: const EdgeInsets.symmetric(

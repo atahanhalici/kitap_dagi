@@ -27,8 +27,6 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
           centerTitle: true,
           elevation: 0,
         ),
-        drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
@@ -175,7 +173,8 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
               ),
             ]))));
   }
-    alertDialog(String baslik, String icerik, void Function() fonksiyon,
+
+  alertDialog(String baslik, String icerik, void Function() fonksiyon,
       BuildContext context) {
     return showDialog<void>(
       context: context,

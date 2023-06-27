@@ -15,7 +15,11 @@ class UserViewModel with ChangeNotifier {
   bool girisState = false;
   bool sifreKontrol = false;
   int a = 0;
-  Users users = Users(mesaj: "", user: {}, durum: false);
+  Users users = Users(
+      mesaj: "",
+      user: {"name": "", "surname": "", "email": ""},
+      durum: false,
+      mailgiris: false);
   set statee(ViewStatee value) {
     _statee = value;
     notifyListeners();
@@ -51,16 +55,19 @@ class UserViewModel with ChangeNotifier {
     if (a == 0) {
       a++;
       try {
+        var box = await Hive.openBox("informations");
         users = await _repository.beniHatirlaKontrol();
         String sifre = await _repository.userKontrol(users);
-        if (sifre == users.user["password"]) {
-        } else {
-          users = Users(mesaj: "", user: {}, durum: false);
-          var box = await Hive.openBox("informations");
-          box.clear();
-          sifreKontrol = true;
-          await Future.delayed(const Duration(seconds: 5));
-          sifreKontrol = false;
+        if (box.get("mailgiris") == true) {
+          if (sifre == users.user["password"]) {
+          } else {
+            users = Users(mesaj: "", user: {}, durum: false, mailgiris: false);
+
+            box.clear();
+            sifreKontrol = true;
+            await Future.delayed(const Duration(seconds: 5));
+            sifreKontrol = false;
+          }
         }
       } catch (e) {
         return users;
@@ -76,7 +83,11 @@ class UserViewModel with ChangeNotifier {
   Future<bool> cikisYap() async {
     bool sonuc = await _repository.cikisYap();
     if (sonuc == true) {
-      users = Users(mesaj: "", user: {}, durum: false);
+      users = Users(
+          mesaj: "",
+          user: {"name": "", "surname": "", "email": ""},
+          durum: false,
+          mailgiris: false);
       return true;
     } else {
       return false;
@@ -105,6 +116,25 @@ class UserViewModel with ChangeNotifier {
       if (sonuc["durum"] == true) {
         users.user["name"] = text;
         users.user["surname"] = text2;
+        var box = await Hive.openBox("informations");
+        if (box.get("user") != null) {
+          await box.put("user", users.user);
+        }
+      }
+      statee = ViewStatee.geldi;
+      return sonuc;
+    } catch (e) {
+      statee = ViewStatee.hata;
+      return users;
+    }
+  }
+
+  sifreGuncelle(String isim, String soyisim, String user) async {
+    try {
+      var sonuc = await _repository.sifreGuncelle(isim, soyisim, user);
+
+      if (sonuc["durum"] == true) {
+        users.user["password"] = sonuc["password"];
         var box = await Hive.openBox("informations");
         if (box.get("user") != null) {
           await box.put("user", users.user);

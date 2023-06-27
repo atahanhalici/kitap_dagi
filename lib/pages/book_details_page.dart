@@ -77,149 +77,127 @@ class _BookDetailsState extends State<BookDetails> {
                 icon: Icon(Icons.person))
           ]),
       drawerEnableOpenDragGesture: true,
-      drawer: const MyDrawer(),
+      drawer: const MyDrawer(sayi: 0, gidilecek: "",),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const MyAppBar(),
-            size.width < size.height
-                ? Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: SizedBox(
-                            width: size.width / 1.5,
-                            height: size.height / 2,
-                            child: Image.network(widget.book.bookImage),
-                          ),
+            const MyAppBar(sayfa: 0,),
+            _mainModel.state == ViewState.geldi
+                ? kitap()
+                : Center(
+                    child: CircularProgressIndicator(),
+                  )
+          ],
+        ),
+      )),
+    );
+  }
+
+  Widget kitap() {
+    CommentViewModel _commentModel =
+        Provider.of<CommentViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
+    MainViewModel _mainModel =
+        Provider.of<MainViewModel>(context, listen: true);
+    FavoritesViewModel _favModel =
+        Provider.of<FavoritesViewModel>(context, listen: true);
+    Size size = MediaQuery.of(context).size;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        size.width < size.height
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: size.width / 1.5,
+                        height: size.height / 2,
+                        child: Image.network(
+                          widget.book.bookImage,
+                          fit: BoxFit.contain,
                         ),
-                        const SizedBox(
-                          height: kDefaultPadding,
-                        ),
-                        bilgiler(_commentModel),
-                      ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: kDefaultPadding,
+                    ),
+                    bilgiler(_commentModel),
+                  ],
+                ),
+              )
+            : Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.only(
+                          left: kDefaultPadding, right: kDefaultPadding / 2),
+                      child: SizedBox(
+                          width: (size.height / 1.5) - 10,
+                          height: (size.width / 2) - 10,
+                          child: Image.network(
+                            widget.book.bookImage,
+                            fit: BoxFit.contain,
+                          ))),
+                  Padding(
+                    padding: const EdgeInsets.only(right: kDefaultPadding),
+                    child: SizedBox(
+                      width: size.width -
+                          (2 * kDefaultPadding) -
+                          (size.height / 1.5),
+                      child: bilgiler(_commentModel),
                     ),
                   )
-                : Row(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.only(
-                              left: kDefaultPadding,
-                              right: kDefaultPadding / 2),
-                          child: SizedBox(
-                              width: (size.height / 1.5) - 10,
-                              height: (size.width / 2) - 10,
-                              child: Image.network(widget.book.bookImage))),
-                      Padding(
-                        padding: const EdgeInsets.only(right: kDefaultPadding),
-                        child: SizedBox(
-                          width: size.width -
-                              (2 * kDefaultPadding) -
-                              (size.height / 1.5),
-                          child: bilgiler(_commentModel),
-                        ),
-                      )
-                    ],
-                  ),
-            const SizedBox(
-              height: kDefaultPadding,
-            ),
-            _commentModel.state == ViewStates.geldi
-                ? KitapSlider(
-                    size: size,
-                    asd: _commentModel.onerilenKitap,
-                    baslik: "Öneriler",
-                    cizgiUzunluk: 75,
-                  )
-                : CircularProgressIndicator(),
-            const SizedBox(
-              height: kDefaultPadding,
-            ),
-            _commentModel.state == ViewStates.geldi
-                ? _commentModel.comments.yorumSayisi > 0
-                    ? yorumlar(size, _commentModel)
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding),
-                            child: Text(
-                              "Yorumlar",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding),
-                            child: SizedBox(
-                              width: 65,
-                              child: Divider(
-                                color: kPrimaryColor,
-                                thickness: 2,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding),
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 214, 214, 214),
-                                borderRadius: BorderRadius.circular(10)),
-                            height: size.height / 4,
-                            child: Center(
-                              child: Text(
-                                "Bu Kitap İçin Herhangi Bir Yorum Bulunmamaktadır!",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                : Container(),
-            const SizedBox(
-              height: kDefaultPadding,
-            ),
-            _userModel.users.durum == true
-                ? yorumyap(size, _commentModel, widget.book, _userModel)
+                ],
+              ),
+        const SizedBox(
+          height: kDefaultPadding,
+        ),
+        _commentModel.state == ViewStates.geldi
+            ? KitapSlider(
+                size: size,
+                asd: _commentModel.onerilenKitap,
+                baslik: "Öneriler",
+                cizgiUzunluk: 75,
+              )
+            : CircularProgressIndicator(),
+        const SizedBox(
+          height: kDefaultPadding,
+        ),
+        _commentModel.state == ViewStates.geldi
+            ? _commentModel.comments.yorumSayisi > 0
+                ? yorumlar(size, _commentModel)
                 : Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding),
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         child: Text(
-                          "Yorum Yap",
+                          "Yorumlar",
                           style: TextStyle(
                               color: kPrimaryColor,
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding),
-                        child: const SizedBox(
-                          width: 75,
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                        child: SizedBox(
+                          width: 65,
                           child: Divider(
                             color: kPrimaryColor,
                             thickness: 2,
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
@@ -231,19 +209,67 @@ class _BookDetailsState extends State<BookDetails> {
                         height: size.height / 4,
                         child: Center(
                           child: Text(
-                            "Yorum Yapabilmek İçin Oturum Açmanız Gerekmektedir!",
+                            "Bu Kitap İçin Herhangi Bir Yorum Bulunmamaktadır!",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
                     ],
-                  ),
-            const SizedBox(
-              height: kDefaultPadding,
-            ),
-          ],
+                  )
+            : Container(),
+        const SizedBox(
+          height: kDefaultPadding,
         ),
-      )),
+        _userModel.users.durum == true
+            ? yorumyap(size, _commentModel, widget.book, _userModel)
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: Text(
+                      "Yorum Yap",
+                      style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: const SizedBox(
+                      width: 75,
+                      child: Divider(
+                        color: kPrimaryColor,
+                        thickness: 2,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 214, 214, 214),
+                        borderRadius: BorderRadius.circular(10)),
+                    height: size.height / 4,
+                    child: Center(
+                      child: Text(
+                        "Yorum Yapabilmek İçin Oturum Açmanız Gerekmektedir!",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        const SizedBox(
+          height: kDefaultPadding,
+        ),
+      ],
     );
   }
 

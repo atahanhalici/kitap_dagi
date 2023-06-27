@@ -2,31 +2,33 @@ class Users {
   final bool durum;
   final String mesaj;
   final Map user;
+  final bool mailgiris;
 
   Users({
     required this.mesaj,
     required this.user,
     required this.durum,
+    required this.mailgiris,
   });
   factory Users.fromJson(Map<String, dynamic> json) => Users(
         durum: json["durum"],
         mesaj: json["mesaj"],
+        mailgiris: json["mailgiris"],
         user: json["user"]["user"],
       );
-  Map<String, dynamic> toJson() => {
-        "durum": durum,
-        "mesaj": mesaj,
-        "user": user,
-      };
+  Map<String, dynamic> toJson() =>
+      {"durum": durum, "mesaj": mesaj, "user": user, "mailgiris": mailgiris};
   Users.fromMap(Map<String, dynamic> map)
       : durum = map["durum"],
         mesaj = map["mesaj"],
-        user = map["user"]["user"];
+        user = map["user"]["user"],
+        mailgiris = map["mailgiris"];
   Map<String, dynamic> toMap() {
     return {
       "durum": durum,
       "mesaj": mesaj,
       "user": user,
+      "mailgiris": mailgiris
     };
   }
 }

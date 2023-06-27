@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/category_page.dart';
+import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class MyAppBar extends StatelessWidget {
-  const MyAppBar({Key? key}) : super(key: key);
+  final int sayfa;
+  const MyAppBar({Key? key, required this.sayfa}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    TextEditingController _controller = TextEditingController();
     return Container(
       margin: EdgeInsets.only(bottom: kDefaultPadding * 2.5),
       // It will cover 20% of our total height
@@ -54,7 +59,11 @@ class MyAppBar extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      onChanged: (value) {},
+                      textInputAction: TextInputAction.search,
+                      controller: _controller,
+                      onSubmitted: (value) {
+                        aramaMetodu(context, value, _controller);
+                      },
                       decoration: InputDecoration(
                         hintText: "Search",
                         hintStyle: TextStyle(
@@ -64,7 +73,12 @@ class MyAppBar extends StatelessWidget {
                         focusedBorder: InputBorder.none,
                         // surffix isn't working properly  with SVG
                         // thats why we use row
-                        // suffixIcon: SvgPicture.asset("assets/icons/search.svg"),
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              aramaMetodu(
+                                  context, _controller.text, _controller);
+                            },
+                            child: Icon(Icons.search)),
                       ),
                     ),
                   ),
@@ -75,5 +89,70 @@ class MyAppBar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  aramaMetodu(
+      BuildContext context, String isim, TextEditingController controller) {
+    if (isim.isNotEmpty) {
+      CategoryViewModel _categoryModel =
+          Provider.of<CategoryViewModel>(context, listen: false);
+      _categoryModel.baslama = 0;
+      _categoryModel.aramaKitapGetir(isim);
+      if (sayfa == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CategoryPage(title: isim.toUpperCase())),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CategoryPage(title: isim.toUpperCase())),
+        );
+      }
+
+      controller.clear();
+    } else {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: true, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Arama Kutusu Boş",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text(
+                    "Kutucuk Boş Bırakılamaz! Lütfen Aramak İstediğiniz İçeriğin Adını Giriniz.",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  "Tamam",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }

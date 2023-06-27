@@ -41,13 +41,13 @@ class FavoritesPage extends StatelessWidget {
                   icon: const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
+        drawer: const MyDrawer(sayi:3,gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-              const MyAppBar(),
+              const MyAppBar(sayfa: 0,),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: Text(

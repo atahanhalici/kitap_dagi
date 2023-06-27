@@ -5,7 +5,10 @@ import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  final int sayi;
+  final String gidilecek;
+  const MyDrawer({Key? key, required this.sayi, required this.gidilecek})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class MyDrawer extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: kPrimaryColor,
               ),
-              child: Image.asset("assets/logopng.png")),
+              child: Image.asset("assets/logopng2.png")),
           Categories(context, 'Edebiyat', "edebiyat"),
           Categories(context, 'Bilim Kurgu', "bilim-kurgu"),
           Categories(context, 'Çocuk', "cocuk"),
@@ -37,12 +40,33 @@ class MyDrawer extends StatelessWidget {
     return ListTile(
       title: Text(ad),
       onTap: () async {
-        _categoryModel.kategoriKitapGetir(name);
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CategoryPage(title: ad)),
-        );
+        if (gidilecek == ad) {
+          Navigator.pop(context);
+        } else {
+          if (sayi == 5) {
+            _categoryModel.kategoriKitapGetir(name);
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CategoryPage(title: ad)),
+            );
+          } else if (sayi == 0 ||
+              sayi == 1 ||
+              sayi == 2 ||
+              sayi == 3 ||
+              sayi == 6 ||
+              sayi == 7 ||
+              sayi == 8) {
+            _categoryModel.kategoriKitapGetir(name);
+            Navigator.pop(context);
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CategoryPage(title: ad)));
+          }
+        }
+
         // Update the state of the app
         // ...
         // Then close the drawer

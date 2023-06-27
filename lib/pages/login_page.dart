@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
           elevation: 0,
         ),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
+        drawer: const MyDrawer(sayi:6,gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
@@ -230,6 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                                     await box.put(
                                         "durum", _userModel.users.durum);
                                     await box.put("mesaj", "");
+                                    await box.put("mailgiris", true);
                                   }
                                   if (context.mounted) {
                                     Navigator.popUntil(
@@ -310,8 +311,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomePage()));
+                                          builder: (context) => HomePage()));
                                 }
                               }
                             },
@@ -346,8 +346,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomePage()));
+                                          builder: (context) => HomePage()));
                                 }
                               }
                             },

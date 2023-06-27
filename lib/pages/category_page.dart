@@ -26,6 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
+
     CategoryViewModel _categoryModel =
         Provider.of<CategoryViewModel>(context, listen: true);
     FavoritesViewModel _favModel =
@@ -66,19 +67,19 @@ class _CategoryPageState extends State<CategoryPage> {
                   icon: Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(),
+        drawer: MyDrawer(sayi: 1, gidilecek: widget.title),
         body: SafeArea(
             child: SingleChildScrollView(
                 controller: _scrollController,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const MyAppBar(),
+                      const MyAppBar(sayfa: 0),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: kDefaultPadding),
                         child: Text(
-                          this.widget.title,
+                          widget.title,
                           style: const TextStyle(
                               color: kPrimaryColor,
                               fontSize: 20,
@@ -89,7 +90,6 @@ class _CategoryPageState extends State<CategoryPage> {
                         padding:
                             EdgeInsets.symmetric(horizontal: kDefaultPadding),
                         child: SizedBox(
-                          width: 100,
                           child: Divider(
                             color: kPrimaryColor,
                             thickness: 2,
@@ -100,7 +100,25 @@ class _CategoryPageState extends State<CategoryPage> {
                         height: kDefaultPadding,
                       ),
                       _categoryModel.state == ViewStatees.geldi
-                          ? Kitaplar(context)
+                          ? _categoryModel.kitaplar.isEmpty
+                              ? Container(
+                                  height: 100,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: kDefaultPadding,
+                                      vertical: 20),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: const Color.fromARGB(
+                                          255, 207, 207, 207)),
+                                  child: Center(
+                                    child: Text(
+                                      "Aradığınız İsimde Kitap Bulunamadı",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                )
+                              : Kitaplar(context)
                           : Center(child: CircularProgressIndicator()),
                     ]))));
   }
@@ -122,10 +140,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       ? 20
                       : _categoryModel.kitaplar.length - _categoryModel.baslama,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 270,
+                  maxCrossAxisExtent: 260,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 20,
-                  mainAxisExtent: 290),
+                  mainAxisExtent: 295),
               itemBuilder: (context, index) {
                 return GestureDetector(
                     onTap: () {
@@ -142,6 +160,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       );
                     },
                     child: Container(
+                      // height: 295,
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 207, 207, 207),
@@ -152,6 +171,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Image.network(
                                 _categoryModel

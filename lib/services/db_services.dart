@@ -71,7 +71,6 @@ class DbServices {
         },
         body: jsonEncode(bilgiler));
     var jsonResponse = json.decode(response.body);
-
     Users users = Users.fromJson(jsonResponse);
     return users;
   }
@@ -82,7 +81,12 @@ class DbServices {
     box.get("durum") == null ? durum = false : durum = box.get("durum");
     Map user = {};
     box.get("user") == null ? user = {} : user = box.get("user");
-    Users users = Users(mesaj: "", user: user, durum: durum);
+    bool mailgiris = false;
+    box.get("mailgiris") == null
+        ? mailgiris = false
+        : mailgiris = box.get("mailgiris");
+    Users users =
+        Users(mesaj: "", user: user, durum: durum, mailgiris: mailgiris);
     return users;
   }
 
@@ -130,7 +134,6 @@ class DbServices {
         },
         body: jsonEncode(body));
     var jsonResponse = json.decode(response.body);
-    print(jsonResponse);
     return jsonResponse;
   }
 
@@ -139,47 +142,71 @@ class DbServices {
       var box = await Hive.openBox("informations");
 
       final GoogleSignInAccount? account = await googleSignIn.signIn();
-      List isim = account!.displayName!.split(" ");
-      String ad = "";
-      String soyad = "";
-      if (isim.length > 2) {
-        for (int i = 0; i < isim.length; i++) {
-          ad += " ${isim[i]}";
-        }
-        soyad = isim.last;
-      } else {
-        ad = isim[0];
-        soyad = isim[1];
-      }
-      Users user = Users(
-          mesaj: "",
-          user: {
-            "name": ad,
-            "email": account.email,
-            "password": account.id,
-            "surname": soyad
-          },
-          durum: true);
-      await box.put("user", user.user);
-      await box.put("durum", user.durum);
-      await box.put("password", account.id);
-      await box.put("mesaj", "");
-      await http.post(Uri.parse("$yol/mobile/auth/google"),
+      Map<String, String> body = {
+        "email": account!.email,
+      };
+      var response = await http.post(
+          Uri.parse("$yol/mobile/auth/getGoogleInfo"),
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
           },
-          body: jsonEncode({
-            "name": ad,
-            "email": account.email,
-            "password": account.id,
-            "surname": soyad
-          }));
+          body: jsonEncode(body));
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse["durum"] == true) {
+        Users user = Users.fromJson(jsonResponse);
+        await box.put("user", user.user);
+        await box.put("durum", user.durum);
+        await box.put("password", account.id);
+        await box.put("mesaj", "");
+        await box.put("mailgiris", false);
+        googleSignIn.signOut();
+        return user;
+      } else {
+        List isim = account.displayName!.split(" ");
+        String ad = "";
+        String soyad = "";
+        if (isim.length > 2) {
+          for (int i = 0; i < isim.length; i++) {
+            ad += " ${isim[i]}";
+          }
+          soyad = isim.last;
+        } else {
+          ad = isim[0];
+          soyad = isim[1];
+        }
+        Users user = Users(
+            mesaj: "",
+            user: {
+              "name": ad,
+              "email": account.email,
+              "password": account.id,
+              "surname": soyad
+            },
+            durum: true,
+            mailgiris: false);
+        await box.put("user", user.user);
+        await box.put("durum", user.durum);
+        await box.put("password", account.id);
+        await box.put("mesaj", "");
+        await box.put("mailgiris", false);
+        await http.post(Uri.parse("$yol/mobile/auth/google"),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: jsonEncode({
+              "name": ad,
+              "email": account.email,
+              "password": account.id,
+              "surname": soyad
+            }));
 
-      googleSignIn.signOut();
-      return user;
+        googleSignIn.signOut();
+        return user;
+      }
     } catch (e) {
-      return Users(mesaj: "", user: {}, durum: false);
+      return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     }
   }
 
@@ -193,11 +220,11 @@ class DbServices {
       final accessToken = await twitterLogin.loginV2();
       print('login successed');
       print(accessToken.toJson());
-      return Users(mesaj: "", user: {}, durum: false);
+      return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     } catch (e) {
       print('login failed');
       print(e);
-      return Users(mesaj: "", user: {}, durum: false);
+      return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     }
   }
 
@@ -263,7 +290,7 @@ class DbServices {
   }
 
   guncelle(String text, String text2, String user) async {
-    Map<String, String> body = {"id": user, "name": text, "surname": text2};
+    Map<String, String> body = {"email": user, "name": text, "surname": text2};
 
     try {
       var response = await http.post(Uri.parse("$yol/mobile/auth/profile"),
@@ -277,5 +304,47 @@ class DbServices {
     } catch (e) {
       return {"durum": false, "mesaj": "HATA"};
     }
+  }
+
+  gununKitabi() async {
+    var response = await http.get(Uri.parse("$yol/mobile/book-of-the-day"));
+    var jsonResponse = json.decode(response.body);
+    return Book.fromJson(jsonResponse["book"][0]);
+  }
+
+  sifreGuncelle(String isim, String soyisim, String user) async {
+    Map<String, String> body = {
+      "email": user,
+      "oldpass": isim,
+      "newpass": soyisim
+    };
+
+    try {
+      var response = await http.post(
+          Uri.parse("$yol/mobile/auth/updatePassword"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: jsonEncode(body));
+      var jsonResponse = json.decode(response.body);
+
+      return jsonResponse;
+    } catch (e) {
+      return {"durum": false, "mesaj": "HATA", "password": ""};
+    }
+  }
+
+  aramaKitapGetir(String isim) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$yol/mobile/search/$isim"),
+      );
+      var jsonResponse = json.decode(response.body);
+      List sa = jsonResponse["book"];
+      var asd = sa.map((e) => Book.fromJson(e)).toList();
+      Map son = {"title": jsonResponse["title"], "book": asd};
+      return son;
+    } catch (e) {}
   }
 }

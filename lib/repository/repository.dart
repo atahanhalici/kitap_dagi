@@ -72,4 +72,16 @@ class Repository {
   guncelle(String text, String text2, String user) async{
      return await _databaseService.guncelle(text,text2,user);
   }
+
+  gununKitabi() async{
+return await _databaseService.gununKitabi();
+  }
+
+  sifreGuncelle(String isim, String soyisim, String user) async{
+     return await _databaseService.sifreGuncelle(isim,soyisim,user);
+  }
+
+  aramaKitapGetir(String isim) async{
+     return await _databaseService.aramaKitapGetir(isim);
+  }
 }

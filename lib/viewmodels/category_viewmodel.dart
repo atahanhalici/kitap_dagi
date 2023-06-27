@@ -31,4 +31,18 @@ class CategoryViewModel with ChangeNotifier {
       state = ViewStatees.hata;
     }
   }
+
+  aramaKitapGetir(String isim) async {
+    state = ViewStatees.geliyor;
+    kitaplar.clear();
+    try {
+      var sonuc = await _repository.aramaKitapGetir(isim);
+      title = sonuc["title"];
+      kitaplar = sonuc["book"];
+
+      state = ViewStatees.geldi;
+    } catch (e) {
+      state = ViewStatees.hata;
+    }
+  }
 }
