@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
           elevation: 0,
         ),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi:6,gidilecek: ""),
+        drawer: const MyDrawer(sayi: 6, gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: kDefaultPadding,
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 70,
                         child: TextFormField(
                           //  controller: _titleController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 10,
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 70,
                         child: TextFormField(
                           //  controller: _titleController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -183,11 +183,14 @@ class _LoginPageState extends State<LoginPage> {
                                 isChecked = !isChecked;
                               });
                             },
-                            child: const Text(
-                              'Beni Hatırla',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 68, 68, 68),
-                                fontSize: 15,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: const Text(
+                                'Beni Hatırla',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 68, 68, 68),
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
                           ),
@@ -200,11 +203,14 @@ class _LoginPageState extends State<LoginPage> {
                                       builder: (context) =>
                                           ForgotMyPassword()));
                             },
-                            child: Text(
-                              "Şifremi Unuttum",
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 15,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                "Şifremi Unuttum",
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
                           )
@@ -327,18 +333,26 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(
                             width: 20,
                           ),
-                          const CircleAvatar(
-                            radius: 17,
-                            backgroundImage: AssetImage("assets/face_logo.png"),
-                            backgroundColor: Color.fromARGB(255, 236, 236, 236),
-                            //child: Image.asset("assets/google_logo.png"),
+                          GestureDetector(
+                            onTap: () {
+                              alertDialog("Şu Anda Aktif Değil",
+                                  "Facebook ile oturum açma hizmetimiz şu anda maalesef aktif değil. Entegre edebilmek için çalışmaktayız.");
+                            },
+                            child: const CircleAvatar(
+                              radius: 17,
+                              backgroundImage:
+                                  AssetImage("assets/face_logo.png"),
+                              backgroundColor:
+                                  Color.fromARGB(255, 236, 236, 236),
+                              //child: Image.asset("assets/google_logo.png"),
+                            ),
                           ),
                           const SizedBox(
                             width: 20,
                           ),
                           GestureDetector(
                             onTap: () async {
-                              bool deger = await _userModel.twitterGiris();
+                              /*bool deger = await _userModel.twitterGiris();
                               if (context.mounted) {
                                 if (deger == true) {
                                   Navigator.popUntil(
@@ -348,7 +362,9 @@ class _LoginPageState extends State<LoginPage> {
                                       MaterialPageRoute(
                                           builder: (context) => HomePage()));
                                 }
-                              }
+                              }*/
+                              alertDialog("Şu Anda Aktif Değil",
+                                  "Twitter ile oturum açma hizmetimiz şu anda maalesef aktif değil. Entegre edebilmek için çalışmaktayız.");
                             },
                             child: const CircleAvatar(
                               radius: 17,
@@ -375,9 +391,12 @@ class _LoginPageState extends State<LoginPage> {
                                   MaterialPageRoute(
                                       builder: (context) => KayitOl()));
                             },
-                            child: const Text(
-                              "Kayıt Ol",
-                              style: TextStyle(color: kPrimaryColor),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: const Text(
+                                "Kayıt Ol",
+                                style: TextStyle(color: kPrimaryColor),
+                              ),
                             ),
                           )
                         ],

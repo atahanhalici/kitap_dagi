@@ -17,6 +17,9 @@ class ProfilPage extends StatefulWidget {
 
 class _ProfilPageState extends State<ProfilPage> {
   bool sifreGuncelle = false;
+  bool _gizli = true;
+  bool _gizli1 = true;
+  bool _gizli2 = true;
   @override
   Widget build(BuildContext context) {
     UserViewModel _userModel =
@@ -48,7 +51,7 @@ class _ProfilPageState extends State<ProfilPage> {
               IconButton(onPressed: () {}, icon: Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi:7,gidilecek: ""),
+        drawer: const MyDrawer(sayi: 7, gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
@@ -158,7 +161,21 @@ class _ProfilPageState extends State<ProfilPage> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   cursorColor: Colors.black,
                   maxLines: 1,
+                  obscureText: sifreGuncelle ? _gizli : false,
                   decoration: InputDecoration(
+                    suffixIcon: sifreGuncelle
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _gizli = !_gizli;
+                              });
+                            },
+                            icon: _gizli
+                                ? const Icon(Icons.visibility,
+                                    color: Colors.grey)
+                                : const Icon(Icons.visibility_off,
+                                    color: Colors.grey))
+                        : null,
                     labelText: !sifreGuncelle ? "İsim" : "Eski Şifre",
                     labelStyle: const TextStyle(color: Colors.black),
                     focusedBorder: const OutlineInputBorder(
@@ -192,7 +209,21 @@ class _ProfilPageState extends State<ProfilPage> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   cursorColor: Colors.black,
                   maxLines: 1,
+                  obscureText: sifreGuncelle ? _gizli1 : false,
                   decoration: InputDecoration(
+                    suffixIcon: sifreGuncelle
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _gizli1 = !_gizli1;
+                              });
+                            },
+                            icon: _gizli1
+                                ? const Icon(Icons.visibility,
+                                    color: Colors.grey)
+                                : const Icon(Icons.visibility_off,
+                                    color: Colors.grey))
+                        : null,
                     labelText: !sifreGuncelle ? "Soyisim" : "Yeni Şifre",
                     labelStyle: const TextStyle(color: Colors.black),
                     focusedBorder: const OutlineInputBorder(
@@ -234,7 +265,21 @@ class _ProfilPageState extends State<ProfilPage> {
                   readOnly: !sifreGuncelle,
                   cursorColor: Colors.black,
                   maxLines: 1,
+                  obscureText: sifreGuncelle ? _gizli2 : false,
                   decoration: InputDecoration(
+                    suffixIcon: sifreGuncelle
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _gizli2 = !_gizli2;
+                              });
+                            },
+                            icon: _gizli2
+                                ? const Icon(Icons.visibility,
+                                    color: Colors.grey)
+                                : const Icon(Icons.visibility_off,
+                                    color: Colors.grey))
+                        : null,
                     labelText: !sifreGuncelle
                         ? "E-Mail"
                         : "Yeni Şifrenizi Tekrar Giriniz",
@@ -276,7 +321,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>  HomePage()));
+                                  builder: (context) => HomePage()));
                           aDialog(
                               "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                         } else {
@@ -297,7 +342,7 @@ class _ProfilPageState extends State<ProfilPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>  HomePage()));
+                                    builder: (context) => HomePage()));
                             aDialog(
                                 "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                           } else {
@@ -342,7 +387,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>  HomePage()));
+                                  builder: (context) => HomePage()));
                         }
                       }
                     }, context);

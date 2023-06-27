@@ -15,6 +15,7 @@ class KayitOl extends StatefulWidget {
 
 class _KayitOlState extends State<KayitOl> {
   bool uyari = false;
+  bool _gizli = true;
   bool uyusmuyor = false;
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class _KayitOlState extends State<KayitOl> {
           elevation: 0,
         ),
         drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi: 8,gidilecek: ""),
+        drawer: const MyDrawer(sayi: 8, gidilecek: ""),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
@@ -98,7 +99,7 @@ class _KayitOlState extends State<KayitOl> {
                           children: [
                             Expanded(
                                 child: SizedBox(
-                              height: 50,
+                              height: 70,
                               child: TextFormField(
                                 //  controller: _titleController,
                                 autovalidateMode:
@@ -124,7 +125,7 @@ class _KayitOlState extends State<KayitOl> {
                             ),
                             Expanded(
                                 child: SizedBox(
-                              height: 50,
+                              height: 70,
                               child: TextFormField(
                                 //  controller: _titleController,
                                 autovalidateMode:
@@ -152,7 +153,7 @@ class _KayitOlState extends State<KayitOl> {
                         height: 10,
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 70,
                         child: TextFormField(
                           //  controller: _titleController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -184,7 +185,7 @@ class _KayitOlState extends State<KayitOl> {
                         height: 10,
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 70,
                         child: TextFormField(
                           //  controller: _titleController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -214,14 +215,25 @@ class _KayitOlState extends State<KayitOl> {
                         height: 10,
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 70,
                         child: TextFormField(
                           //  controller: _titleController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           cursorColor: Colors.black,
                           maxLines: 1,
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: _gizli,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _gizli = !_gizli;
+                                  });
+                                },
+                                icon: _gizli
+                                    ? const Icon(Icons.visibility,
+                                        color: Colors.grey)
+                                    : const Icon(Icons.visibility_off,
+                                        color: Colors.grey)),
                             labelText: "Şifrenizi Tekrar Giriniz",
                             labelStyle: TextStyle(color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
@@ -387,9 +399,12 @@ class _KayitOlState extends State<KayitOl> {
                                     builder: (context) => LoginPage()),
                               );*/
                             },
-                            child: const Text(
-                              "Giriş Yap",
-                              style: TextStyle(color: kPrimaryColor),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: const Text(
+                                "Giriş Yap",
+                                style: TextStyle(color: kPrimaryColor),
+                              ),
                             ),
                           )
                         ],
