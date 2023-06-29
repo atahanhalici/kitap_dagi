@@ -297,7 +297,7 @@ class _KayitOlState extends State<KayitOl> {
                                       "E postanızı kontrol edip hesabınızı onaylamanız gerekmektedir. Onaylamadığınız takdirde hesabınıza giriş yapmanız mümkün değildir!");
                                 } else if (context.mounted && kayit == false) {
                                   alertDialog("Kayıt İşlemi Tamamlanamadı",
-                                      "Kayıt İşlemi Tamamlanamadı. Google - Facebook - Twitter ile daha önceden giriş yaptıysanız bu nedenle kayıt olamamış olabilirsiniz. Bu durumlar geçerli değilse sunucularımızda sorun oluşmuş olabilir. Lütfen Daha Sonra Tekrar Deneyiniz!");
+                                      "Kayıt işlemi tamamlanamadı. Google - Facebook - Twitter ile daha önceden giriş yaptıysanız bu nedenle kayıt olamamış olabilirsiniz. Bu durumlar geçerli değilse sunucularımızda sorun oluşmuş olabilir. Lütfen daha sonra tekrar deneyiniz!");
                                 }
                               } else {
                                 setState(() {
