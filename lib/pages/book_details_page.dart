@@ -447,15 +447,23 @@ class _BookDetailsState extends State<BookDetails> {
         ),
         TextButton(
             onPressed: () async {
-              var sonuc = await _favModel.favoriEkle(
-                  _userModel.users.user["_id"], widget.book.id);
-              if (context.mounted) {
-                sonuc["durum"] == true
-                    ? aDialog(
-                        "Favorilere Ekle",
-                        "${widget.book.title} İsimli Kitap Favorilere Eklendi",
-                        context)
-                    : aDialog("Favorilere Ekle", "${sonuc["mesaj"]}", context);
+              if (_userModel.users.durum == true) {
+                var sonuc = await _favModel.favoriEkle(
+                    _userModel.users.user["_id"], widget.book.id);
+                if (context.mounted) {
+                  sonuc["durum"] == true
+                      ? aDialog(
+                          "Favorilere Ekle",
+                          "${widget.book.title} İsimli Kitap Favorilere Eklendi",
+                          context)
+                      : aDialog(
+                          "Favorilere Ekle", "${sonuc["mesaj"]}", context);
+                }
+              } else {
+                aDialog(
+                    "Oturum Açmanız Gerekiyor",
+                    "Herhangi Bir Kitabı Favorilerinize Ekleyebilmek İçin Oturum Açmanız Gerekmektedir!",
+                    context);
               }
             },
             child: Container(

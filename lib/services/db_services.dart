@@ -221,10 +221,9 @@ class DbServices {
     try {
       // ignore: unused_local_variable
       final accessToken = await twitterLogin.loginV2();
-   
+
       return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     } catch (e) {
-   
       return Users(mesaj: "", user: {}, durum: false, mailgiris: false);
     }
   }
@@ -236,11 +235,11 @@ class DbServices {
       );
       var jsonResponse = json.decode(response.body);
       List sa = jsonResponse["book"];
-      
+
       var asd = sa.map((e) => Book.fromJson(e)).toList();
       Map son = {"title": jsonResponse["title"], "book": asd};
       return son;
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {}
   }
 
@@ -313,7 +312,7 @@ class DbServices {
       var response = await http.get(Uri.parse("$yol/mobile/book-of-the-day"));
       var jsonResponse = json.decode(response.body);
       return Book.fromJson(jsonResponse["book"][0]);
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {}
   }
 
@@ -350,7 +349,7 @@ class DbServices {
       var asd = sa.map((e) => Book.fromJson(e)).toList();
       Map son = {"title": jsonResponse["title"], "book": asd};
       return son;
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {}
   }
 }

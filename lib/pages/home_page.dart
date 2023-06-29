@@ -50,18 +50,18 @@ class _HomePageState extends State<HomePage> {
           barrierDismissible: true, // user must tap button!
           builder: (BuildContext context) {
             return AlertDialog(
-              title:const Text(
+              title: const Text(
                 "Şifre Değişikliği Tespit Edildi!",
-                style:  TextStyle(
+                style: TextStyle(
                   color: Colors.black,
                 ),
               ),
               content: SingleChildScrollView(
                 child: ListBody(
-                  children:const <Widget>[
+                  children: const <Widget>[
                     Text(
                       "Şifre Değişikliği Yaptığınız İçin Hesabınızdan Çıkış Yapıldı. Lütfen Tekrar Giriş Yapınız!",
-                      style:  TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
                       ),
                     ),
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title:const Text("Kitap Dağı"),
+          title: const Text("Kitap Dağı"),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -101,26 +101,28 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>const FavoritesPage()),
+                            builder: (context) => const FavoritesPage()),
                       );
                     },
-                    icon:const Icon(Icons.favorite))),
+                    icon: const Icon(Icons.favorite))),
             IconButton(
                 onPressed: () {
                   _userModel.users.durum == false
                       ? Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) =>const LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         )
                       : Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) =>const ProfilPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const ProfilPage()),
                         );
                 },
-                icon:const Icon(Icons.person))
+                icon: const Icon(Icons.person))
           ]),
       drawerEnableOpenDragGesture: true,
-      drawer: const MyDrawer(sayi:5,gidilecek: ""),
+      drawer: const MyDrawer(sayi: 5, gidilecek: ""),
       body: _mainModel.state == ViewState.geliyor
           ? const Center(
               child: CircularProgressIndicator(),
@@ -131,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const MyAppBar(sayfa:1),
+                        const MyAppBar(sayfa: 1),
                         slider(size, context),
                         KitapSlider(
                           size: size,
@@ -168,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 )
-              :const Center(
+              : const Center(
                   child: Text("HATA"),
                 ),
     );
@@ -186,7 +188,7 @@ slider(Size size, BuildContext context) {
         viewportFraction: 1,
         height: size.height > size.width ? size.height / 3.5 : size.width / 3.5,
         autoPlay: true,
-        autoPlayInterval:const Duration(seconds: 7)),
+        autoPlayInterval: const Duration(seconds: 7)),
     items: imgList.map((imgAsset) {
       return Builder(
         builder: (BuildContext context) {

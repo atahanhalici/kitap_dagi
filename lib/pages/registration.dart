@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/home_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -183,7 +184,7 @@ class _KayitOlState extends State<KayitOl> {
                           },
                         ),
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       SizedBox(
@@ -238,9 +239,9 @@ class _KayitOlState extends State<KayitOl> {
                                         color: Colors.grey)),
                             labelText: "Şifrenizi Tekrar Giriniz",
                             labelStyle: const TextStyle(color: Colors.black),
-                            focusedBorder:const UnderlineInputBorder(
+                            focusedBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border:const UnderlineInputBorder(),
+                            border: const UnderlineInputBorder(),
                           ),
                           validator: (deger) {
                             if (deger!.length < 4) {
@@ -254,10 +255,10 @@ class _KayitOlState extends State<KayitOl> {
                           },
                         ),
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       TextButton(
@@ -306,7 +307,7 @@ class _KayitOlState extends State<KayitOl> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child:const Center(
+                            child: const Center(
                                 child: Text(
                               "Kayıt Ol",
                               style: TextStyle(
@@ -317,19 +318,19 @@ class _KayitOlState extends State<KayitOl> {
                           )),
                       Visibility(
                         visible: uyari,
-                        child:const Text(
+                        child: const Text(
                           "Lütfen Hiçbir Alanı Boş Geçmeyiniz!",
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
                       Visibility(
                         visible: uyusmuyor,
-                        child:const Text(
+                        child: const Text(
                           "İki şifre birbiriyle uyuşmuyor!",
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -347,42 +348,85 @@ class _KayitOlState extends State<KayitOl> {
                           )),
                         ],
                       ),
-                  const   SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          CircleAvatar(
-                            radius: 17,
-                            backgroundImage:
-                                AssetImage("assets/google_logo.png"),
-                            backgroundColor: Color.fromARGB(255, 236, 236, 236),
-                            //child: Image.asset("assets/google_logo.png"),
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              bool deger = await _userModel.googleGiris();
+                              if (context.mounted) {
+                                if (deger == true) {
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomePage()));
+                                }
+                              }
+                            },
+                            child: const CircleAvatar(
+                              radius: 17,
+                              backgroundImage:
+                                  AssetImage("assets/google_logo.png"),
+                              backgroundColor:
+                                  Color.fromARGB(255, 236, 236, 236),
+                              //child: Image.asset("assets/google_logo.png"),
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          CircleAvatar(
-                            radius: 17,
-                            backgroundImage: AssetImage("assets/face_logo.png"),
-                            backgroundColor: Color.fromARGB(255, 236, 236, 236),
-                            //child: Image.asset("assets/google_logo.png"),
+                          GestureDetector(
+                            onTap: () {
+                              alertDialog("Şu Anda Aktif Değil",
+                                  "Facebook ile oturum açma hizmetimiz şu anda maalesef aktif değil. Entegre edebilmek için çalışmaktayız.");
+                            },
+                            child: const CircleAvatar(
+                              radius: 17,
+                              backgroundImage:
+                                  AssetImage("assets/face_logo.png"),
+                              backgroundColor:
+                                  Color.fromARGB(255, 236, 236, 236),
+                              //child: Image.asset("assets/google_logo.png"),
+                            ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          CircleAvatar(
-                            radius: 17,
-                            backgroundImage:
-                                AssetImage("assets/twitter_logo.png"),
-                            backgroundColor: Color.fromARGB(255, 236, 236, 236),
-                            //child: Image.asset("assets/google_logo.png"),
+                          GestureDetector(
+                            onTap: () async {
+                              /*bool deger = await _userModel.twitterGiris();
+                              if (context.mounted) {
+                                if (deger == true) {
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()));
+                                }
+                              }*/
+                              alertDialog("Şu Anda Aktif Değil",
+                                  "Twitter ile oturum açma hizmetimiz şu anda maalesef aktif değil. Entegre edebilmek için çalışmaktayız.");
+                            },
+                            child: const CircleAvatar(
+                              radius: 17,
+                              backgroundImage:
+                                  AssetImage("assets/twitter_logo.png"),
+                              backgroundColor:
+                                  Color.fromARGB(255, 236, 236, 236),
+                              //child: Image.asset("assets/google_logo.png"),
+                            ),
                           )
                         ],
                       ),
-                const      SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -394,7 +438,7 @@ class _KayitOlState extends State<KayitOl> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>const LoginPage()));
+                                      builder: (context) => const LoginPage()));
                               /* Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -402,7 +446,7 @@ class _KayitOlState extends State<KayitOl> {
                               );*/
                             },
                             child: Container(
-                              padding:const EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 "Giriş Yap",
                                 style: TextStyle(color: kPrimaryColor),
