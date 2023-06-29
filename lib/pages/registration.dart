@@ -19,6 +19,7 @@ class KayitOl extends StatefulWidget {
 class _KayitOlState extends State<KayitOl> {
   bool uyari = false;
   bool _gizli = true;
+  bool _gizli1 = true;
   bool uyusmuyor = false;
   @override
   Widget build(BuildContext context) {
@@ -194,13 +195,24 @@ class _KayitOlState extends State<KayitOl> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           cursorColor: Colors.black,
                           maxLines: 1,
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: _gizli1,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _gizli1 = !_gizli1;
+                                  });
+                                },
+                                icon: _gizli1
+                                    ? const Icon(Icons.visibility,
+                                        color: Colors.grey)
+                                    : const Icon(Icons.visibility_off,
+                                        color: Colors.grey)),
                             labelText: "Şifre",
-                            labelStyle: TextStyle(color: Colors.black),
-                            focusedBorder: UnderlineInputBorder(
+                            labelStyle: const TextStyle(color: Colors.black),
+                            focusedBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border: UnderlineInputBorder(),
+                            border: const UnderlineInputBorder(),
                           ),
                           validator: (deger) {
                             if (deger!.length < 4) {
@@ -285,7 +297,7 @@ class _KayitOlState extends State<KayitOl> {
                                       "E postanızı kontrol edip hesabınızı onaylamanız gerekmektedir. Onaylamadığınız takdirde hesabınıza giriş yapmanız mümkün değildir!");
                                 } else if (context.mounted && kayit == false) {
                                   alertDialog("Kayıt İşlemi Tamamlanamadı",
-                                      "Sunucularımızda bir sorun var gibi gözüküyor. Lütfen Daha Sonra Tekrar Deneyiniz!");
+                                      "Kayıt İşlemi Tamamlanamadı. Google - Facebook - Twitter ile daha önceden giriş yaptıysanız bu nedenle kayıt olamamış olabilirsiniz. Bu durumlar geçerli değilse sunucularımızda sorun oluşmuş olabilir. Lütfen Daha Sonra Tekrar Deneyiniz!");
                                 }
                               } else {
                                 setState(() {

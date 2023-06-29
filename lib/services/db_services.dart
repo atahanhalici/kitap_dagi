@@ -164,45 +164,23 @@ class DbServices {
         googleSignIn.signOut();
         return user;
       } else {
-        List isim = account.displayName!.split(" ");
-        String ad = "";
-        String soyad = "";
-        if (isim.length > 2) {
-          for (int i = 0; i < isim.length; i++) {
-            ad += " ${isim[i]}";
-          }
-          soyad = isim.last;
-        } else {
-          ad = isim[0];
-          soyad = isim[1];
-        }
-        Users user = Users(
-            mesaj: "",
-            user: {
-              "name": ad,
-              "email": account.email,
-              "password": account.id,
-              "surname": soyad
-            },
-            durum: true,
-            mailgiris: false);
-        await box.put("user", user.user);
-        await box.put("durum", user.durum);
-        await box.put("password", account.id);
-        await box.put("mesaj", "");
-        await box.put("mailgiris", false);
         await http.post(Uri.parse("$yol/mobile/auth/google"),
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/json"
             },
             body: jsonEncode({
-              "name": ad,
+              "name": account.displayName,
               "email": account.email,
               "password": account.id,
-              "surname": soyad
+              "surname": ""
             }));
-
+        Users user =
+            await giris({"email": account.email, "password": account.id});
+        await box.put("user", user);
+        await box.put("durum", user.durum);
+        await box.put("mesaj", "");
+        await box.put("mailgiris", false);
         googleSignIn.signOut();
         return user;
       }
