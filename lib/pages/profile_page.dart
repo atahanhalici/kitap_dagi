@@ -69,122 +69,95 @@ class _ProfilPageState extends State<ProfilPage> {
     String soyisim = _userModel.users.user["surname"];
     String email = "";
     Size size = MediaQuery.of(context).size;
-
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: kPrimaryColor,
-            title: GestureDetector(
-                onTap: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: const Text(
-                  "Kitap Dağı",
-                  style: TextStyle(
-                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
-                )),
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    _favModel.favoriGetir(_userModel.users.user["_id"]);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FavoritesPage()),
-                    );
+  FocusScopeNode currentFocus = FocusScopeNode();
+    return Listener(
+       onPointerDown: (_) {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: kPrimaryColor,
+              title: GestureDetector(
+                  onTap: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
                   },
-                  icon: const Icon(Icons.favorite)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.person))
-            ]),
-        drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi: 7, gidilecek: ""),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  left: kDefaultPadding,
-                  right: kDefaultPadding,
-                  bottom: 36 + kDefaultPadding,
-                ),
-                height: size.height > size.width
-                    ? size.height * 0.1 - 27
-                    : size.width * 0.1 - 27,
-                decoration: const BoxDecoration(
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(36),
-                    bottomRight: Radius.circular(36),
+                  child: const Text(
+                    "Kitap Dağı",
+                    style: TextStyle(
+                        fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                  )),
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      _favModel.favoriGetir(_userModel.users.user["_id"]);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FavoritesPage()),
+                      );
+                    },
+                    icon: const Icon(Icons.favorite)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.person))
+              ]),
+          drawerEnableOpenDragGesture: true,
+          drawer: const MyDrawer(sayi: 7, gidilecek: ""),
+          body: SafeArea(
+              child: SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                Container(
+                  padding: const EdgeInsets.only(
+                    left: kDefaultPadding,
+                    right: kDefaultPadding,
+                    bottom: 36 + kDefaultPadding,
+                  ),
+                  height: size.height > size.width
+                      ? size.height * 0.1 - 27
+                      : size.width * 0.1 - 27,
+                  decoration: const BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(36),
+                      bottomRight: Radius.circular(36),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height > 500 ? 60 : 20,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: !sifreGuncelle
-                                ? const Color.fromARGB(255, 250, 250, 250)
-                                : const Color.fromARGB(255, 226, 226, 226),
-                            border: Border(
-                              top: BorderSide(
-                                  width: 1.0,
-                                  color: !sifreGuncelle
-                                      ? kPrimaryColor
-                                      : Colors.black),
-                            ),
-                          ),
-                          height: 50,
-                          child: const Center(
-                              child: Text(
-                            "Bilgilerimi Güncelle",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                            ),
-                          )),
-                        ),
-                        onTap: () {
-                          setState(() {});
-                          sifreGuncelle = false;
-                        },
-                      ),
-                    ),
-                    Visibility(
-                      visible:
-                          _userModel.users.mailgiris == true ? true : false,
-                      child: Expanded(
+                SizedBox(
+                  height: size.height > 500 ? 60 : 20,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
                         child: GestureDetector(
                           child: Container(
-                            height: 50,
                             decoration: BoxDecoration(
-                              color: sifreGuncelle
+                              color: !sifreGuncelle
                                   ? const Color.fromARGB(255, 250, 250, 250)
                                   : const Color.fromARGB(255, 226, 226, 226),
                               border: Border(
                                 top: BorderSide(
                                     width: 1.0,
-                                    color: sifreGuncelle
+                                    color: !sifreGuncelle
                                         ? kPrimaryColor
                                         : Colors.black),
                               ),
                             ),
+                            height: 50,
                             child: const Center(
                                 child: Text(
-                              "Şifremi Güncelle",
+                              "Bilgilerimi Güncelle",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: "Poppins",
@@ -192,215 +165,228 @@ class _ProfilPageState extends State<ProfilPage> {
                             )),
                           ),
                           onTap: () {
-                            setState(() {
-                              sifreGuncelle = true;
-                            });
+                            setState(() {});
+                            sifreGuncelle = false;
                           },
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
-                child: TextFormField(
-                  //  controller: _titleController,
-                  key: Key(
-                      !sifreGuncelle ? _userModel.users.user["name"] : "eski"),
-                  initialValue:
-                      !sifreGuncelle ? _userModel.users.user["name"] : "",
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  cursorColor: Colors.black,
-                  maxLines: 1,
-                  obscureText: sifreGuncelle ? _gizli : false,
-                  decoration: InputDecoration(
-                    suffixIcon: sifreGuncelle
-                        ? IconButton(
-                            onPressed: () {
+                      Visibility(
+                        visible:
+                            _userModel.users.mailgiris == true ? true : false,
+                        child: Expanded(
+                          child: GestureDetector(
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: sifreGuncelle
+                                    ? const Color.fromARGB(255, 250, 250, 250)
+                                    : const Color.fromARGB(255, 226, 226, 226),
+                                border: Border(
+                                  top: BorderSide(
+                                      width: 1.0,
+                                      color: sifreGuncelle
+                                          ? kPrimaryColor
+                                          : Colors.black),
+                                ),
+                              ),
+                              child: const Center(
+                                  child: Text(
+                                "Şifremi Güncelle",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                ),
+                              )),
+                            ),
+                            onTap: () {
                               setState(() {
-                                _gizli = !_gizli;
+                                sifreGuncelle = true;
                               });
                             },
-                            icon: _gizli
-                                ? const Icon(Icons.visibility,
-                                    color: Colors.grey)
-                                : const Icon(Icons.visibility_off,
-                                    color: Colors.grey))
-                        : null,
-                    labelText: !sifreGuncelle ? "İsim" : "Eski Şifre",
-                    labelStyle: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Poppins",
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: kPrimaryColor)),
-                    border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  validator: (deger) {
-                    if (deger!.isEmpty) {
-                      if (!sifreGuncelle) {
-                        return "İsim Kısmı Boş Bırakılamaz!";
-                      } else {
-                        return "Eski Şifre Kısmı Boş Bırakılamaz!";
-                      }
-                    } else {
-                      isim = deger;
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
-                child: TextFormField(
-                  //  controller: _titleController,
-                  key: Key(!sifreGuncelle
-                      ? _userModel.users.user["surname"]
-                      : "yeni"),
-                  initialValue:
-                      !sifreGuncelle ? _userModel.users.user["surname"] : "",
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  cursorColor: Colors.black,
-                  maxLines: 1,
-                  obscureText: sifreGuncelle ? _gizli1 : false,
-                  decoration: InputDecoration(
-                    suffixIcon: sifreGuncelle
-                        ? IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _gizli1 = !_gizli1;
-                              });
-                            },
-                            icon: _gizli1
-                                ? const Icon(Icons.visibility,
-                                    color: Colors.grey)
-                                : const Icon(Icons.visibility_off,
-                                    color: Colors.grey))
-                        : null,
-                    labelText: !sifreGuncelle ? "Soyisim" : "Yeni Şifre",
-                    labelStyle: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Poppins",
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
+                  child: TextFormField(
+                    //  controller: _titleController,
+                    key: Key(
+                        !sifreGuncelle ? _userModel.users.user["name"] : "eski"),
+                    initialValue:
+                        !sifreGuncelle ? _userModel.users.user["name"] : "",
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    cursorColor: Colors.black,
+                    maxLines: 1,
+                    obscureText: sifreGuncelle ? _gizli : false,
+                    decoration: InputDecoration(
+                      suffixIcon: sifreGuncelle
+                          ? IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _gizli = !_gizli;
+                                });
+                              },
+                              icon: _gizli
+                                  ? const Icon(Icons.visibility,
+                                      color: Colors.grey)
+                                  : const Icon(Icons.visibility_off,
+                                      color: Colors.grey))
+                          : null,
+                      labelText: !sifreGuncelle ? "İsim" : "Eski Şifre",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: kPrimaryColor)),
+                      border: const OutlineInputBorder(),
                     ),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: kPrimaryColor)),
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (deger) {
-                    if (deger!.isEmpty) {
-                      if (!sifreGuncelle) {
-                        return "Soyisim Kısmı Boş Bırakılamaz!";
-                      } else {
-                        return "Yeni Şifre Kısmı Boş Bırakılamaz!";
-                      }
-                    } else {
-                      if (deger.length < 4) {
-                        return "Şifreniz en az 4 karakter uzunluğunda olmalıdır!";
-                      } else if (deger.length > 20) {
-                        return "Şifreniz en çok 20 karakter uzunluğunda olmalıdır!";
-                      } else {
-                        soyisim = deger;
-                      }
-                    }
-
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
-                child: TextFormField(
-                  //  controller: _titleController,
-                  key: Key(!sifreGuncelle
-                      ? _userModel.users.user["email"]
-                      : "yeniden"),
-                  initialValue:
-                      !sifreGuncelle ? _userModel.users.user["email"] : "",
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  readOnly: !sifreGuncelle,
-                  cursorColor: Colors.black,
-                  maxLines: 1,
-                  obscureText: sifreGuncelle ? _gizli2 : false,
-                  decoration: InputDecoration(
-                    suffixIcon: sifreGuncelle
-                        ? IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _gizli2 = !_gizli2;
-                              });
-                            },
-                            icon: _gizli2
-                                ? const Icon(Icons.visibility,
-                                    color: Colors.grey)
-                                : const Icon(Icons.visibility_off,
-                                    color: Colors.grey))
-                        : null,
-                    labelText: !sifreGuncelle
-                        ? "E-Mail"
-                        : "Yeni Şifrenizi Tekrar Giriniz",
-                    labelStyle: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Poppins",
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: kPrimaryColor)),
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (deger) {
-                    if (deger!.isEmpty) {
-                      if (!sifreGuncelle) {
-                        return "Soyisim Kısmı Boş Bırakılamaz!";
-                      } else {
-                        return "Yeni Şifrenizi Tekrar Giriniz Kısmı Boş Bırakılamaz!";
-                      }
-                    } else {
-                      if (deger.length < 4) {
-                        return "Şifreniz en az 4 karakter uzunluğunda olmalıdır!";
-                      } else if (deger.length > 20) {
-                        return "Şifreniz en çok 20 karakter uzunluğunda olmalıdır!";
-                      } else {
-                        email = deger;
-                      }
-                    }
-
-                    return null;
-                  },
-                ),
-              ),
-              TextButton(
-                  onPressed: () async {
-                    if (sifreGuncelle == false) {
-                      var sonuc = await _userModel.guncelle(
-                          isim, soyisim, _userModel.users.user["email"]);
-                      if (context.mounted) {
-                        if (sonuc["durum"] == true) {
-                          // ignore: use_build_context_synchronously
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
-                          aDialog(
-                              "İşlem Başarılı", "${sonuc["mesaj"]}", context);
+                    validator: (deger) {
+                      if (deger!.isEmpty) {
+                        if (!sifreGuncelle) {
+                          return "İsim Kısmı Boş Bırakılamaz!";
                         } else {
-                          // ignore: use_build_context_synchronously
-                          aDialog(
-                              "İşlem Başarısız", "${sonuc["mesaj"]} ", context);
+                          return "Eski Şifre Kısmı Boş Bırakılamaz!";
+                        }
+                      } else {
+                        isim = deger;
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
+                  child: TextFormField(
+                    //  controller: _titleController,
+                    key: Key(!sifreGuncelle
+                        ? _userModel.users.user["surname"]
+                        : "yeni"),
+                    initialValue:
+                        !sifreGuncelle ? _userModel.users.user["surname"] : "",
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    cursorColor: Colors.black,
+                    maxLines: 1,
+                    obscureText: sifreGuncelle ? _gizli1 : false,
+                    decoration: InputDecoration(
+                      suffixIcon: sifreGuncelle
+                          ? IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _gizli1 = !_gizli1;
+                                });
+                              },
+                              icon: _gizli1
+                                  ? const Icon(Icons.visibility,
+                                      color: Colors.grey)
+                                  : const Icon(Icons.visibility_off,
+                                      color: Colors.grey))
+                          : null,
+                      labelText: !sifreGuncelle ? "Soyisim" : "Yeni Şifre",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: kPrimaryColor)),
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (deger) {
+                      if (deger!.isEmpty) {
+                        if (!sifreGuncelle) {
+                          return "Soyisim Kısmı Boş Bırakılamaz!";
+                        } else {
+                          return "Yeni Şifre Kısmı Boş Bırakılamaz!";
+                        }
+                      } else {
+                        if (deger.length < 4) {
+                          return "Şifreniz en az 4 karakter uzunluğunda olmalıdır!";
+                        } else if (deger.length > 20) {
+                          return "Şifreniz en çok 20 karakter uzunluğunda olmalıdır!";
+                        } else {
+                          soyisim = deger;
                         }
                       }
-                    } else {
-                      if (email == soyisim) {
-                        var sonuc = await _userModel.sifreGuncelle(
+    
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
+                  child: TextFormField(
+                    //  controller: _titleController,
+                    key: Key(!sifreGuncelle
+                        ? _userModel.users.user["email"]
+                        : "yeniden"),
+                    initialValue:
+                        !sifreGuncelle ? _userModel.users.user["email"] : "",
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    readOnly: !sifreGuncelle,
+                    cursorColor: Colors.black,
+                    maxLines: 1,
+                    obscureText: sifreGuncelle ? _gizli2 : false,
+                    decoration: InputDecoration(
+                      suffixIcon: sifreGuncelle
+                          ? IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _gizli2 = !_gizli2;
+                                });
+                              },
+                              icon: _gizli2
+                                  ? const Icon(Icons.visibility,
+                                      color: Colors.grey)
+                                  : const Icon(Icons.visibility_off,
+                                      color: Colors.grey))
+                          : null,
+                      labelText: !sifreGuncelle
+                          ? "E-Mail"
+                          : "Yeni Şifrenizi Tekrar Giriniz",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: kPrimaryColor)),
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (deger) {
+                      if (deger!.isEmpty) {
+                        if (!sifreGuncelle) {
+                          return "Soyisim Kısmı Boş Bırakılamaz!";
+                        } else {
+                          return "Yeni Şifrenizi Tekrar Giriniz Kısmı Boş Bırakılamaz!";
+                        }
+                      } else {
+                        if (deger.length < 4) {
+                          return "Şifreniz en az 4 karakter uzunluğunda olmalıdır!";
+                        } else if (deger.length > 20) {
+                          return "Şifreniz en çok 20 karakter uzunluğunda olmalıdır!";
+                        } else {
+                          email = deger;
+                        }
+                      }
+    
+                      return null;
+                    },
+                  ),
+                ),
+                TextButton(
+                    onPressed: () async {
+                      if (sifreGuncelle == false) {
+                        var sonuc = await _userModel.guncelle(
                             isim, soyisim, _userModel.users.user["email"]);
                         if (context.mounted) {
                           if (sonuc["durum"] == true) {
                             // ignore: use_build_context_synchronously
-                            Navigator.popUntil(
-                                context, (route) => route.isFirst);
+                            Navigator.popUntil(context, (route) => route.isFirst);
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -409,70 +395,92 @@ class _ProfilPageState extends State<ProfilPage> {
                                 "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                           } else {
                             // ignore: use_build_context_synchronously
-                            aDialog("İşlem Başarısız", "${sonuc["mesaj"]} ",
-                                context);
+                            aDialog(
+                                "İşlem Başarısız", "${sonuc["mesaj"]} ", context);
                           }
                         }
                       } else {
-                        aDialog(
-                            "İşlem Başarısız",
-                            "Girmiş Olduğunuz Şifreler Uyuşmuyor! Lütfen Kontrol Ediniz.",
-                            context);
-                      }
-                    }
-                  },
-                  child: Container(
-                    width: size.width - (2 * kDefaultPadding),
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Center(
-                        child: Text(
-                      "Değişiklikleri Kaydet",
-                      style: TextStyle(
-                          fontFamily: "Comfortaa",
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  )),
-              TextButton(
-                  onPressed: () async {
-                    alertDialog("Hesabınızdan Çıkış Yapılacak",
-                        "Hesabınızdan Çıkış Yapmak Üzeresiniz! Çıkış Yapmak İstediğinize Emin misiniz?",
-                        () async {
-                      bool sonuc = await _userModel.cikisYap();
-                      if (context.mounted) {
-                        if (sonuc == true) {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()));
+                        if (email == soyisim) {
+                          var sonuc = await _userModel.sifreGuncelle(
+                              isim, soyisim, _userModel.users.user["email"]);
+                          if (context.mounted) {
+                            if (sonuc["durum"] == true) {
+                              // ignore: use_build_context_synchronously
+                              Navigator.popUntil(
+                                  context, (route) => route.isFirst);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()));
+                              aDialog(
+                                  "İşlem Başarılı", "${sonuc["mesaj"]}", context);
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              aDialog("İşlem Başarısız", "${sonuc["mesaj"]} ",
+                                  context);
+                            }
+                          }
+                        } else {
+                          aDialog(
+                              "İşlem Başarısız",
+                              "Girmiş Olduğunuz Şifreler Uyuşmuyor! Lütfen Kontrol Ediniz.",
+                              context);
                         }
                       }
-                    }, context);
-                  },
-                  child: Container(
-                    width: size.width - (2 * kDefaultPadding),
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Center(
-                        child: Text(
-                      "Çıkış Yap",
-                      style: TextStyle(
-                          fontFamily: "Comfortaa",
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                    },
+                    child: Container(
+                      width: size.width - (2 * kDefaultPadding),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Center(
+                          child: Text(
+                        "Değişiklikleri Kaydet",
+                        style: TextStyle(
+                            fontFamily: "Comfortaa",
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
                     )),
-                  )),
-            ]))));
+                TextButton(
+                    onPressed: () async {
+                      alertDialog("Hesabınızdan Çıkış Yapılacak",
+                          "Hesabınızdan Çıkış Yapmak Üzeresiniz! Çıkış Yapmak İstediğinize Emin misiniz?",
+                          () async {
+                        bool sonuc = await _userModel.cikisYap();
+                        if (context.mounted) {
+                          if (sonuc == true) {
+                            Navigator.popUntil(context, (route) => route.isFirst);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()));
+                          }
+                        }
+                      }, context);
+                    },
+                    child: Container(
+                      width: size.width - (2 * kDefaultPadding),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Center(
+                          child: Text(
+                        "Çıkış Yap",
+                        style: TextStyle(
+                            fontFamily: "Comfortaa",
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    )),
+              ])))),
+    );
   }
 
   aDialog(String baslik, String icerik, BuildContext context) {

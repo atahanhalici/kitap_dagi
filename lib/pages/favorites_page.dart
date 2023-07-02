@@ -66,134 +66,142 @@ class _FavoritesPageState extends State<FavoritesPage> {
     // ignore: no_leading_underscores_for_local_identifiers
     FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
-
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: kPrimaryColor,
-            title: GestureDetector(
-                onTap: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: const Text(
-                  "Kitap Dağı",
-                  style: TextStyle(
-                    fontFamily: "Comfortaa",
-                    fontWeight: FontWeight.bold,
-                  ),
-                )),
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.favorite)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProfilPage()),
-                    );
+  FocusScopeNode currentFocus = FocusScopeNode();
+    return Listener(
+       onPointerDown: (_) {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: kPrimaryColor,
+              title: GestureDetector(
+                  onTap: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
                   },
-                  icon: const Icon(Icons.person))
-            ]),
-        drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi: 3, gidilecek: ""),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-              const MyAppBar(
-                sayfa: 0,
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: Text(
-                  "Favorilerim",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: kPrimaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                  child: const Text(
+                    "Kitap Dağı",
+                    style: TextStyle(
+                      fontFamily: "Comfortaa",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.favorite)),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfilPage()),
+                      );
+                    },
+                    icon: const Icon(Icons.person))
+              ]),
+          drawerEnableOpenDragGesture: true,
+          drawer: const MyDrawer(sayi: 3, gidilecek: ""),
+          body: SafeArea(
+              child: SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                const MyAppBar(
+                  sayfa: 0,
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: SizedBox(
-                  width: 100,
-                  child: Divider(
-                    color: kPrimaryColor,
-                    thickness: 2,
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: Text(
+                    "Favorilerim",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        color: kPrimaryColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),
-              _favModel.state == ViewStatex.geldi
-                  ? _favModel.kitaplar.isNotEmpty
-                      ? Liste(_favModel, size)
-                      : Container(
-                          height: 100,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: kDefaultPadding, vertical: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color.fromARGB(255, 207, 207, 207)),
-                          child: const Center(
-                            child: Text(
-                              "Favori Listenize Eklenmiş Kitap Bulunmamaktadır",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: SizedBox(
+                    width: 100,
+                    child: Divider(
+                      color: kPrimaryColor,
+                      thickness: 2,
+                    ),
+                  ),
+                ),
+                _favModel.state == ViewStatex.geldi
+                    ? _favModel.kitaplar.isNotEmpty
+                        ? Liste(_favModel, size)
+                        : Container(
+                            height: 100,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding, vertical: 20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color.fromARGB(255, 207, 207, 207)),
+                            child: const Center(
+                              child: Text(
+                                "Favori Listenize Eklenmiş Kitap Bulunmamaktadır",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
+                            ),
+                          )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: kDefaultPadding,
+                          ),
+                          Shimmer.fromColors(
+                            period: const Duration(milliseconds: 1000),
+                            baseColor: const Color.fromARGB(255, 205, 205, 205),
+                            highlightColor:
+                                const Color.fromARGB(255, 214, 214, 214),
+                            direction: ShimmerDirection.ltr,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultPadding),
+                              child: Container(
+                                height: 250,
+                                decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(255, 223, 223, 223),
+                                    borderRadius: BorderRadius.circular(20)),
                               ),
                             ),
                           ),
-                        )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: kDefaultPadding,
-                        ),
-                        Shimmer.fromColors(
-                          period: const Duration(milliseconds: 1000),
-                          baseColor: const Color.fromARGB(255, 205, 205, 205),
-                          highlightColor:
-                              const Color.fromARGB(255, 214, 214, 214),
-                          direction: ShimmerDirection.ltr,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding),
-                            child: Container(
-                              height: 250,
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 223, 223, 223),
-                                  borderRadius: BorderRadius.circular(20)),
+                          const SizedBox(
+                            height: kDefaultPadding,
+                          ),
+                          Shimmer.fromColors(
+                            period: const Duration(milliseconds: 1000),
+                            baseColor: const Color.fromARGB(255, 205, 205, 205),
+                            highlightColor:
+                                const Color.fromARGB(255, 214, 214, 214),
+                            direction: ShimmerDirection.ltr,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultPadding),
+                              child: Container(
+                                height: 250,
+                                decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(255, 223, 223, 223),
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: kDefaultPadding,
-                        ),
-                        Shimmer.fromColors(
-                          period: const Duration(milliseconds: 1000),
-                          baseColor: const Color.fromARGB(255, 205, 205, 205),
-                          highlightColor:
-                              const Color.fromARGB(255, 214, 214, 214),
-                          direction: ShimmerDirection.ltr,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding),
-                            child: Container(
-                              height: 250,
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 223, 223, 223),
-                                  borderRadius: BorderRadius.circular(20)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-            ]))));
+                        ],
+                      )
+              ])))),
+    );
   }
 
   // ignore: non_constant_identifier_names

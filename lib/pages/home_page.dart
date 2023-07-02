@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
-
+    FocusScopeNode currentFocus = FocusScopeNode();
     if (_userModel.sifreKontrol == true && a == 0) {
       a++;
       Future.delayed(Duration.zero, () {
@@ -125,93 +125,101 @@ class _HomePageState extends State<HomePage> {
         );
       });
     }
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: kPrimaryColor,
-            title: const Text(
-              "Kitap Dağı",
-              style: TextStyle(
-                  fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              Visibility(
-                  visible: _userModel.users.durum,
-                  child: IconButton(
-                      onPressed: () {
-                        _favModel.favoriGetir(_userModel.users.user["_id"]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FavoritesPage()),
-                        );
-                      },
-                      icon: const Icon(Icons.favorite))),
-              IconButton(
-                  onPressed: () {
-                    _userModel.users.durum == false
-                        ? Navigator.push(
+    return Listener(
+      onPointerDown: (_) {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: kPrimaryColor,
+              title: const Text(
+                "Kitap Dağı",
+                style: TextStyle(
+                    fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+              ),
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                Visibility(
+                    visible: _userModel.users.durum,
+                    child: IconButton(
+                        onPressed: () {
+                          _favModel.favoriGetir(_userModel.users.user["_id"]);
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginPage()),
-                          )
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilPage()),
+                                builder: (context) => const FavoritesPage()),
                           );
-                  },
-                  icon: const Icon(Icons.person))
-            ]),
-        drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi: 5, gidilecek: ""),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const MyAppBar(sayfa: 1),
-                slider(size, context),
-                _mainModel.state == ViewState.geldi
-                    ? KitapSlider(
-                        size: size,
-                        asd: _mainModel.sizinicin,
-                        baslik: "Sizin İçin Seçtiklerimiz",
-                        cizgiUzunluk: 160,
-                      )
-                    : yukleniyor(size, "Sizin İçin Seçtiklerimiz", 160),
-                //buildBook(size, "Sizin İçin Seçtiklerimiz",
-                //  _mainModel.asd, 0),
-                _mainModel.state == ViewState.geldi
-                    ? KitapSlider(
-                        size: size,
-                        asd: _mainModel.coksatan,
-                        baslik: "Çok Satan Kitaplar",
-                        cizgiUzunluk: 130,
-                      )
-                    : yukleniyor(size, "Çok Satan Kitaplar", 130),
+                        },
+                        icon: const Icon(Icons.favorite))),
+                IconButton(
+                    onPressed: () {
+                      _userModel.users.durum == false
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            )
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfilPage()),
+                            );
+                    },
+                    icon: const Icon(Icons.person))
+              ]),
+          drawerEnableOpenDragGesture: true,
+          drawer: const MyDrawer(sayi: 5, gidilecek: ""),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const MyAppBar(sayfa: 1),
+                  slider(size, context),
+                  _mainModel.state == ViewState.geldi
+                      ? KitapSlider(
+                          size: size,
+                          asd: _mainModel.sizinicin,
+                          baslik: "Sizin İçin Seçtiklerimiz",
+                          cizgiUzunluk: 160,
+                        )
+                      : yukleniyor(size, "Sizin İçin Seçtiklerimiz", 160),
+                  //buildBook(size, "Sizin İçin Seçtiklerimiz",
+                  //  _mainModel.asd, 0),
+                  _mainModel.state == ViewState.geldi
+                      ? KitapSlider(
+                          size: size,
+                          asd: _mainModel.coksatan,
+                          baslik: "Çok Satan Kitaplar",
+                          cizgiUzunluk: 130,
+                        )
+                      : yukleniyor(size, "Çok Satan Kitaplar", 130),
 
-                //  buildBook(
-                //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
-                _mainModel.state == ViewState.geldi
-                    ? KitapSlider(
-                        size: size,
-                        asd: _mainModel.yenicikan,
-                        baslik: "Yeni Çıkan Kitaplar",
-                        cizgiUzunluk: 130,
-                      )
-                    : yukleniyor(size, "Yeni Çıkan Kitaplar", 130),
+                  //  buildBook(
+                  //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
+                  _mainModel.state == ViewState.geldi
+                      ? KitapSlider(
+                          size: size,
+                          asd: _mainModel.yenicikan,
+                          baslik: "Yeni Çıkan Kitaplar",
+                          cizgiUzunluk: 130,
+                        )
+                      : yukleniyor(size, "Yeni Çıkan Kitaplar", 130),
 
-                // buildBook(
-                //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
-                const SizedBox(
-                  height: kDefaultPadding,
-                ),
-              ],
+                  // buildBook(
+                  //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
+                  const SizedBox(
+                    height: kDefaultPadding,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Padding yukleniyor(Size size, String isim, double uzunluk) {

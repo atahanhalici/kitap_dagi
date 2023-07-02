@@ -38,7 +38,7 @@ class _BookDetailsState extends State<BookDetails> {
   final _descController = TextEditingController();
   double ortalama = 0;
   late StreamSubscription<InternetConnectionStatus> listener;
-
+  FocusScopeNode currentFocus = FocusScopeNode();
   @override
   void initState() {
     execute();
@@ -82,70 +82,78 @@ class _BookDetailsState extends State<BookDetails> {
         Provider.of<UserViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     ortalamaHesapla(_commentModel);
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kPrimaryColor,
-          title: GestureDetector(
-              onTap: () {
-                Navigator.popUntil(context, (route) => route.isFirst);
-              },
-              child: const Text(
-                "Kitap Dağı",
-                style: TextStyle(
-                    fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
-              )),
-          centerTitle: true,
-          elevation: 0,
-          actions: [
-            Visibility(
-                visible: _userModel.users.durum,
-                child: IconButton(
-                    onPressed: () {
-                      _favModel.favoriGetir(_userModel.users.user["_id"]);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FavoritesPage()),
-                      );
-                    },
-                    icon: const Icon(Icons.favorite))),
-            IconButton(
-                onPressed: () {
-                  _userModel.users.durum == false
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        )
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfilPage()),
-                        );
+    return Listener(
+      onPointerDown: (_) {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: kPrimaryColor,
+            title: GestureDetector(
+                onTap: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                icon: const Icon(Icons.person))
-          ]),
-      drawerEnableOpenDragGesture: true,
-      drawer: const MyDrawer(
-        sayi: 0,
-        gidilecek: "",
-      ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const MyAppBar(
-              sayfa: 0,
-            ),
-            _mainModel.state == ViewState.geldi
-                ? kitap()
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  )
-          ],
+                child: const Text(
+                  "Kitap Dağı",
+                  style: TextStyle(
+                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                )),
+            centerTitle: true,
+            elevation: 0,
+            actions: [
+              Visibility(
+                  visible: _userModel.users.durum,
+                  child: IconButton(
+                      onPressed: () {
+                        _favModel.favoriGetir(_userModel.users.user["_id"]);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const FavoritesPage()),
+                        );
+                      },
+                      icon: const Icon(Icons.favorite))),
+              IconButton(
+                  onPressed: () {
+                    _userModel.users.durum == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          )
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProfilPage()),
+                          );
+                  },
+                  icon: const Icon(Icons.person))
+            ]),
+        drawerEnableOpenDragGesture: true,
+        drawer: const MyDrawer(
+          sayi: 0,
+          gidilecek: "",
         ),
-      )),
+        body: SafeArea(
+            child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const MyAppBar(
+                sayfa: 0,
+              ),
+              _mainModel.state == ViewState.geldi
+                  ? kitap()
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    )
+            ],
+          ),
+        )),
+      ),
     );
   }
 

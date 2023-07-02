@@ -29,8 +29,8 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   final ScrollController _scrollController = ScrollController();
-    late StreamSubscription<InternetConnectionStatus> listener;
-
+  late StreamSubscription<InternetConnectionStatus> listener;
+  FocusScopeNode currentFocus = FocusScopeNode();
   @override
   void initState() {
     execute();
@@ -44,7 +44,6 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Future<void> execute() async {
-   
     listener = InternetConnectionChecker().onStatusChange.listen(
       (InternetConnectionStatus status) {
         switch (status) {
@@ -62,7 +61,6 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     UserViewModel _userModel =
@@ -72,106 +70,115 @@ class _CategoryPageState extends State<CategoryPage> {
         Provider.of<CategoryViewModel>(context, listen: true);
     FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: kPrimaryColor,
-            title: GestureDetector(
-                onTap: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: const Text(
-                  "Kitap Dağı",
-                  style: TextStyle(
-                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
-                )),
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              Visibility(
-                  visible: _userModel.users.durum,
-                  child: IconButton(
-                      onPressed: () {
-                        _favModel.favoriGetir(_userModel.users.user["_id"]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FavoritesPage()),
-                        );
-                      },
-                      icon: const Icon(Icons.favorite))),
-              IconButton(
-                  onPressed: () {
-                    _userModel.users.durum == false
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginPage()),
-                          )
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilPage()),
-                          );
+
+    return Listener(
+      onPointerDown: (_) {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: kPrimaryColor,
+              title: GestureDetector(
+                  onTap: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
                   },
-                  icon: const Icon(Icons.person))
-            ]),
-        drawerEnableOpenDragGesture: true,
-        drawer: MyDrawer(sayi: 1, gidilecek: widget.title),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const MyAppBar(sayfa: 0),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding),
-                        child: Text(
-                          widget.title,
-                          style: const TextStyle(
-                              fontFamily: "Comfortaa",
-                              color: kPrimaryColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                        child: SizedBox(
-                          child: Divider(
-                            color: kPrimaryColor,
-                            thickness: 2,
+                  child: const Text(
+                    "Kitap Dağı",
+                    style: TextStyle(
+                        fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                  )),
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                Visibility(
+                    visible: _userModel.users.durum,
+                    child: IconButton(
+                        onPressed: () {
+                          _favModel.favoriGetir(_userModel.users.user["_id"]);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const FavoritesPage()),
+                          );
+                        },
+                        icon: const Icon(Icons.favorite))),
+                IconButton(
+                    onPressed: () {
+                      _userModel.users.durum == false
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            )
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfilPage()),
+                            );
+                    },
+                    icon: const Icon(Icons.person))
+              ]),
+          drawerEnableOpenDragGesture: true,
+          drawer: MyDrawer(sayi: 1, gidilecek: widget.title),
+          body: SafeArea(
+              child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const MyAppBar(sayfa: 0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding),
+                          child: Text(
+                            widget.title,
+                            style: const TextStyle(
+                                fontFamily: "Comfortaa",
+                                color: kPrimaryColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      _categoryModel.state == ViewStatees.geldi
-                          ? _categoryModel.kitaplar.isEmpty
-                              ? Container(
-                                  height: 100,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: kDefaultPadding,
-                                      vertical: 20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: const Color.fromARGB(
-                                          255, 207, 207, 207)),
-                                  child: const Center(
-                                    child: Text(
-                                      "Aradığınız İsimde Kitap Bulunamadı",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.bold),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                          child: SizedBox(
+                            child: Divider(
+                              color: kPrimaryColor,
+                              thickness: 2,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        _categoryModel.state == ViewStatees.geldi
+                            ? _categoryModel.kitaplar.isEmpty
+                                ? Container(
+                                    height: 100,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: kDefaultPadding,
+                                        vertical: 20),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: const Color.fromARGB(
+                                            255, 207, 207, 207)),
+                                    child: const Center(
+                                      child: Text(
+                                        "Aradığınız İsimde Kitap Bulunamadı",
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : Kitaplar(context)
-                          : kitaplarYukleniyor(),
-                    ]))));
+                                  )
+                                : Kitaplar(context)
+                            : kitaplarYukleniyor(),
+                      ])))),
+    );
   }
 
   // ignore: non_constant_identifier_names

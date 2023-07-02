@@ -79,125 +79,134 @@ class _CommentsDetailsState extends State<CommentsDetails> {
     FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-        appBar: AppBar(
-            backgroundColor: kPrimaryColor,
-            title: GestureDetector(
-                onTap: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: const Text(
-                  "Kitap Dağı",
-                  style: TextStyle(
-                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
-                )),
-            centerTitle: true,
-            elevation: 0,
-            actions: [
-              Visibility(
-                  visible: _userModel.users.durum,
-                  child: IconButton(
-                      onPressed: () {
-                        _favModel.favoriGetir(_userModel.users.user["_id"]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FavoritesPage()),
-                        );
-                      },
-                      icon: const Icon(Icons.favorite))),
-              IconButton(
-                  onPressed: () {
-                    _userModel.users.durum == false
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginPage()),
-                          )
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilPage()),
-                          );
+      FocusScopeNode currentFocus = FocusScopeNode();
+    return Listener(
+       onPointerDown: (_) {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.focusedChild?.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+              backgroundColor: kPrimaryColor,
+              title: GestureDetector(
+                  onTap: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
                   },
-                  icon: const Icon(Icons.person))
-            ]),
-        drawerEnableOpenDragGesture: true,
-        drawer: const MyDrawer(sayi: 2, gidilecek: ""),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-              const MyAppBar(
-                sayfa: 0,
-              ),
-              size.width < size.height
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultPadding),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              width: size.width / 1.5,
-                              height: size.height / 2,
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/yukleniyor.jpg',
-                                image: widget.book.bookImage,
+                  child: const Text(
+                    "Kitap Dağı",
+                    style: TextStyle(
+                        fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                  )),
+              centerTitle: true,
+              elevation: 0,
+              actions: [
+                Visibility(
+                    visible: _userModel.users.durum,
+                    child: IconButton(
+                        onPressed: () {
+                          _favModel.favoriGetir(_userModel.users.user["_id"]);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const FavoritesPage()),
+                          );
+                        },
+                        icon: const Icon(Icons.favorite))),
+                IconButton(
+                    onPressed: () {
+                      _userModel.users.durum == false
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            )
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProfilPage()),
+                            );
+                    },
+                    icon: const Icon(Icons.person))
+              ]),
+          drawerEnableOpenDragGesture: true,
+          drawer: const MyDrawer(sayi: 2, gidilecek: ""),
+          body: SafeArea(
+              child: SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                const MyAppBar(
+                  sayfa: 0,
+                ),
+                size.width < size.height
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: SizedBox(
+                                width: size.width / 1.5,
+                                height: size.height / 2,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/yukleniyor.jpg',
+                                  image: widget.book.bookImage,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          degerlendirmeOzet(
-                              widget.comments, size, _commentModel),
+                            const SizedBox(
+                              height: kDefaultPadding,
+                            ),
+                            degerlendirmeOzet(
+                                widget.comments, size, _commentModel),
+                          ],
+                        ),
+                      )
+                    : Row(
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                  left: kDefaultPadding,
+                                  right: kDefaultPadding / 2),
+                              child: SizedBox(
+                                width: (size.height / 1.5) - 10,
+                                height: (size.width / 2) - 10,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/yukleniyor.jpg',
+                                  image: widget.book.bookImage,
+                                ),
+                              )),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: kDefaultPadding),
+                            child: SizedBox(
+                              width: size.width -
+                                  (2 * kDefaultPadding) -
+                                  (size.height / 1.5),
+                              child: degerlendirmeOzet(
+                                  widget.comments, size, _commentModel),
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  : Row(
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(
-                                left: kDefaultPadding,
-                                right: kDefaultPadding / 2),
-                            child: SizedBox(
-                              width: (size.height / 1.5) - 10,
-                              height: (size.width / 2) - 10,
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/yukleniyor.jpg',
-                                image: widget.book.bookImage,
-                              ),
-                            )),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: kDefaultPadding),
-                          child: SizedBox(
-                            width: size.width -
-                                (2 * kDefaultPadding) -
-                                (size.height / 1.5),
-                            child: degerlendirmeOzet(
-                                widget.comments, size, _commentModel),
-                          ),
-                        )
-                      ],
-                    ),
-              const SizedBox(
-                height: kDefaultPadding,
-              ),
-              YorumlarWidget(
-                baslama: _commentModel.baslama,
-              ),
-              const SizedBox(
-                height: kDefaultPadding / 2,
-              ),
-              Sayfalama(widget.comments, _commentModel),
-              const SizedBox(
-                height: kDefaultPadding,
-              ),
-            ]))));
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+                YorumlarWidget(
+                  baslama: _commentModel.baslama,
+                ),
+                const SizedBox(
+                  height: kDefaultPadding / 2,
+                ),
+                Sayfalama(widget.comments, _commentModel),
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+              ])))),
+    );
   }
 
   Sayfalama(Comments comments, CommentViewModel commentViewModel) {
