@@ -37,6 +37,7 @@ class _BookDetailsState extends State<BookDetails> {
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
   double ortalama = 0;
+  late StreamSubscription<InternetConnectionStatus> listener;
 
   @override
   void initState() {
@@ -44,10 +45,14 @@ class _BookDetailsState extends State<BookDetails> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    listener.cancel();
+    super.dispose();
+  }
+
   Future<void> execute() async {
-    // ignore: unused_local_variable
-    final StreamSubscription<InternetConnectionStatus> listener =
-        InternetConnectionChecker().onStatusChange.listen(
+    listener = InternetConnectionChecker().onStatusChange.listen(
       (InternetConnectionStatus status) {
         switch (status) {
           case InternetConnectionStatus.connected:

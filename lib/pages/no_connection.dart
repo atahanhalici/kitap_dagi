@@ -16,16 +16,21 @@ class NoConnectionPage extends StatefulWidget {
 }
 
 class _NoConnectionPageState extends State<NoConnectionPage> {
+  late StreamSubscription<InternetConnectionStatus> listener;
   @override
   void initState() {
     execute();
     super.initState();
   }
 
+  @override
+  void dispose() {
+    listener.cancel();
+    super.dispose();
+  }
+
   Future<void> execute() async {
-    // ignore: unused_local_variable
-    final StreamSubscription<InternetConnectionStatus> listener =
-        InternetConnectionChecker().onStatusChange.listen(
+    listener = InternetConnectionChecker().onStatusChange.listen(
       (InternetConnectionStatus status) {
         switch (status) {
           case InternetConnectionStatus.connected:

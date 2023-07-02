@@ -34,16 +34,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int a = 0;
+  late StreamSubscription<InternetConnectionStatus> listener;
+
   @override
   void initState() {
     execute();
     super.initState();
   }
 
+  @override
+  void dispose() {
+    listener.cancel();
+    super.dispose();
+  }
+
   Future<void> execute() async {
-    // ignore: unused_local_variable
-    final StreamSubscription<InternetConnectionStatus> listener =
-        InternetConnectionChecker().onStatusChange.listen(
+    listener = InternetConnectionChecker().onStatusChange.listen(
       (InternetConnectionStatus status) {
         switch (status) {
           case InternetConnectionStatus.connected:
