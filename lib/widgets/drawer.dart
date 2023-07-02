@@ -156,22 +156,30 @@ class MyDrawer extends StatelessWidget {
                 sayi == 6 ||
                 sayi == 7 ||
                 sayi == 8) {
-              _favModel.favoriGetir(_userModel.users.user["_id"]);
-              Navigator.pop(context);
-              Navigator.popUntil(context, (route) => route.isFirst);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const FavoritesPage()));
+              if (sayi == 3) {
+                Navigator.pop(context);
+              } else {
+                _favModel.favoriGetir(_userModel.users.user["_id"]);
+
+                Navigator.popUntil(context, (route) => route.isFirst);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FavoritesPage()));
+              }
             }
           } else if (ad == "Profil") {
             Navigator.pop(context);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ProfilPage()));
+            if (sayi != 7) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ProfilPage()));
+            }
           } else if (name == "girisyap") {
             Navigator.pop(context);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const LoginPage()));
+            if (sayi != 6 && sayi != 8) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
+            }
           }
         }
 
