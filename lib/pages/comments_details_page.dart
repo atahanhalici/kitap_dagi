@@ -1,9 +1,13 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
+import 'package:kitap_dagi/pages/no_connection.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
@@ -32,6 +36,31 @@ class CommentsDetails extends StatefulWidget {
 }
 
 class _CommentsDetailsState extends State<CommentsDetails> {
+   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
@@ -44,7 +73,11 @@ class _CommentsDetailsState extends State<CommentsDetails> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: const Text("Kitap Dağı"),
+            title: GestureDetector(
+                onTap: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                },
+                child: const Text("Kitap Dağı")),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -56,7 +89,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>const FavoritesPage()),
+                              builder: (context) => const FavoritesPage()),
                         );
                       },
                       icon: const Icon(Icons.favorite))),
@@ -66,12 +99,12 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>const LoginPage()),
+                                builder: (context) => const LoginPage()),
                           )
                         : Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>const ProfilPage()),
+                                builder: (context) => const ProfilPage()),
                           );
                   },
                   icon: const Icon(Icons.person))
@@ -97,7 +130,10 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                             child: SizedBox(
                               width: size.width / 1.5,
                               height: size.height / 2,
-                              child: Image.network(widget.book.bookImage),
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/yukleniyor.jpg',
+                                image: widget.book.bookImage,
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -115,11 +151,13 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                                 left: kDefaultPadding,
                                 right: kDefaultPadding / 2),
                             child: SizedBox(
-                                width: (size.height / 1.5) - 10,
-                                height: (size.width / 2) - 10,
-                                child: Image.network(
-                                  widget.book.bookImage,
-                                ))),
+                              width: (size.height / 1.5) - 10,
+                              height: (size.width / 2) - 10,
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/yukleniyor.jpg',
+                                image: widget.book.bookImage,
+                              ),
+                            )),
                         Padding(
                           padding:
                               const EdgeInsets.only(right: kDefaultPadding),

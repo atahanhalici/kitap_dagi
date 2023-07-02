@@ -10,7 +10,7 @@ import 'package:twitter_login_v2/twitter_login_v2.dart';
 import '../models/user.dart';
 
 class DbServices {
-  String yol = "https://kitapdagi.onrender.com";
+  String yol = "https://www.kitapdagi.com.tr";
   final GoogleSignIn googleSignIn = GoogleSignIn();
   Future<List<Book>> kitaplariGetir() async {
     // ignore: no_leading_underscores_for_local_identifiers

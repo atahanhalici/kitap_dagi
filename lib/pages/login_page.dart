@@ -1,7 +1,10 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/forgot_my_password_page.dart';
 import 'package:kitap_dagi/pages/home_page.dart';
@@ -10,6 +13,7 @@ import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/drawer.dart';
+import 'no_connection.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,6 +23,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
   final _emailController = TextEditingController();
   final _sifreController = TextEditingController();
   bool _gizli = true;
@@ -33,7 +62,11 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: const Text("Kitap Dağı"),
+          title: GestureDetector(
+              onTap: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text("Kitap Dağı")),
           centerTitle: true,
           elevation: 0,
         ),
@@ -45,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
               Container(
-                padding:const EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                   bottom: 36 + kDefaultPadding,
@@ -53,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration:const BoxDecoration(
+                decoration: const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -61,14 +94,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-             const SizedBox(
+              const SizedBox(
                 height: kDefaultPadding * 3,
               ),
               Container(
                 //height: 500,
                 //width: 100,
-                margin:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                padding:const EdgeInsets.all(kDefaultPadding),
+                margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding: const EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 236, 236, 236),
                     boxShadow: const [
@@ -102,12 +135,12 @@ class _LoginPageState extends State<LoginPage> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           cursorColor: Colors.black,
                           maxLines: 1,
-                          decoration:const InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: "E-Mail",
-                            labelStyle:  TextStyle(color: Colors.black),
-                            focusedBorder:  UnderlineInputBorder(
+                            labelStyle: TextStyle(color: Colors.black),
+                            focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border:  UnderlineInputBorder(),
+                            border: UnderlineInputBorder(),
                             suffixIcon: Icon(Icons.person),
                           ),
                           validator: (deger) {
@@ -123,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                    const  SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       SizedBox(
@@ -164,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                       ),
-                 const     SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Row(
@@ -186,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                             child: Container(
-                              padding:const EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 'Beni Hatırla',
                                 style: TextStyle(
@@ -196,18 +229,18 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                      const    Expanded(child: SizedBox()),
+                          const Expanded(child: SizedBox()),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                       const   ForgotMyPassword()));
+                                          const ForgotMyPassword()));
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
-                              child:const Text(
+                              child: const Text(
                                 "Şifremi Unuttum",
                                 style: TextStyle(
                                   color: kPrimaryColor,
@@ -218,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
-                  const    SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       TextButton(
@@ -268,7 +301,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child:const Center(
+                            child: const Center(
                                 child: Text(
                               "Giriş Yap",
                               style: TextStyle(
@@ -284,7 +317,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -302,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                         ],
                       ),
-                  const    SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -319,7 +352,8 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>const HomePage()));
+                                          builder: (context) =>
+                                              const HomePage()));
                                 }
                               }
                             },
@@ -379,7 +413,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
-               const       SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       Row(
@@ -391,10 +425,10 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>const KayitOl()));
+                                      builder: (context) => const KayitOl()));
                             },
                             child: Container(
-                              padding:const EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 "Kayıt Ol",
                                 style: TextStyle(color: kPrimaryColor),

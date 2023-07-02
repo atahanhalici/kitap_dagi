@@ -1,10 +1,14 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/pages/login_page.dart';
+import 'package:kitap_dagi/pages/no_connection.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
@@ -13,6 +17,7 @@ import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CategoryPage extends StatefulWidget {
   final String title;
@@ -25,6 +30,32 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   final ScrollController _scrollController = ScrollController();
   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
+ 
+  @override
   Widget build(BuildContext context) {
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
@@ -36,7 +67,11 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title:const Text("Kitap Dağı"),
+            title: GestureDetector(
+                onTap: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                },
+                child: const Text("Kitap Dağı")),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -48,25 +83,25 @@ class _CategoryPageState extends State<CategoryPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>const FavoritesPage()),
+                              builder: (context) => const FavoritesPage()),
                         );
                       },
-                      icon:const Icon(Icons.favorite))),
+                      icon: const Icon(Icons.favorite))),
               IconButton(
                   onPressed: () {
                     _userModel.users.durum == false
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>const LoginPage()),
+                                builder: (context) => const LoginPage()),
                           )
                         : Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>const ProfilPage()),
+                                builder: (context) => const ProfilPage()),
                           );
                   },
-                  icon:const Icon(Icons.person))
+                  icon: const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
         drawer: MyDrawer(sayi: 1, gidilecek: widget.title),
@@ -98,7 +133,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           ),
                         ),
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding,
                       ),
                       _categoryModel.state == ViewStatees.geldi
@@ -112,7 +147,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                       borderRadius: BorderRadius.circular(10),
                                       color: const Color.fromARGB(
                                           255, 207, 207, 207)),
-                                  child:const Center(
+                                  child: const Center(
                                     child: Text(
                                       "Aradığınız İsimde Kitap Bulunamadı",
                                       style: TextStyle(
@@ -121,7 +156,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                   ),
                                 )
                               : Kitaplar(context)
-                          :const Center(child: CircularProgressIndicator()),
+                          : kitaplarYukleniyor(),
                     ]))));
   }
 
@@ -132,7 +167,7 @@ class _CategoryPageState extends State<CategoryPage> {
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
     return Padding(
-      padding:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
         children: [
           GridView.builder(
@@ -176,17 +211,15 @@ class _CategoryPageState extends State<CategoryPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Image.network(
-                                _categoryModel
+                              FadeInImage.assetNetwork(
+                                placeholder: 'assets/yukleniyor.jpg',
+                                image: _categoryModel
                                     .kitaplar[index + _categoryModel.baslama]
                                     .bookImage,
-                                //"assets/harry.jpg",
-                                //height: 190,
-
                                 height: 200,
                                 fit: BoxFit.contain,
                               ),
-                           const   SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Align(
@@ -219,15 +252,44 @@ class _CategoryPageState extends State<CategoryPage> {
                       ),
                     ));
               }),
-        const SizedBox(
+          const SizedBox(
             height: kDefaultPadding,
           ),
           sayfalama(_categoryModel),
-        const  SizedBox(
+          const SizedBox(
             height: kDefaultPadding,
           ),
         ],
       ),
+    );
+  }
+
+  kitaplarYukleniyor() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 10,
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 260,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              mainAxisExtent: 295),
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              period: const Duration(milliseconds: 1000),
+              baseColor: const Color.fromARGB(255, 205, 205, 205),
+              highlightColor: const Color.fromARGB(255, 214, 214, 214),
+              direction: ShimmerDirection.ltr,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 207, 207, 207),
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+            );
+          }),
     );
   }
 
@@ -252,11 +314,11 @@ class _CategoryPageState extends State<CategoryPage> {
               },
               child: Row(
                 children: [
-            const      SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Container(
-                      padding:const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           color: categoryViewModel.baslama / 20 == index
@@ -271,7 +333,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                       )),
-            const      SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                 ],

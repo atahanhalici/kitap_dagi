@@ -14,13 +14,13 @@ class MyAppBar extends StatelessWidget {
     // ignore: no_leading_underscores_for_local_identifiers
     TextEditingController _controller = TextEditingController();
     return Container(
-      margin:const EdgeInsets.only(bottom: kDefaultPadding * 2.5),
+      margin: const EdgeInsets.only(bottom: kDefaultPadding * 2.5),
       // It will cover 20% of our total height
       height: size.height > size.width ? size.height * 0.1 : size.width * 0.1,
       child: Stack(
         children: <Widget>[
           Container(
-            padding:const EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: kDefaultPadding,
               right: kDefaultPadding,
               bottom: 36 + kDefaultPadding,
@@ -28,7 +28,7 @@ class MyAppBar extends StatelessWidget {
             height: size.height > size.width
                 ? size.height * 0.1 - 27
                 : size.width * 0.1 - 27,
-            decoration:const BoxDecoration(
+            decoration: const BoxDecoration(
               color: kPrimaryColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(36),
@@ -42,15 +42,15 @@ class MyAppBar extends StatelessWidget {
             top: 15,
             child: Container(
               alignment: Alignment.center,
-              margin:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              padding:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               height: 54,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    offset:const Offset(0, 10),
+                    offset: const Offset(0, 10),
                     blurRadius: 50,
                     color: kPrimaryColor.withOpacity(0.23),
                   ),
@@ -66,7 +66,7 @@ class MyAppBar extends StatelessWidget {
                         aramaMetodu(context, value, _controller);
                       },
                       decoration: InputDecoration(
-                        hintText: "Search",
+                        hintText: "Arama yap",
                         hintStyle: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                         ),
@@ -79,7 +79,7 @@ class MyAppBar extends StatelessWidget {
                               aramaMetodu(
                                   context, _controller.text, _controller);
                             },
-                            child:const Icon(Icons.search)),
+                            child: const Icon(Icons.search)),
                       ),
                     ),
                   ),

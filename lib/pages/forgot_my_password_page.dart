@@ -1,7 +1,11 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/constants.dart';
+import 'package:kitap_dagi/pages/no_connection.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/user_viewmodel.dart';
@@ -14,6 +18,31 @@ class ForgotMyPassword extends StatefulWidget {
 }
 
 class _ForgotMyPasswordState extends State<ForgotMyPassword> {
+   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
   bool uyari = false;
   @override
   Widget build(BuildContext context) {
@@ -24,7 +53,12 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: const Text("Kitap Dağı"),
+          title: GestureDetector(
+              onTap: () {
+              
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text("Kitap Dağı")),
           centerTitle: true,
           elevation: 0,
         ),

@@ -1,6 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:kitap_dagi/models/book.dart';
 import 'package:kitap_dagi/pages/comments_details_page.dart';
@@ -13,11 +16,13 @@ import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:kitap_dagi/widgets/kitap_slider.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../constants.dart';
 import '../viewmodels/main_viewmodel.dart';
 import '../viewmodels/user_viewmodel.dart';
+import 'no_connection.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -34,23 +39,53 @@ class _BookDetailsState extends State<BookDetails> {
   double ortalama = 0;
 
   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
+ 
+
+  @override
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
         Provider.of<CommentViewModel>(context, listen: true);
-
-    UserViewModel _userModel =
-        Provider.of<UserViewModel>(context, listen: true);
 
     MainViewModel _mainModel =
         Provider.of<MainViewModel>(context, listen: true);
     FavoritesViewModel _favModel =
         Provider.of<FavoritesViewModel>(context, listen: true);
+    UserViewModel _userModel =
+        Provider.of<UserViewModel>(context, listen: true);
     Size size = MediaQuery.of(context).size;
     ortalamaHesapla(_commentModel);
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: const Text("Kitap Dağı"),
+          title: GestureDetector(
+              onTap: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text("Kitap Dağı")),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -130,8 +165,9 @@ class _BookDetailsState extends State<BookDetails> {
                       child: SizedBox(
                         width: size.width / 1.5,
                         height: size.height / 2,
-                        child: Image.network(
-                          widget.book.bookImage,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/yukleniyor.jpg',
+                          image: widget.book.bookImage,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -149,12 +185,14 @@ class _BookDetailsState extends State<BookDetails> {
                       padding: const EdgeInsets.only(
                           left: kDefaultPadding, right: kDefaultPadding / 2),
                       child: SizedBox(
-                          width: (size.height / 1.5) - 10,
-                          height: (size.width / 2) - 10,
-                          child: Image.network(
-                            widget.book.bookImage,
-                            fit: BoxFit.contain,
-                          ))),
+                        width: (size.height / 1.5) - 10,
+                        height: (size.width / 2) - 10,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/yukleniyor.jpg',
+                          image: widget.book.bookImage,
+                          fit: BoxFit.contain,
+                        ),
+                      )),
                   Padding(
                     padding: const EdgeInsets.only(right: kDefaultPadding),
                     child: SizedBox(
@@ -176,7 +214,7 @@ class _BookDetailsState extends State<BookDetails> {
                 baslik: "Öneriler",
                 cizgiUzunluk: 75,
               )
-            : const CircularProgressIndicator(),
+            : yukleniyor(size, "Öneriler", 75),
         const SizedBox(
           height: kDefaultPadding,
         ),
@@ -227,7 +265,7 @@ class _BookDetailsState extends State<BookDetails> {
                       ),
                     ],
                   )
-            : Container(),
+            : yorumYukleniyor(),
         const SizedBox(
           height: kDefaultPadding,
         ),
@@ -278,6 +316,71 @@ class _BookDetailsState extends State<BookDetails> {
               ),
         const SizedBox(
           height: kDefaultPadding,
+        ),
+      ],
+    );
+  }
+
+  Column yorumYukleniyor() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: Text(
+            "Yorumlar",
+            style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 15,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: SizedBox(
+            child: Divider(
+              color: kPrimaryColor,
+              thickness: 2,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: Shimmer.fromColors(
+            period: const Duration(milliseconds: 1000),
+            baseColor: const Color.fromARGB(255, 205, 205, 205),
+            highlightColor: const Color.fromARGB(255, 214, 214, 214),
+            direction: ShimmerDirection.ltr,
+            child: Container(
+              padding: const EdgeInsets.all(kDefaultPadding / 2),
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 223, 223, 223),
+                  borderRadius: BorderRadius.circular(10)),
+              height: 100,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: Shimmer.fromColors(
+            period: const Duration(milliseconds: 1000),
+            baseColor: const Color.fromARGB(255, 205, 205, 205),
+            highlightColor: const Color.fromARGB(255, 214, 214, 214),
+            direction: ShimmerDirection.ltr,
+            child: Container(
+              padding: const EdgeInsets.all(kDefaultPadding / 2),
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 223, 223, 223),
+                  borderRadius: BorderRadius.circular(10)),
+              height: 100,
+            ),
+          ),
         ),
       ],
     );
@@ -1051,5 +1154,177 @@ class _BookDetailsState extends State<BookDetails> {
       }
       ortalama = ortalama / commentViewModel.comments.yorumlar.length;
     }
+  }
+
+  Padding yukleniyor(Size size, String isim, double uzunluk) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: Text(
+              isim,
+              style: const TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: SizedBox(
+              width: uzunluk,
+              child: const Divider(
+                color: kPrimaryColor,
+                thickness: 2,
+              ),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 200,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: [
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 200,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: [
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 200,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

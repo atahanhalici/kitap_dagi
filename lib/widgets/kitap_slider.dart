@@ -80,10 +80,9 @@ class _KitapSliderState extends State<KitapSlider> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Image.network(
-                                  book.bookImage,
-                                  // "assets/harry.jpg",
-                                  //height: 190,
+                                FadeInImage.assetNetwork(
+                                  placeholder: 'assets/yukleniyor.jpg',
+                                  image: book.bookImage,
                                   width: 130,
                                   height: 200,
                                   fit: BoxFit.contain,

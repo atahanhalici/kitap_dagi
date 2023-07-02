@@ -1,10 +1,14 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable
 
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
 import 'package:kitap_dagi/pages/category_page.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
+import 'package:kitap_dagi/pages/no_connection.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/viewmodels/category_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
@@ -13,6 +17,7 @@ import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:kitap_dagi/widgets/drawer.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../constants.dart';
 import '../viewmodels/comment_viewmodel.dart';
@@ -29,7 +34,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int a = 0;
+ @override
+  void initState() {
+    execute();
+    super.initState();
+  }
 
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     MainViewModel _mainModel =
@@ -87,92 +116,259 @@ class _HomePageState extends State<HomePage> {
       });
     }
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kPrimaryColor,
-          title: const Text("Kitap Dağı"),
-          centerTitle: true,
-          elevation: 0,
-          actions: [
-            Visibility(
-                visible: _userModel.users.durum,
-                child: IconButton(
-                    onPressed: () {
-                      _favModel.favoriGetir(_userModel.users.user["_id"]);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FavoritesPage()),
-                      );
-                    },
-                    icon: const Icon(Icons.favorite))),
-            IconButton(
-                onPressed: () {
-                  _userModel.users.durum == false
-                      ? Navigator.push(
+        appBar: AppBar(
+            backgroundColor: kPrimaryColor,
+            title: const Text("Kitap Dağı"),
+            centerTitle: true,
+            elevation: 0,
+            actions: [
+              Visibility(
+                  visible: _userModel.users.durum,
+                  child: IconButton(
+                      onPressed: () {
+                        _favModel.favoriGetir(_userModel.users.user["_id"]);
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        )
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfilPage()),
+                              builder: (context) => const FavoritesPage()),
                         );
-                },
-                icon: const Icon(Icons.person))
-          ]),
-      drawerEnableOpenDragGesture: true,
-      drawer: const MyDrawer(sayi: 5, gidilecek: ""),
-      body: _mainModel.state == ViewState.geliyor
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : _mainModel.state == ViewState.geldi
-              ? SafeArea(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const MyAppBar(sayfa: 1),
-                        slider(size, context),
-                        KitapSlider(
-                          size: size,
-                          asd: _mainModel.sizinicin,
-                          baslik: "Sizin İçin Seçtiklerimiz",
-                          cizgiUzunluk: 160,
-                        ),
-                        //buildBook(size, "Sizin İçin Seçtiklerimiz",
-                        //  _mainModel.asd, 0),
+                      },
+                      icon: const Icon(Icons.favorite))),
+              IconButton(
+                  onPressed: () {
+                    _userModel.users.durum == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          )
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProfilPage()),
+                          );
+                  },
+                  icon: const Icon(Icons.person))
+            ]),
+        drawerEnableOpenDragGesture: true,
+        drawer: const MyDrawer(sayi: 5, gidilecek: ""),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const MyAppBar(sayfa: 1),
+                slider(size, context),
+                _mainModel.state == ViewState.geldi
+                    ? KitapSlider(
+                        size: size,
+                        asd: _mainModel.sizinicin,
+                        baslik: "Sizin İçin Seçtiklerimiz",
+                        cizgiUzunluk: 160,
+                      )
+                    : yukleniyor(size, "Sizin İçin Seçtiklerimiz", 160),
+                //buildBook(size, "Sizin İçin Seçtiklerimiz",
+                //  _mainModel.asd, 0),
+                _mainModel.state == ViewState.geldi
+                    ? KitapSlider(
+                        size: size,
+                        asd: _mainModel.coksatan,
+                        baslik: "Çok Satan Kitaplar",
+                        cizgiUzunluk: 130,
+                      )
+                    : yukleniyor(size, "Çok Satan Kitaplar", 130),
 
-                        KitapSlider(
-                          size: size,
-                          asd: _mainModel.coksatan,
-                          baslik: "Çok Satan Kitaplar",
-                          cizgiUzunluk: 130,
-                        ),
+                //  buildBook(
+                //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
+                _mainModel.state == ViewState.geldi
+                    ? KitapSlider(
+                        size: size,
+                        asd: _mainModel.yenicikan,
+                        baslik: "Yeni Çıkan Kitaplar",
+                        cizgiUzunluk: 130,
+                      )
+                    : yukleniyor(size, "Yeni Çıkan Kitaplar", 130),
 
-                        //  buildBook(
-                        //   size, "Çok Satan Kitaplar", _mainModel.asd, 7),
+                // buildBook(
+                //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
 
-                        KitapSlider(
-                          size: size,
-                          asd: _mainModel.yenicikan,
-                          baslik: "Yeni Çıkan Kitaplar",
-                          cizgiUzunluk: 130,
-                        ),
-
-                        // buildBook(
-                        //     size, "Yeni Çıkan Kitaplar", _mainModel.asd, 14),
-                        const SizedBox(
-                          height: kDefaultPadding,
-                        ),
-                      ],
+  Padding yukleniyor(Size size, String isim, double uzunluk) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: Text(
+              isim,
+              style: const TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            child: SizedBox(
+              width: uzunluk,
+              child: const Divider(
+                color: kPrimaryColor,
+                thickness: 2,
+              ),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 200,
+                      width: (size.width - 50) / 3,
                     ),
                   ),
-                )
-              : const Center(
-                  child: Text("HATA"),
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: [
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 200,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: [
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 200,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Shimmer.fromColors(
+                    period: const Duration(milliseconds: 1000),
+                    baseColor: const Color.fromARGB(255, 205, 205, 205),
+                    highlightColor: const Color.fromARGB(255, 214, 214, 214),
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      color: Colors.grey,
+                      height: 20,
+                      width: (size.width - 50) / 3,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -237,7 +433,7 @@ slider(Size size, BuildContext context) {
                   ],
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     image: AssetImage(
                       imgAsset,
                     ),

@@ -1,6 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/pages/favorites_page.dart';
 import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
@@ -9,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../widgets/drawer.dart';
 import 'home_page.dart';
+import 'no_connection.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -18,6 +22,31 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
+   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
   bool sifreGuncelle = false;
   bool _gizli = true;
   bool _gizli1 = true;
@@ -36,7 +65,11 @@ class _ProfilPageState extends State<ProfilPage> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title:const Text("Kitap Dağı"),
+            title: GestureDetector(
+                onTap: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                },
+                child: const Text("Kitap Dağı")),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -45,11 +78,12 @@ class _ProfilPageState extends State<ProfilPage> {
                     _favModel.favoriGetir(_userModel.users.user["_id"]);
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) =>const FavoritesPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const FavoritesPage()),
                     );
                   },
-                  icon:const Icon(Icons.favorite)),
-              IconButton(onPressed: () {}, icon:const Icon(Icons.person))
+                  icon: const Icon(Icons.favorite)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.person))
             ]),
         drawerEnableOpenDragGesture: true,
         drawer: const MyDrawer(sayi: 7, gidilecek: ""),
@@ -60,7 +94,7 @@ class _ProfilPageState extends State<ProfilPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
               Container(
-                padding:const EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                   bottom: 36 + kDefaultPadding,
@@ -68,7 +102,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration:const BoxDecoration(
+                decoration: const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -91,7 +125,7 @@ class _ProfilPageState extends State<ProfilPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: !sifreGuncelle
-                                ?const Color.fromARGB(255, 250, 250, 250)
+                                ? const Color.fromARGB(255, 250, 250, 250)
                                 : const Color.fromARGB(255, 226, 226, 226),
                             border: Border(
                               top: BorderSide(
@@ -123,8 +157,8 @@ class _ProfilPageState extends State<ProfilPage> {
                             height: 50,
                             decoration: BoxDecoration(
                               color: sifreGuncelle
-                                  ?const Color.fromARGB(255, 250, 250, 250)
-                                  :const Color.fromARGB(255, 226, 226, 226),
+                                  ? const Color.fromARGB(255, 250, 250, 250)
+                                  : const Color.fromARGB(255, 226, 226, 226),
                               border: Border(
                                 top: BorderSide(
                                     width: 1.0,
@@ -343,7 +377,7 @@ class _ProfilPageState extends State<ProfilPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>const HomePage()));
+                                    builder: (context) => const HomePage()));
                             aDialog(
                                 "İşlem Başarılı", "${sonuc["mesaj"]}", context);
                           } else {

@@ -1,22 +1,57 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, duplicate_ignore
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/models/book.dart';
 import 'package:kitap_dagi/pages/book_details_page.dart';
+import 'package:kitap_dagi/pages/no_connection.dart';
 import 'package:kitap_dagi/pages/profile_page.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/favorites_viewmodel.dart';
 import 'package:kitap_dagi/viewmodels/user_viewmodel.dart';
 import 'package:kitap_dagi/widgets/appbar.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../widgets/drawer.dart';
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);
 
+  @override
+  State<FavoritesPage> createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> {
+   @override
+  void initState() {
+    execute();
+    super.initState();
+  }
+
+  Future<void> execute() async {
+    // ignore: unused_local_variable
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            break;
+          case InternetConnectionStatus.disconnected:
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NoConnectionPage()));
+            break;
+        }
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -27,7 +62,11 @@ class FavoritesPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: const Text("Kitap Dağı"),
+            title: GestureDetector(
+                onTap: () {
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                },
+                child: const Text("Kitap Dağı")),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -89,12 +128,54 @@ class FavoritesPage extends StatelessWidget {
                             ),
                           ),
                         )
-                  :const Padding(
-                      padding:  EdgeInsets.only(top: 20),
-                      child:  Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        Shimmer.fromColors(
+                          period: const Duration(milliseconds: 1000),
+                          baseColor: const Color.fromARGB(255, 205, 205, 205),
+                          highlightColor:
+                              const Color.fromARGB(255, 214, 214, 214),
+                          direction: ShimmerDirection.ltr,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
+                            child: Container(
+                              height: 250,
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 223, 223, 223),
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        Shimmer.fromColors(
+                          period: const Duration(milliseconds: 1000),
+                          baseColor: const Color.fromARGB(255, 205, 205, 205),
+                          highlightColor:
+                              const Color.fromARGB(255, 214, 214, 214),
+                          direction: ShimmerDirection.ltr,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding),
+                            child: Container(
+                              height: 250,
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 223, 223, 223),
+                                  borderRadius: BorderRadius.circular(20)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
             ]))));
   }
 
@@ -128,16 +209,17 @@ class FavoritesPage extends StatelessWidget {
             Row(
               children: [
                 SizedBox(
-                    width: size.width < size.height
-                        ? size.width / 3
-                        : size.height / 3,
-                    height: size.width < size.height
-                        ? size.height / 4
-                        : size.width / 4,
-                    child: Image.network(
-                      kitap.bookImage,
-                      fit: BoxFit.contain,
-                    )),
+                  width: size.width < size.height
+                      ? size.width / 3
+                      : size.height / 3,
+                  height: size.width < size.height
+                      ? size.height / 4
+                      : size.width / 4,
+                  child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/yukleniyor.jpg',
+                      image: kitap.bookImage,
+                      fit: BoxFit.contain),
+                ),
                 const SizedBox(
                   width: 10,
                 ),
@@ -166,7 +248,7 @@ class FavoritesPage extends StatelessWidget {
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
                           ),
-                      const    SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(
@@ -187,7 +269,7 @@ class FavoritesPage extends StatelessWidget {
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
                           ),
-                    const      SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(
@@ -323,7 +405,7 @@ class FavoritesPage extends StatelessWidget {
                 height: 5,
               ),
             ),
-         const   SizedBox(
+            const SizedBox(
               height: kDefaultPadding,
             )
           ],
@@ -414,7 +496,8 @@ class FavoritesPage extends StatelessWidget {
                     // color: Color.fromARGB(255, 207, 207, 207),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        width: 1.5, color:const Color.fromARGB(255, 112, 112, 112))),
+                        width: 1.5,
+                        color: const Color.fromARGB(255, 112, 112, 112))),
                 child: Padding(
                   padding: const EdgeInsets.all(1),
                   child: Column(
@@ -423,12 +506,13 @@ class FavoritesPage extends StatelessWidget {
                     children: [
                       Text(
                         kitap.buyLinks[index]["name"],
-                        style:const TextStyle(fontSize: 8, color: kPrimaryColor),
+                        style:
+                            const TextStyle(fontSize: 8, color: kPrimaryColor),
                         textAlign: TextAlign.center,
                       ),
                       Text(
                         kitap.buyLinks[index]["linkPrice"] + " TL",
-                        style:const TextStyle(
+                        style: const TextStyle(
                             fontSize: 10,
                             color: kPrimaryColor,
                             fontWeight: FontWeight.bold),
