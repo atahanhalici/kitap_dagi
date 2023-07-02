@@ -18,7 +18,7 @@ class ForgotMyPassword extends StatefulWidget {
 }
 
 class _ForgotMyPasswordState extends State<ForgotMyPassword> {
-   late StreamSubscription<InternetConnectionStatus> listener;
+  late StreamSubscription<InternetConnectionStatus> listener;
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
   }
 
   Future<void> execute() async {
-   
     listener = InternetConnectionChecker().onStatusChange.listen(
       (InternetConnectionStatus status) {
         switch (status) {
@@ -51,16 +50,16 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
     );
   }
 
-
   bool uyari = false;
   @override
   Widget build(BuildContext context) {
     final _emailController = TextEditingController();
     Size size = MediaQuery.of(context).size;
     UserViewModel _userModel =
-        Provider.of<UserViewModel>(context, listen: true);  FocusScopeNode currentFocus = FocusScopeNode();
+        Provider.of<UserViewModel>(context, listen: true);
+    FocusScopeNode currentFocus = FocusScopeNode();
     return Listener(
-       onPointerDown: (_) {
+      onPointerDown: (_) {
         currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.focusedChild?.unfocus();
@@ -111,7 +110,8 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                 Container(
                   //height: 225,
                   //width: 100,
-                  margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   padding: const EdgeInsets.all(kDefaultPadding),
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 236, 236, 236),
@@ -141,10 +141,14 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           height: kDefaultPadding,
                         ),
                         SizedBox(
-                          height: 50,
+                          height: 70,
                           child: TextFormField(
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                            ),
                             //  controller: _titleController,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             cursorColor: Colors.black,
                             maxLines: 1,
                             decoration: const InputDecoration(

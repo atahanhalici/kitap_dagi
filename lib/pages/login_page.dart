@@ -151,6 +151,9 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 70,
                           child: TextFormField(
+                              style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
                             //  controller: _titleController,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             cursorColor: Colors.black,
@@ -185,6 +188,9 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 70,
                           child: TextFormField(
+                              style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
                             //  controller: _titleController,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             cursorColor: Colors.black,

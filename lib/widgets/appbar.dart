@@ -60,6 +60,9 @@ class MyAppBar extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      style: const TextStyle(
+                        fontFamily: "Comfortaa",
+                      ),
                       textInputAction: TextInputAction.search,
                       controller: _controller,
                       onSubmitted: (value) {

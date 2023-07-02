@@ -213,6 +213,9 @@ class _ProfilPageState extends State<ProfilPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
                   child: TextFormField(
+                      style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
                     //  controller: _titleController,
                     key: Key(
                         !sifreGuncelle ? _userModel.users.user["name"] : "eski"),
@@ -263,6 +266,9 @@ class _ProfilPageState extends State<ProfilPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
                   child: TextFormField(
+                      style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
                     //  controller: _titleController,
                     key: Key(!sifreGuncelle
                         ? _userModel.users.user["surname"]
@@ -321,6 +327,9 @@ class _ProfilPageState extends State<ProfilPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
                   child: TextFormField(
+                      style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
                     //  controller: _titleController,
                     key: Key(!sifreGuncelle
                         ? _userModel.users.user["email"]

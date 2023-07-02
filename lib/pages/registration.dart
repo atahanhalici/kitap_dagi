@@ -159,6 +159,9 @@ class _KayitOlState extends State<KayitOl> {
                                   child: SizedBox(
                                 height: 70,
                                 child: TextFormField(
+                                  style: const TextStyle(
+                                    fontFamily: "Poppins",
+                                  ),
                                   //  controller: _titleController,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -188,6 +191,9 @@ class _KayitOlState extends State<KayitOl> {
                                   child: SizedBox(
                                 height: 70,
                                 child: TextFormField(
+                                  style: const TextStyle(
+                                    fontFamily: "Poppins",
+                                  ),
                                   //  controller: _titleController,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -219,6 +225,9 @@ class _KayitOlState extends State<KayitOl> {
                         SizedBox(
                           height: 70,
                           child: TextFormField(
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                            ),
                             //  controller: _titleController,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -255,6 +264,9 @@ class _KayitOlState extends State<KayitOl> {
                         SizedBox(
                           height: 70,
                           child: TextFormField(
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                            ),
                             //  controller: _titleController,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -300,6 +312,9 @@ class _KayitOlState extends State<KayitOl> {
                         SizedBox(
                           height: 70,
                           child: TextFormField(
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                            ),
                             //  controller: _titleController,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,

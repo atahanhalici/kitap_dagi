@@ -920,6 +920,9 @@ class _BookDetailsState extends State<BookDetails> {
             height: 10,
           ),
           TextFormField(
+            style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
             controller: _titleController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             cursorColor: Colors.black,
@@ -946,6 +949,9 @@ class _BookDetailsState extends State<BookDetails> {
             height: 10,
           ),
           TextFormField(
+            style: const TextStyle(
+              fontFamily: "Poppins",
+            ),
             controller: _descController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             cursorColor: Colors.black,
