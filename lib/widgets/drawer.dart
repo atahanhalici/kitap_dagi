@@ -39,6 +39,7 @@ class MyDrawer extends StatelessWidget {
               child: Text(
             "Hızlı Ulaşım",
             style: TextStyle(
+                fontFamily: "Comfortaa",
                 color: kPrimaryColor,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
@@ -66,6 +67,7 @@ class MyDrawer extends StatelessWidget {
               child: Text(
             "Kategoriler",
             style: TextStyle(
+                fontFamily: "Comfortaa",
                 color: kPrimaryColor,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
@@ -102,7 +104,12 @@ class MyDrawer extends StatelessWidget {
         Provider.of<UserViewModel>(context, listen: true);
     _categoryModel.baslama = 0;
     return ListTile(
-      title: Text(ad),
+      title: Text(
+        ad,
+        style: const TextStyle(
+          fontFamily: "Poppins",
+        ),
+      ),
       onTap: () async {
         if (gidilecek == ad) {
           Navigator.pop(context);

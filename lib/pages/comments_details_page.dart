@@ -36,7 +36,7 @@ class CommentsDetails extends StatefulWidget {
 }
 
 class _CommentsDetailsState extends State<CommentsDetails> {
-   @override
+  @override
   void initState() {
     execute();
     super.initState();
@@ -61,6 +61,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     CommentViewModel _commentModel =
@@ -77,7 +78,11 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                 onTap: () {
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                child: const Text("Kitap Dağı")),
+                child: const Text(
+                  "Kitap Dağı",
+                  style: TextStyle(
+                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                )),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -219,6 +224,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                       child: Text(
                         "${index + 1}",
                         style: TextStyle(
+                            fontFamily: "Comfortaa",
                             color: commentViewModel.baslama / 10 == index
                                 ? Colors.white
                                 : Colors.black,
@@ -256,6 +262,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                   child: Text(
                 "Kitap Detayına Dön",
                 style: TextStyle(
+                    fontFamily: "Comfortaa",
                     color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -267,7 +274,10 @@ class _CommentsDetailsState extends State<CommentsDetails> {
         Text(
           widget.book.title,
           style: const TextStyle(
-              color: kPrimaryColor, fontSize: 20, fontWeight: FontWeight.bold),
+              fontFamily: "Poppins",
+              color: kPrimaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         ),
         SizedBox(
           width: size.width - 2 * kDefaultPadding,
@@ -300,8 +310,11 @@ class _CommentsDetailsState extends State<CommentsDetails> {
             children: [
               Text(
                 widget.ortalama.toStringAsFixed(1),
-                style:
-                    const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Poppins",
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -348,6 +361,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
         Text(
           "(${commentModel.comments.yorumSayisi} Değerlendirme)",
           style: const TextStyle(
+              fontFamily: "Poppins",
               color: Color.fromARGB(255, 70, 70, 70),
               fontSize: 15,
               fontWeight: FontWeight.bold),
@@ -362,7 +376,7 @@ class _CommentsDetailsState extends State<CommentsDetails> {
 
   cizelge(Size size, CommentViewModel commentModel) {
     return SizedBox(
-      height: 65,
+      height: 75,
       child: ListView.builder(
           itemCount: 5,
           scrollDirection: Axis.horizontal,
@@ -382,7 +396,10 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                       children: [
                         Text(
                           "${index + 1}",
-                          style: const TextStyle(fontSize: 18),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                         const Icon(
                           Icons.star,
@@ -414,7 +431,10 @@ class _CommentsDetailsState extends State<CommentsDetails> {
                                       : index + 1 == 5
                                           ? commentModel.besyildiz.toString()
                                           : "",
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontFamily: "Poppins",
+                      ),
                     ),
                   )
                 ],

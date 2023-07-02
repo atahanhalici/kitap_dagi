@@ -34,7 +34,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int a = 0;
- @override
+  @override
   void initState() {
     execute();
     super.initState();
@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     MainViewModel _mainModel =
@@ -82,6 +83,7 @@ class _HomePageState extends State<HomePage> {
               title: const Text(
                 "Şifre Değişikliği Tespit Edildi!",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),
@@ -91,6 +93,7 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       "Şifre Değişikliği Yaptığınız İçin Hesabınızdan Çıkış Yapıldı. Lütfen Tekrar Giriş Yapınız!",
                       style: TextStyle(
+                        fontFamily: "Poppins",
                         color: Colors.black,
                       ),
                     ),
@@ -102,6 +105,7 @@ class _HomePageState extends State<HomePage> {
                   child: const Text(
                     "Tamam",
                     style: TextStyle(
+                      fontFamily: "Poppins",
                       color: Colors.black,
                     ),
                   ),
@@ -118,7 +122,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: kPrimaryColor,
-            title: const Text("Kitap Dağı"),
+            title: const Text(
+              "Kitap Dağı",
+              style: TextStyle(
+                  fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+            ),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -211,9 +219,10 @@ class _HomePageState extends State<HomePage> {
             child: Text(
               isim,
               style: const TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
+                fontFamily: "Poppins",
+                color: kPrimaryColor,
+                fontSize: 15,
+              ),
             ),
           ),
           Padding(

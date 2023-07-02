@@ -22,7 +22,7 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
-   @override
+  @override
   void initState() {
     execute();
     super.initState();
@@ -47,6 +47,7 @@ class _ProfilPageState extends State<ProfilPage> {
       },
     );
   }
+
   bool sifreGuncelle = false;
   bool _gizli = true;
   bool _gizli1 = true;
@@ -69,7 +70,11 @@ class _ProfilPageState extends State<ProfilPage> {
                 onTap: () {
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                child: const Text("Kitap Dağı")),
+                child: const Text(
+                  "Kitap Dağı",
+                  style: TextStyle(
+                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                )),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -140,6 +145,9 @@ class _ProfilPageState extends State<ProfilPage> {
                               child: Text(
                             "Bilgilerimi Güncelle",
                             textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                            ),
                           )),
                         ),
                         onTap: () {
@@ -171,6 +179,9 @@ class _ProfilPageState extends State<ProfilPage> {
                                 child: Text(
                               "Şifremi Güncelle",
                               textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                              ),
                             )),
                           ),
                           onTap: () {
@@ -212,7 +223,10 @@ class _ProfilPageState extends State<ProfilPage> {
                                     color: Colors.grey))
                         : null,
                     labelText: !sifreGuncelle ? "İsim" : "Eski Şifre",
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Poppins",
+                    ),
                     focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: kPrimaryColor)),
                     border: const OutlineInputBorder(),
@@ -260,7 +274,10 @@ class _ProfilPageState extends State<ProfilPage> {
                                     color: Colors.grey))
                         : null,
                     labelText: !sifreGuncelle ? "Soyisim" : "Yeni Şifre",
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Poppins",
+                    ),
                     focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: kPrimaryColor)),
                     border: const OutlineInputBorder(),
@@ -318,7 +335,10 @@ class _ProfilPageState extends State<ProfilPage> {
                     labelText: !sifreGuncelle
                         ? "E-Mail"
                         : "Yeni Şifrenizi Tekrar Giriniz",
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Poppins",
+                    ),
                     focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: kPrimaryColor)),
                     border: const OutlineInputBorder(),
@@ -405,6 +425,7 @@ class _ProfilPageState extends State<ProfilPage> {
                         child: Text(
                       "Değişiklikleri Kaydet",
                       style: TextStyle(
+                          fontFamily: "Comfortaa",
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
@@ -438,6 +459,7 @@ class _ProfilPageState extends State<ProfilPage> {
                         child: Text(
                       "Çıkış Yap",
                       style: TextStyle(
+                          fontFamily: "Comfortaa",
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
@@ -455,6 +477,7 @@ class _ProfilPageState extends State<ProfilPage> {
           title: Text(
             baslik,
             style: const TextStyle(
+              fontFamily: "Poppins",
               color: Colors.black,
             ),
           ),
@@ -464,6 +487,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 Text(
                   icerik,
                   style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -475,6 +499,7 @@ class _ProfilPageState extends State<ProfilPage> {
               child: const Text(
                 "Tamam",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),
@@ -498,6 +523,7 @@ class _ProfilPageState extends State<ProfilPage> {
           title: Text(
             baslik,
             style: const TextStyle(
+              fontFamily: "Poppins",
               color: Colors.black,
             ),
           ),
@@ -507,6 +533,7 @@ class _ProfilPageState extends State<ProfilPage> {
                 Text(
                   icerik,
                   style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -518,6 +545,7 @@ class _ProfilPageState extends State<ProfilPage> {
               child: const Text(
                 "Hayır",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),
@@ -530,6 +558,7 @@ class _ProfilPageState extends State<ProfilPage> {
               child: const Text(
                 "Evet",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),

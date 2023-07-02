@@ -69,6 +69,7 @@ class MyAppBar extends StatelessWidget {
                         hintText: "Arama yap",
                         hintStyle: TextStyle(
                           color: Colors.black.withOpacity(0.5),
+                          fontFamily: "Comfortaa",
                         ),
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,

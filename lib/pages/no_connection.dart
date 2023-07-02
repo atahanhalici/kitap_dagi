@@ -68,6 +68,7 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
           const Text(
             "Bağlantınızda Problem Var Gibi Duruyor",
             style: TextStyle(
+                fontFamily: "Poppins",
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
                 color: Color.fromARGB(255, 0, 0, 0)),
@@ -79,6 +80,7 @@ class _NoConnectionPageState extends State<NoConnectionPage> {
             child: const Text(
               "kitapdagi.com.tr",
               style: TextStyle(
+                  fontFamily: "Poppins",
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: Color.fromARGB(140, 0, 0, 0)),

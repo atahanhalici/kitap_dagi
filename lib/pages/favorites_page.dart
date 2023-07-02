@@ -27,7 +27,7 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-   @override
+  @override
   void initState() {
     execute();
     super.initState();
@@ -52,6 +52,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -66,7 +67,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 onTap: () {
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                child: const Text("Kitap Dağı")),
+                child: const Text(
+                  "Kitap Dağı",
+                  style: TextStyle(
+                    fontFamily: "Comfortaa",
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -96,6 +103,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 child: Text(
                   "Favorilerim",
                   style: TextStyle(
+                      fontFamily: "Poppins",
                       color: kPrimaryColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
@@ -124,7 +132,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           child: const Center(
                             child: Text(
                               "Favori Listenize Eklenmiş Kitap Bulunmamaktadır",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                              ),
                             ),
                           ),
                         )
@@ -198,7 +208,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
         Provider.of<CommentViewModel>(context, listen: true);
     UserViewModel _userModel =
         Provider.of<UserViewModel>(context, listen: true);
-    var rating = double.parse(kitap.rating);
+    double rating = 0;
+    if (kitap.rating != "NaN") {
+      rating = double.parse(kitap.rating);
+    }
+
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         decoration: BoxDecoration(
@@ -235,6 +249,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       Text(
                         kitap.title,
                         style: const TextStyle(
+                            fontFamily: "Poppins",
                             color: kTextColor,
                             fontSize: 13,
                             fontWeight: FontWeight.bold),
@@ -244,6 +259,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           const Text(
                             "Yazar:",
                             style: TextStyle(
+                                fontFamily: "Poppins",
                                 color: kPrimaryColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
@@ -254,6 +270,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           Text(
                             kitap.author,
                             style: const TextStyle(
+                                fontFamily: "Poppins",
                                 color: kTextColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
@@ -265,6 +282,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           const Text(
                             "Yayınevi:",
                             style: TextStyle(
+                                fontFamily: "Poppins",
                                 color: kPrimaryColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
@@ -275,6 +293,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           Text(
                             kitap.publisher,
                             style: const TextStyle(
+                                fontFamily: "Poppins",
                                 color: kTextColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
@@ -287,6 +306,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       const Text(
                         "Değerlendirmeler",
                         style: TextStyle(
+                            fontFamily: "Comfortaa",
                             color: kPrimaryColor,
                             fontSize: 13,
                             fontWeight: FontWeight.bold),
@@ -299,7 +319,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           thickness: 2,
                         ),
                       ),
-                      yildizlar(rating),
+                      yildizlar(rating == "NaN" ? 0 : rating),
                       const SizedBox(
                         height: 10,
                       ),
@@ -326,9 +346,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               child: Text(
                             "Kitabı İncele",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                            ),
+                                fontFamily: "Comfortaa",
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
                           )),
                         ),
                       ),
@@ -370,6 +391,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               child: Text(
                             "Favorilerden Kaldır",
                             style: TextStyle(
+                              fontFamily: "Comfortaa",
+                              fontWeight: FontWeight.bold,
                               color: Colors.white,
                               fontSize: 13,
                             ),
@@ -441,6 +464,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       title: const Text(
                         "Kitap Dağı'ndan Ayrılıyorsunuz!",
                         style: TextStyle(
+                          fontFamily: "Poppins",
                           color: Colors.black,
                         ),
                       ),
@@ -451,6 +475,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               kitap.buyLinks[index]["name"] +
                                   " Web Sitesi Açılacak. Onaylıyor musunuz?",
                               style: const TextStyle(
+                                fontFamily: "Poppins",
                                 color: Colors.black,
                               ),
                             ),
@@ -462,6 +487,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           child: const Text(
                             "Hayır",
                             style: TextStyle(
+                              fontFamily: "Poppins",
                               color: Colors.black,
                             ),
                           ),
@@ -473,6 +499,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           child: const Text(
                             "Evet",
                             style: TextStyle(
+                              fontFamily: "Poppins",
                               color: Colors.black,
                             ),
                           ),
@@ -506,13 +533,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     children: [
                       Text(
                         kitap.buyLinks[index]["name"],
-                        style:
-                            const TextStyle(fontSize: 8, color: kPrimaryColor),
+                        style: const TextStyle(
+                          fontSize: 8,
+                          color: kPrimaryColor,
+                          fontFamily: "Poppins",
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       Text(
                         kitap.buyLinks[index]["linkPrice"] + " TL",
                         style: const TextStyle(
+                            fontFamily: "Poppins",
                             fontSize: 10,
                             color: kPrimaryColor,
                             fontWeight: FontWeight.bold),
@@ -536,6 +567,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           title: Text(
             baslik,
             style: const TextStyle(
+              fontFamily: "Poppins",
               color: Colors.black,
             ),
           ),
@@ -545,6 +577,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 Text(
                   icerik,
                   style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -556,6 +589,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               child: const Text(
                 "Tamam",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),

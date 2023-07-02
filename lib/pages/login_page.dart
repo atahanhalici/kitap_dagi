@@ -23,7 +23,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-   @override
+  @override
   void initState() {
     execute();
     super.initState();
@@ -48,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
+
   final _emailController = TextEditingController();
   final _sifreController = TextEditingController();
   bool _gizli = true;
@@ -66,7 +67,11 @@ class _LoginPageState extends State<LoginPage> {
               onTap: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              child: const Text("Kitap Dağı")),
+              child: const Text(
+                "Kitap Dağı",
+                style: TextStyle(
+                    fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+              )),
           centerTitle: true,
           elevation: 0,
         ),
@@ -121,6 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text(
                         "Giriş Yap",
                         style: TextStyle(
+                            fontFamily: "Poppins",
                             color: kPrimaryColor,
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
@@ -137,7 +143,10 @@ class _LoginPageState extends State<LoginPage> {
                           maxLines: 1,
                           decoration: const InputDecoration(
                             labelText: "E-Mail",
-                            labelStyle: TextStyle(color: Colors.black),
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                            ),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
                             border: UnderlineInputBorder(),
@@ -169,7 +178,10 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: _gizli,
                           decoration: InputDecoration(
                             labelText: "Şifre",
-                            labelStyle: const TextStyle(color: Colors.black),
+                            labelStyle: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                            ),
                             focusedBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
                             border: const UnderlineInputBorder(),
@@ -223,6 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text(
                                 'Beni Hatırla',
                                 style: TextStyle(
+                                  fontFamily: "Poppins",
                                   color: Color.fromARGB(255, 68, 68, 68),
                                   fontSize: 15,
                                 ),
@@ -243,6 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text(
                                 "Şifremi Unuttum",
                                 style: TextStyle(
+                                  fontFamily: "Poppins",
                                   color: kPrimaryColor,
                                   fontSize: 15,
                                 ),
@@ -305,6 +319,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Text(
                               "Giriş Yap",
                               style: TextStyle(
+                                  fontFamily: "Comfortaa",
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
@@ -314,7 +329,10 @@ class _LoginPageState extends State<LoginPage> {
                         visible: uyari,
                         child: const Text(
                           "Lütfen Hiçbir Alanı Boş Geçmeyiniz!",
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -328,7 +346,12 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                           Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Text("Veya")),
+                              child: Text(
+                                "Veya",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                ),
+                              )),
                           Expanded(
                               child: Divider(
                             thickness: 2,
@@ -419,7 +442,12 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Hesabınız yok mu? "),
+                          const Text(
+                            "Hesabınız yok mu? ",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                            ),
+                          ),
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -431,7 +459,10 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: const Text(
                                 "Kayıt Ol",
-                                style: TextStyle(color: kPrimaryColor),
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontFamily: "Poppins",
+                                ),
                               ),
                             ),
                           )
@@ -456,6 +487,7 @@ class _LoginPageState extends State<LoginPage> {
           title: Text(
             baslik,
             style: const TextStyle(
+              fontFamily: "Poppins",
               color: Colors.black,
             ),
           ),
@@ -465,6 +497,7 @@ class _LoginPageState extends State<LoginPage> {
                 Text(
                   icerik,
                   style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -476,6 +509,7 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text(
                 "Tamam",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),

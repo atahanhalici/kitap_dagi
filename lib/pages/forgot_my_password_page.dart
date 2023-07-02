@@ -18,7 +18,7 @@ class ForgotMyPassword extends StatefulWidget {
 }
 
 class _ForgotMyPasswordState extends State<ForgotMyPassword> {
-   @override
+  @override
   void initState() {
     execute();
     super.initState();
@@ -43,6 +43,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
       },
     );
   }
+
   bool uyari = false;
   @override
   Widget build(BuildContext context) {
@@ -55,10 +56,13 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
           backgroundColor: kPrimaryColor,
           title: GestureDetector(
               onTap: () {
-              
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              child: const Text("Kitap Dağı")),
+              child: const Text(
+                "Kitap Dağı",
+                style: TextStyle(
+                    fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+              )),
           centerTitle: true,
           elevation: 0,
         ),
@@ -76,7 +80,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                 height: size.height > size.width
                     ? size.height * 0.1 - 27
                     : size.width * 0.1 - 27,
-                decoration:const BoxDecoration(
+                decoration: const BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(36),
@@ -92,10 +96,10 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
               Container(
                 //height: 225,
                 //width: 100,
-                margin:const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                padding:const EdgeInsets.all(kDefaultPadding),
+                margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding: const EdgeInsets.all(kDefaultPadding),
                 decoration: BoxDecoration(
-                    color:const Color.fromARGB(255, 236, 236, 236),
+                    color: const Color.fromARGB(255, 236, 236, 236),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -113,6 +117,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                       const Text(
                         "Şifremi Unuttum",
                         style: TextStyle(
+                            fontFamily: "Poppins",
                             color: kPrimaryColor,
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
@@ -129,10 +134,13 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           maxLines: 1,
                           decoration: const InputDecoration(
                             labelText: "E-Mail",
-                            labelStyle:  TextStyle(color: Colors.black),
-                            focusedBorder:  UnderlineInputBorder(
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                            ),
+                            focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: kPrimaryColor)),
-                            border:  UnderlineInputBorder(),
+                            border: UnderlineInputBorder(),
                             suffixIcon: Icon(Icons.person),
                           ),
                           validator: (deger) {
@@ -148,7 +156,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           },
                         ),
                       ),
-                   const   SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       TextButton(
@@ -181,10 +189,11 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                               color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child:const Center(
+                            child: const Center(
                                 child: Text(
                               "Şifremi Unuttum",
                               style: TextStyle(
+                                  fontFamily: "Comfortaa",
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
@@ -192,9 +201,12 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                           )),
                       Visibility(
                         visible: uyari,
-                        child:const Text(
+                        child: const Text(
                           "Lütfen Hiçbir Alanı Boş Geçmeyiniz!",
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ),
                     ],
@@ -219,6 +231,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
           title: Text(
             baslik,
             style: const TextStyle(
+              fontFamily: "Poppins",
               color: Colors.black,
             ),
           ),
@@ -228,6 +241,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
                 Text(
                   icerik,
                   style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -240,6 +254,7 @@ class _ForgotMyPasswordState extends State<ForgotMyPassword> {
               child: const Text(
                 "Tamam",
                 style: TextStyle(
+                  fontFamily: "Poppins",
                   color: Colors.black,
                 ),
               ),

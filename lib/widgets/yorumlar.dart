@@ -4,7 +4,6 @@ import 'package:kitap_dagi/constants.dart';
 import 'package:kitap_dagi/viewmodels/comment_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-
 class YorumlarWidget extends StatelessWidget {
   final int baslama;
   const YorumlarWidget({Key? key, required this.baslama}) : super(key: key);
@@ -31,6 +30,7 @@ class YorumlarWidget extends StatelessWidget {
                           child: const Text(
                             "Yorumlar",
                             style: TextStyle(
+                                fontFamily: "Comfortaa",
                                 color: kPrimaryColor,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
@@ -38,12 +38,12 @@ class YorumlarWidget extends StatelessWidget {
                         ),
                         SizedBox(
                           width: size.width - 2 * kDefaultPadding,
-                          child:const Divider(
+                          child: const Divider(
                             color: kPrimaryColor,
                             thickness: 2,
                           ),
                         ),
-                    const    SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         SizedBox(
@@ -66,10 +66,10 @@ class YorumlarWidget extends StatelessWidget {
                                 return Column(
                                   children: [
                                     Container(
-                                      padding:
-                                      const    EdgeInsets.all(kDefaultPadding / 2),
+                                      padding: const EdgeInsets.all(
+                                          kDefaultPadding / 2),
                                       decoration: BoxDecoration(
-                                          color:const Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 223, 223, 223),
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -91,8 +91,10 @@ class YorumlarWidget extends StatelessWidget {
                                                 Text(
                                                   commentModel.comments
                                                               .yorumlar[index]
-                                                          ["nameSurname"] ?? "",
+                                                          ["nameSurname"] ??
+                                                      "",
                                                   style: const TextStyle(
+                                                      fontFamily: "Poppins",
                                                       color: kTextColor,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -122,7 +124,8 @@ class YorumlarWidget extends StatelessWidget {
                                             commentModel.comments
                                                     .yorumlar[index + baslama]
                                                 ["title"],
-                                            style:const TextStyle(
+                                            style: const TextStyle(
+                                                fontFamily: "Poppins",
                                                 color: kTextColor,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
@@ -136,7 +139,8 @@ class YorumlarWidget extends StatelessWidget {
                                             children: [
                                               Text(
                                                 formattedDate,
-                                                style:const TextStyle(
+                                                style: const TextStyle(
+                                                    fontFamily: "Poppins",
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
@@ -145,7 +149,7 @@ class YorumlarWidget extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                 const   SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     )
                                   ],

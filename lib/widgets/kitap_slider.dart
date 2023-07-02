@@ -41,6 +41,7 @@ class _KitapSliderState extends State<KitapSlider> {
               Text(
                 widget.baslik,
                 style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -89,15 +90,22 @@ class _KitapSliderState extends State<KitapSlider> {
                                 ),
                                 Text(
                                   book.title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
+                                      fontFamily: "Poppins",
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 14),
+                                      fontSize: 13),
                                 ),
                                 Text(
                                   book.author,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      color: kPrimaryColor, fontSize: 13),
+                                      fontFamily: "Poppins",
+                                      color: kPrimaryColor,
+                                      fontSize: 12),
                                 )
                               ],
                             ),

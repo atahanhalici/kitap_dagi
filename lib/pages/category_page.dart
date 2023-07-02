@@ -54,7 +54,7 @@ class _CategoryPageState extends State<CategoryPage> {
       },
     );
   }
- 
+
   @override
   Widget build(BuildContext context) {
     UserViewModel _userModel =
@@ -71,7 +71,11 @@ class _CategoryPageState extends State<CategoryPage> {
                 onTap: () {
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                child: const Text("Kitap Dağı")),
+                child: const Text(
+                  "Kitap Dağı",
+                  style: TextStyle(
+                      fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+                )),
             centerTitle: true,
             elevation: 0,
             actions: [
@@ -118,6 +122,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         child: Text(
                           widget.title,
                           style: const TextStyle(
+                              fontFamily: "Comfortaa",
                               color: kPrimaryColor,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
@@ -151,6 +156,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     child: Text(
                                       "Aradığınız İsimde Kitap Bulunamadı",
                                       style: TextStyle(
+                                          fontFamily: "Poppins",
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -229,7 +235,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                   _categoryModel
                                       .kitaplar[index + _categoryModel.baslama]
                                       .title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
+                                      fontFamily: "Poppins",
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14),
@@ -242,8 +251,12 @@ class _CategoryPageState extends State<CategoryPage> {
                                   _categoryModel
                                       .kitaplar[index + _categoryModel.baslama]
                                       .author,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      color: kPrimaryColor, fontSize: 13),
+                                      fontFamily: "Poppins",
+                                      color: kPrimaryColor,
+                                      fontSize: 13),
                                 ),
                               )
                             ],
@@ -327,6 +340,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       child: Text(
                         "${index + 1}",
                         style: TextStyle(
+                            fontFamily: "Comfortaa",
                             color: categoryViewModel.baslama / 20 == index
                                 ? Colors.white
                                 : Colors.black,

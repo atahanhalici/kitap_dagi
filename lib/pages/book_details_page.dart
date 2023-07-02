@@ -63,7 +63,6 @@ class _BookDetailsState extends State<BookDetails> {
       },
     );
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +84,11 @@ class _BookDetailsState extends State<BookDetails> {
               onTap: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              child: const Text("Kitap Dağı")),
+              child: const Text(
+                "Kitap Dağı",
+                style: TextStyle(
+                    fontFamily: "Comfortaa", fontWeight: FontWeight.bold),
+              )),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -230,6 +233,7 @@ class _BookDetailsState extends State<BookDetails> {
                         child: Text(
                           "Yorumlar",
                           style: TextStyle(
+                              fontFamily: "Comfortaa",
                               color: kPrimaryColor,
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
@@ -259,7 +263,9 @@ class _BookDetailsState extends State<BookDetails> {
                         child: const Center(
                           child: Text(
                             "Bu Kitap İçin Herhangi Bir Yorum Bulunmamaktadır!",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                            ),
                           ),
                         ),
                       ),
@@ -280,6 +286,7 @@ class _BookDetailsState extends State<BookDetails> {
                     child: Text(
                       "Yorum Yap",
                       style: TextStyle(
+                          fontFamily: "Comfortaa",
                           color: kPrimaryColor,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
@@ -308,7 +315,9 @@ class _BookDetailsState extends State<BookDetails> {
                     child: const Center(
                       child: Text(
                         "Yorum Yapabilmek İçin Oturum Açmanız Gerekmektedir!",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                        ),
                       ),
                     ),
                   ),
@@ -330,6 +339,7 @@ class _BookDetailsState extends State<BookDetails> {
           child: Text(
             "Yorumlar",
             style: TextStyle(
+                fontFamily: "Comfortaa",
                 color: kPrimaryColor,
                 fontSize: 15,
                 fontWeight: FontWeight.bold),
@@ -398,7 +408,10 @@ class _BookDetailsState extends State<BookDetails> {
         Text(
           widget.book.title,
           style: const TextStyle(
-              color: kTextColor, fontSize: 20, fontWeight: FontWeight.bold),
+              fontFamily: "Poppins",
+              color: kTextColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 10,
@@ -412,6 +425,7 @@ class _BookDetailsState extends State<BookDetails> {
               const Text(
                 "Yazar:",
                 style: TextStyle(
+                    fontFamily: "Poppins",
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -422,6 +436,7 @@ class _BookDetailsState extends State<BookDetails> {
               Text(
                 widget.book.author,
                 style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: kTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -438,6 +453,7 @@ class _BookDetailsState extends State<BookDetails> {
               const Text(
                 "Yayınevi:",
                 style: TextStyle(
+                    fontFamily: "Poppins",
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -448,6 +464,7 @@ class _BookDetailsState extends State<BookDetails> {
               Text(
                 widget.book.publisher,
                 style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: kTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -461,7 +478,10 @@ class _BookDetailsState extends State<BookDetails> {
         const Text(
           "Değerlendirmeler",
           style: TextStyle(
-              color: kPrimaryColor, fontSize: 15, fontWeight: FontWeight.bold),
+              fontFamily: "Comfortaa",
+              color: kPrimaryColor,
+              fontSize: 15,
+              fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           width: 120,
@@ -479,7 +499,12 @@ class _BookDetailsState extends State<BookDetails> {
                       ? double.parse(widget.book.rating)
                       : 0.0*/
                       ),
-                  Text("(${commentModel.comments.yorumSayisi})")
+                  Text(
+                    "(${commentModel.comments.yorumSayisi})",
+                    style: const TextStyle(
+                      fontFamily: "Poppins",
+                    ),
+                  )
                 ],
               )
             : Container(),
@@ -495,6 +520,7 @@ class _BookDetailsState extends State<BookDetails> {
               const Text(
                 "Açıklama:",
                 style: TextStyle(
+                    fontFamily: "Poppins",
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -505,6 +531,7 @@ class _BookDetailsState extends State<BookDetails> {
               Text(
                 widget.book.description,
                 style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: kTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -524,6 +551,7 @@ class _BookDetailsState extends State<BookDetails> {
               const Text(
                 "Kitap Boyutu:",
                 style: TextStyle(
+                    fontFamily: "Poppins",
                     color: kPrimaryColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -534,6 +562,7 @@ class _BookDetailsState extends State<BookDetails> {
               Text(
                 "${widget.book.bookImageHeight} x ${widget.book.bookImageWidth} mm",
                 style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: kTextColor,
                     fontSize: 15,
                     fontWeight: FontWeight.bold),
@@ -580,6 +609,7 @@ class _BookDetailsState extends State<BookDetails> {
                   child: Text(
                 "Favorilere Ekle",
                 style: TextStyle(
+                    fontFamily: "Comfortaa",
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
@@ -598,8 +628,9 @@ class _BookDetailsState extends State<BookDetails> {
           title: Text(
             baslik,
             style: const TextStyle(
-              color: Colors.black,
-            ),
+                fontFamily: "Poppins",
+                color: Colors.black,
+                fontWeight: FontWeight.bold),
           ),
           content: SingleChildScrollView(
             child: ListBody(
@@ -607,6 +638,7 @@ class _BookDetailsState extends State<BookDetails> {
                 Text(
                   icerik,
                   style: const TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -618,6 +650,7 @@ class _BookDetailsState extends State<BookDetails> {
                 child: const Text(
                   "Tamam",
                   style: TextStyle(
+                    fontFamily: "Poppins",
                     color: Colors.black,
                   ),
                 ),
@@ -650,6 +683,7 @@ class _BookDetailsState extends State<BookDetails> {
                               const Text(
                                 "Yorumlar",
                                 style: TextStyle(
+                                    fontFamily: "Comfortaa",
                                     color: kPrimaryColor,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold),
@@ -676,6 +710,7 @@ class _BookDetailsState extends State<BookDetails> {
                                     Text(
                                       "Tüm Yorumları Görüntüle",
                                       style: TextStyle(
+                                        fontFamily: "Poppins",
                                         color: Colors.grey,
                                         fontSize: 15,
                                       ),
@@ -746,6 +781,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                           ["nameSurname"] ??
                                                       "",
                                                   style: const TextStyle(
+                                                      fontFamily: "Poppins",
                                                       color: kTextColor,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -771,12 +807,18 @@ class _BookDetailsState extends State<BookDetails> {
                                             commentModel.comments
                                                 .yorumlar[index]["title"],
                                             style: const TextStyle(
+                                                fontFamily: "Poppins",
                                                 color: kTextColor,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Text(commentModel.comments
-                                              .yorumlar[index]["desc"]),
+                                          Text(
+                                            commentModel.comments
+                                                .yorumlar[index]["desc"],
+                                            style: const TextStyle(
+                                              fontFamily: "Poppins",
+                                            ),
+                                          ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -784,6 +826,7 @@ class _BookDetailsState extends State<BookDetails> {
                                               Text(
                                                 formattedDate,
                                                 style: const TextStyle(
+                                                    fontFamily: "Poppins",
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
@@ -848,6 +891,7 @@ class _BookDetailsState extends State<BookDetails> {
           const Text(
             "Yorum Yap",
             style: TextStyle(
+                fontFamily: "Comfortaa",
                 color: kPrimaryColor,
                 fontSize: 15,
                 fontWeight: FontWeight.bold),
@@ -869,7 +913,10 @@ class _BookDetailsState extends State<BookDetails> {
             maxLines: 1,
             decoration: const InputDecoration(
               labelText: "Başlık",
-              labelStyle: TextStyle(color: Colors.black),
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontFamily: "Poppins",
+              ),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: kPrimaryColor)),
               errorBorder:
@@ -892,7 +939,10 @@ class _BookDetailsState extends State<BookDetails> {
             maxLines: 5,
             decoration: const InputDecoration(
               labelText: "Yorumunuz",
-              labelStyle: TextStyle(color: Colors.black),
+              labelStyle: TextStyle(
+                color: Colors.black,
+                fontFamily: "Poppins",
+              ),
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: kPrimaryColor)),
               errorBorder:
@@ -1008,6 +1058,7 @@ class _BookDetailsState extends State<BookDetails> {
                     child: Text(
                   "Yorum Yap",
                   style: TextStyle(
+                      fontFamily: "Comfortaa",
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
@@ -1061,6 +1112,7 @@ class _BookDetailsState extends State<BookDetails> {
                     title: const Text(
                       "Kitap Dağı'ndan Ayrılıyorsunuz!",
                       style: TextStyle(
+                        fontFamily: "Poppins",
                         color: Colors.black,
                       ),
                     ),
@@ -1071,6 +1123,7 @@ class _BookDetailsState extends State<BookDetails> {
                             book.buyLinks[index]["name"] +
                                 " Web Sitesi Açılacak. Onaylıyor musunuz?",
                             style: const TextStyle(
+                              fontFamily: "Poppins",
                               color: Colors.black,
                             ),
                           ),
@@ -1082,6 +1135,7 @@ class _BookDetailsState extends State<BookDetails> {
                         child: const Text(
                           "Hayır",
                           style: TextStyle(
+                            fontFamily: "Poppins",
                             color: Colors.black,
                           ),
                         ),
@@ -1093,6 +1147,7 @@ class _BookDetailsState extends State<BookDetails> {
                         child: const Text(
                           "Evet",
                           style: TextStyle(
+                            fontFamily: "Poppins",
                             color: Colors.black,
                           ),
                         ),
@@ -1126,12 +1181,17 @@ class _BookDetailsState extends State<BookDetails> {
                   children: [
                     Text(
                       book.buyLinks[index]["name"],
-                      style: const TextStyle(fontSize: 8, color: kPrimaryColor),
+                      style: const TextStyle(
+                          fontSize: 8,
+                          color: kPrimaryColor,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     Text(
                       book.buyLinks[index]["linkPrice"] + " TL",
                       style: const TextStyle(
+                          fontFamily: "Poppins",
                           fontSize: 10,
                           color: kPrimaryColor,
                           fontWeight: FontWeight.bold),
@@ -1167,6 +1227,7 @@ class _BookDetailsState extends State<BookDetails> {
             child: Text(
               isim,
               style: const TextStyle(
+                  fontFamily: "Comfortaa",
                   color: kPrimaryColor,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
